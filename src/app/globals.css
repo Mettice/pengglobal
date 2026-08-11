@@ -1,26 +1,437 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/* ============================================================
+   KINETIC INK — Peng Global Holding
+   Futurism by way of the printing press. Type is the image;
+   hard rules are the structure; colour is rationed to two hues
+   that both mean something (PENSAN orange, brand lime).
+   ============================================================ */
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+@theme {
+  /* Ground: warm paper, chosen not defaulted. Neutrals are biased
+     toward the paper's warmth so nothing reads as generic grey. */
+  --color-paper: #f4f2ec;
+  --color-paper-2: #eae7dd;
+  --color-paper-3: #dedacd;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  /* Ink */
+  --color-ink: #0b0b0b;
+  --color-ink-2: #1a1a18;
+  --color-ink-soft: #4a4741;
+  --color-ink-faint: #6d6a63;
+
+  /* Colour is rationed and every hue is a real brand asset:
+     green = Peng Global Holding, orange = Peng Edition, navy = PENSAN. */
+  --color-orange: #f97316; /* Peng Edition */
+  --color-orange-deep: #c2410c;
+  --color-lime: #78be20; /* Peng Global Holding */
+  --color-lime-deep: #4d7d13;
+  --color-lime-bright: #8fd62c;
+  --color-pensan: #2a3b74; /* PENSAN Pantone Blue 072C */
+
+  --font-display: var(--font-archivo), "Archivo", system-ui, sans-serif;
+  --font-sans: var(--font-archivo), "Archivo", system-ui, sans-serif;
+  --font-serif: var(--font-fraunces), ui-serif, Georgia, serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, monospace;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--color-orange);
+  color: var(--color-ink);
+}
+
+/* ---------- Display type: the graphic element -------------------- */
+.kin-display {
+  font-family: var(--font-display);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: -0.045em;
+  line-height: 0.88;
+  text-wrap: balance;
+}
+
+/* The single soft moment in an otherwise hard system. */
+.kin-italic {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: -0.015em;
+  font-optical-sizing: auto;
+}
+
+/* Labels, chips, data — anything that is information rather than voice. */
+.kin-mono {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+/* ---------- Structure: hard rules ------------------------------- */
+.kin-rule {
+  border: 0;
+  height: 5px;
+  background: var(--color-ink);
+  margin: 0;
+}
+
+.kin-hairline {
+  border: 0;
+  height: 1px;
+  background: color-mix(in oklab, var(--color-ink) 18%, transparent);
+  margin: 0;
+}
+
+/* ---------- Chips: hard-bordered, no soft radii ------------------ */
+.kin-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  border: 1.5px solid var(--color-ink);
+  padding: 0.45rem 0.8rem;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 500;
+  background: transparent;
+  color: var(--color-ink);
+}
+
+.kin-chip--fill {
+  background: var(--color-ink);
+  color: var(--color-paper);
+}
+
+.kin-chip--orange {
+  background: var(--color-orange);
+  border-color: var(--color-orange);
+  color: var(--color-ink);
+}
+
+.kin-chip--lime {
+  background: var(--color-lime);
+  border-color: var(--color-lime);
+  color: var(--color-ink);
+}
+
+/* ---------- Buttons: square, deliberate, weighty ---------------- */
+.kin-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.95rem 1.6rem;
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 600;
+  border: 2px solid var(--color-ink);
+  background: var(--color-ink);
+  color: var(--color-paper);
+  transition:
+    transform 260ms cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 260ms ease,
+    color 260ms ease;
+}
+
+.kin-btn:hover {
+  background: var(--color-orange);
+  border-color: var(--color-orange);
+  color: var(--color-ink);
+  transform: translate(-2px, -2px);
+}
+
+.kin-btn--ghost {
+  background: transparent;
+  color: var(--color-ink);
+}
+
+.kin-btn--ghost:hover {
+  background: var(--color-ink);
+  border-color: var(--color-ink);
+  color: var(--color-paper);
+}
+
+/* On ink-ground sections the polarity flips. */
+.kin-on-ink .kin-btn {
+  border-color: var(--color-paper);
+  background: var(--color-paper);
+  color: var(--color-ink);
+}
+
+.kin-on-ink .kin-btn:hover {
+  background: var(--color-orange);
+  border-color: var(--color-orange);
+}
+
+.kin-on-ink .kin-btn--ghost {
+  background: transparent;
+  color: var(--color-paper);
+}
+
+.kin-on-ink .kin-btn--ghost:hover {
+  background: var(--color-paper);
+  color: var(--color-ink);
+}
+
+/* ---------- Focus: visible, in-system --------------------------- */
+:where(a, button, input, select, textarea):focus-visible {
+  outline: 3px solid var(--color-orange);
+  outline-offset: 2px;
+}
+
+/* ---------- Masked line reveal ---------------------------------- */
+/* CSS-driven on purpose. The headline is the site's core message, so it
+   must never depend on a JS animation completing: the default state is
+   FINISHED text, and the rise only applies where motion is welcome.
+   A stalled or absent script leaves the type perfectly readable. */
+.kin-mask {
+  display: block;
+  overflow: hidden;
+}
+
+.kin-mask > span {
+  display: block;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .kin-mask > span {
+    animation: kin-line-rise 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation-delay: var(--line-delay, 0s);
+  }
+}
+
+@keyframes kin-line-rise {
+  from {
+    transform: translateY(105%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+/* ---------- Ink-ground sections --------------------------------- */
+.kin-on-ink {
+  background: var(--color-ink);
+  color: var(--color-paper);
+}
+
+.kin-on-ink .kin-hairline {
+  background: color-mix(in oklab, var(--color-paper) 20%, transparent);
+}
+
+/* ---------- Paper grain: subtle, never noisy -------------------- */
+.kin-grain {
+  position: relative;
+}
+
+.kin-grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.035;
+  background-image: radial-gradient(
+    circle at 1px 1px,
+    var(--color-ink) 1px,
+    transparent 0
+  );
+  background-size: 4px 4px;
+}
+
+/* ---------- Marquee rail ---------------------------------------- */
+.kin-marquee {
+  display: flex;
+  overflow: hidden;
+  user-select: none;
+  gap: 0;
+}
+
+.kin-marquee__track {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 3rem;
+  padding-right: 3rem;
+  min-width: 100%;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .kin-marquee__track {
+    animation: kin-scroll 38s linear infinite;
+  }
+
+  .kin-marquee:hover .kin-marquee__track {
+    animation-play-state: paused;
+  }
+}
+
+@keyframes kin-scroll {
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+/* ---------- Brand assets ---------------------------------------- */
+
+/* Supplied logos sit on white. Multiply drops that white into the paper
+   ground so the mark reads as printed rather than pasted on a tile. */
+.kin-logo {
+  mix-blend-mode: multiply;
+}
+
+/* The PENSAN file is a brand-guideline sheet: the wordmark occupies a
+   navy box at roughly 26–74% across and 23–46% down, with a Pantone
+   swatch below. Crop to the box so we show the mark, not the artboard.
+   Geometry is derived from --mark-w so the crop scales as one unit. */
+.pensan-mark {
+  --mark-w: 150px;
+  display: block; /* sized box: width/height are ignored while inline */
+  width: var(--mark-w);
+  height: calc(var(--mark-w) * 0.28); /* 172 / 614 */
+  background-image: url("/images/pensan.jpeg");
+  background-repeat: no-repeat;
+  background-size: calc(var(--mark-w) * 2.0847) auto; /* 1280 / 614 */
+  background-position: calc(var(--mark-w) * -0.5423)
+    calc(var(--mark-w) * -0.2736); /* 333/614, 168/614 */
+}
+
+/* Book covers are supplied as wraparound spreads (back | spine | front).
+   A portrait frame plus right-anchored cover crops to the front board. */
+.book-front {
+  aspect-ratio: 71 / 100;
+  object-fit: cover;
+  object-position: right center;
+  display: block;
+  width: 100%;
+}
+
+/* ---------- Duotone photography --------------------------------- */
+/* Photography is treated, never dropped in raw. Every image is pushed
+   to greyscale then re-inked in two brand tones, so a mixed bag of
+   sources reads as one deliberate system — and no shot looks like a
+   stock library plate. Green for the holding, orange for Peng Edition. */
+.kin-photo {
+  position: relative;
+  overflow: hidden;
+  background: var(--color-ink);
+  isolation: isolate;
+}
+
+.kin-photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(1) contrast(1.12) brightness(0.98);
+}
+
+/* Shadows take the ink, highlights take the brand hue. */
+.kin-photo::before,
+.kin-photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.kin-photo::before {
+  background: var(--color-ink);
+  mix-blend-mode: lighten;
+}
+
+.kin-photo::after {
+  background: var(--duotone-highlight, var(--color-lime));
+  mix-blend-mode: darken;
+}
+
+.kin-photo--orange {
+  --duotone-highlight: var(--color-orange);
+}
+
+.kin-photo--paper {
+  --duotone-highlight: var(--color-paper);
+}
+
+/* Full-colour escape hatch for artwork that must stay true (book
+   covers, logos, product packaging). */
+.kin-photo--true::before,
+.kin-photo--true::after {
+  display: none;
+}
+
+.kin-photo--true img {
+  filter: none;
+}
+
+/* Slow push on hero photography. motion-safe only — the crossfade
+   carries the slide change for reduced-motion users on its own. */
+@keyframes kin-kenburns {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.08);
+  }
+}
+
+/* ---------- Green accents --------------------------------------- */
+/* The holding's own green, used to mark the parent brand inside
+   otherwise black-and-orange (Peng Edition) territory. */
+.kin-green-mark {
+  color: var(--color-lime-deep);
+}
+
+.kin-on-ink .kin-green-mark {
+  color: var(--color-lime-bright);
+}
+
+/* A word set in the holding green inside a display headline. */
+.kin-accent-green {
+  color: var(--color-lime-deep);
+}
+
+.kin-on-ink .kin-accent-green {
+  color: var(--color-lime-bright);
+}
+
+.kin-chip--pensan {
+  background: var(--color-pensan);
+  border-color: var(--color-pensan);
+  color: #ffffff;
+}
+
+/* ---------- Link underline draw --------------------------------- */
+.kin-link {
+  position: relative;
+  text-decoration: none;
+}
+
+.kin-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -3px;
+  height: 2px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.kin-link:hover::after,
+.kin-link:focus-visible::after {
+  transform: scaleX(1);
+  transform-origin: left;
 }

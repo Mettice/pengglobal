@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 420" role="img" aria-label="Fireside Tales – placeholder cover">
+  <!-- Placeholder until the client supplies the real cover file (brief §11.3) -->
+  <rect width="300" height="420" fill="#171717"/>
+  <rect x="0" y="0" width="300" height="130" fill="#f97316"/>
+  <circle cx="150" cy="250" r="52" fill="none" stroke="#f97316" stroke-width="5"/>
+  <path d="M150 218c-10 16-22 24-22 40a22 22 0 0044 0c0-16-12-24-22-40z" fill="#f97316"/>
+  <text x="150" y="55" text-anchor="middle" font-family="Georgia, serif" font-size="30" font-weight="bold" fill="#171717">Fireside</text>
+  <text x="150" y="95" text-anchor="middle" font-family="Georgia, serif" font-size="30" font-weight="bold" fill="#171717">Tales</text>
+  <text x="150" y="350" text-anchor="middle" font-family="Georgia, serif" font-size="18" fill="#ffffff">Charlie-Bey</text>
+  <text x="150" y="390" text-anchor="middle" font-family="Arial, sans-serif" font-size="11" fill="#f97316">PENG EDITION</text>
+</svg>

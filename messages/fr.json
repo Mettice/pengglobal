@@ -1,0 +1,370 @@
+{
+  "meta": {
+    "siteName": "Peng Global Holding",
+    "home": {
+      "title": "Peng Global Holding — Connecter les marques internationales à l'Afrique centrale",
+      "description": "Peng Global Holding représente, importe et distribue des marques internationales de confiance au Cameroun et dans la zone CEMAC. Représentant exclusif de PENSAN Kalem et PENSAN Kidz."
+    },
+    "about": {
+      "title": "À propos — Peng Global Holding",
+      "description": "Société camerounaise spécialisée dans la représentation exclusive et la distribution de marques internationales au Cameroun et dans la zone CEMAC."
+    },
+    "services": {
+      "title": "Services — Peng Global Holding",
+      "description": "Représentation de marques et distribution, import-export, marchés publics et privés, location d'engins lourds et de véhicules au Cameroun et dans la CEMAC."
+    },
+    "pengEdition": {
+      "title": "Peng Edition — Éduquer le monde, un livre à la fois",
+      "description": "Peng Edition est la filiale d'édition de Peng Global Holding, avec deux ouvrages inscrits sur la liste officielle des manuels scolaires du secondaire au Cameroun."
+    },
+    "books": {
+      "title": "Nos livres — Peng Edition",
+      "description": "Fireside Tales et My Cameroon and Other Poems — officiellement prescrits sur la liste des manuels scolaires du secondaire au Cameroun."
+    },
+    "contact": {
+      "title": "Contact — Peng Global Holding",
+      "description": "Contactez-nous pour un partenariat, une commande de livres ou toute autre question."
+    },
+    "legal": {
+      "title": "Mentions légales — Peng Global Holding",
+      "description": "Mentions légales et informations sur la société Peng Global Holding."
+    },
+    "privacy": {
+      "title": "Politique de confidentialité — Peng Global Holding",
+      "description": "Comment Peng Global Holding collecte et traite les données personnelles."
+    }
+  },
+  "nav": {
+    "home": "Accueil",
+    "about": "À propos",
+    "services": "Services",
+    "pengEdition": "Peng Edition",
+    "books": "Nos livres",
+    "contact": "Contact",
+    "menu": "Menu",
+    "closeMenu": "Fermer le menu"
+  },
+  "langSwitcher": {
+    "label": "Langue",
+    "en": "English",
+    "fr": "Français"
+  },
+  "home": {
+    "hero": {
+      "headline": "Connecter les marques internationales à l'Afrique centrale",
+      "headlineRich": "Connecter les marques internationales à <accent>l'Afrique centrale</accent>",
+      "subtitle": "Peng Global Holding représente, importe et distribue des marques internationales de confiance au Cameroun et dans la zone CEMAC.",
+      "cta1": "Devenir partenaire",
+      "cta2": "Découvrir Peng Edition",
+      "badge": "Cameroun & CEMAC",
+      "stat1Label": "Représentation exclusive",
+      "stat1Value": "PENSAN Kalem & Kidz",
+      "stat2Label": "Agrément national",
+      "stat2Value": "2 titres inscrits",
+      "line1": "Marques mondiales.",
+      "line2a": "Afrique",
+      "line2b": "centrale.",
+      "line3": "Un partenaire.",
+      "meta1": "Peng Global Holding",
+      "meta2": "Douala · Cameroun",
+      "chip1": "PENSAN · Exclusif",
+      "chip2": "2 titres · Liste nationale",
+      "chip3": "CEMAC",
+      "scroll": "Défiler"
+    },
+    "trust": {
+      "eyebrow": "Officiel & vérifié"
+    },
+    "reach": {
+      "eyebrow": "Comment fonctionne le parcours",
+      "heading": "De l'usine internationale au rayon camerounais",
+      "body": "L'entrée sur le marché camerounais et CEMAC échoue sur les détails : réglementation, douanes et distribution du dernier kilomètre. Nous prenons en charge l'ensemble du parcours : un fabricant étranger traite avec un seul partenaire responsable, et non six.",
+      "origin": "Fabricant international",
+      "destination": "Cameroun & CEMAC",
+      "point1": "Importation, dédouanement et conformité réglementaire gérés en interne.",
+      "point2": "Distribution établie vers le commerce de détail partout au Cameroun.",
+      "point3": "Un seul partenaire responsable, de l'usine au point de vente.",
+      "cta": "Voir nos services"
+    },
+    "proof": {
+      "pensan": {
+        "brand": "PENSAN Kalem & PENSAN Kidz",
+        "claim": "Représentant exclusif, Cameroun & CEMAC"
+      },
+      "edition": {
+        "brand": "Peng Edition",
+        "claim": "2 ouvrages sur la liste officielle des manuels scolaires"
+      }
+    },
+    "intro": {
+      "heading": "Un partenaire local fiable pour les marques internationales",
+      "p1": "Peng Global Holding est une société camerounaise spécialisée dans la représentation exclusive et la distribution de marques internationales au Cameroun et dans la zone CEMAC. Nous offrons aux fabricants étrangers un partenaire local fiable : connaissance du marché, conformité réglementaire et réseau de distribution établi.",
+      "p2": "Nous sommes le représentant exclusif des marques de papeterie turques PENSAN Kalem et PENSAN Kidz pour le Cameroun et la CEMAC, et la maison mère de Peng Edition, éditeur dont deux ouvrages figurent sur la liste officielle des manuels scolaires du secondaire au Cameroun."
+    },
+    "servicesHeading": "Nos métiers",
+    "servicesCta": "Découvrir nos services",
+    "editionBlock": {
+      "heading": "Peng Edition",
+      "tagline": "Éduquer le monde, un livre à la fois",
+      "proof": "Deux ouvrages officiellement prescrits sur la liste des manuels scolaires du secondaire au Cameroun.",
+      "cta": "Visiter Peng Edition"
+    },
+    "catalogue": {
+      "label": "Nouveautés",
+      "heading": "Un catalogue pensé pour les classes et les lecteurs",
+      "intro": "Peng Edition apporte au groupe sa preuve la plus visible : de vrais livres, de vrais ISBN et des titres déjà prescrits dans le système scolaire camerounais.",
+      "featuredLabel": "Extrait",
+      "featuredHeading": "Titre à la une",
+      "featuredCta": "Voir les livres",
+      "missionHeading": "Découvrez un univers littéraire et éducatif en pleine croissance",
+      "missionText": "Nous publions des ouvrages éducatifs et littéraires destinés aux établissements scolaires, aux librairies et aux familles au Cameroun et dans la zone CEMAC.",
+      "aboutHeading": "Une maison d'édition avec une mission régionale",
+      "aboutSubheading": "Peng Edition relie auteurs, établissements scolaires et librairies grâce à des livres capables de servir la classe et un lectorat plus large.",
+      "availabilityHeading": "Commandes scolaires et librairies, simplement",
+      "availabilityText": "Les titres actuels sont disponibles pour les demandes d'adoption, les commandes scolaires, les librairies et les distributions institutionnelles.",
+      "badgeSchools": "Écoles",
+      "badgeBookshops": "Librairies",
+      "badgeCemac": "CEMAC",
+      "capabilitiesHeading": "Plus qu'une maison d'édition",
+      "capabilitiesText": "Peng Edition intervient sur toute la chaîne éditoriale : développement des textes, production, logistique et accès au marché.",
+      "projectHeading": "Vous avez un projet éditorial, scolaire ou de distribution ?",
+      "projectText": "Parlez à Peng Global Holding des opportunités de partenariat, d'adoption et de distribution."
+    },
+    "contactCta": {
+      "heading": "Parlons-en",
+      "partnership": {
+        "title": "Partenariat & représentation",
+        "text": "Vous fabriquez ou détenez une marque et cherchez un accès fiable au marché camerounais et à la zone CEMAC."
+      },
+      "books": {
+        "title": "Livres & commandes scolaires",
+        "text": "Vous êtes un établissement scolaire, une librairie ou un parent et souhaitez commander les ouvrages Peng Edition."
+      },
+      "button": "Nous contacter"
+    },
+    "marquee": {
+      "a": "Représentation exclusive",
+      "b": "Importation & douanes",
+      "c": "Distribution CEMAC",
+      "d": "Édition scolaire",
+      "e": "Marchés publics & privés"
+    },
+    "slots": {
+      "partnersLabel": "Partenaires & marques",
+      "partnersNote": "Les logos des partenaires seront ajoutés ici une fois fournis et vérifiés.",
+      "pending": "En attente du client",
+      "voicesLabel": "Témoignages",
+      "voicesHeading": "Ce que disent nos partenaires",
+      "voicesNote": "Les témoignages apparaîtront ici une fois confirmés par des clients nommés. Nous ne publions aucune citation non vérifiée."
+    },
+    "stats": {
+      "eyebrow": "En chiffres",
+      "since": "Créée au Cameroun en 2021",
+      "outletsValue": "+35",
+      "outletsLabel": "Points de distribution",
+      "staffValue": "+300",
+      "staffLabel": "Employés",
+      "coverageValue": "100%",
+      "coverageLabel": "Couverture du marché",
+      "ratingValue": "4,9/5",
+      "ratingLabel": "Satisfaction client"
+    }
+  },
+  "services": {
+    "heading": "Services",
+    "intro": "Quatre métiers, fondés sur des opérations réelles au Cameroun et dans la zone CEMAC.",
+    "inPractice": "Exemple concret",
+    "representation": {
+      "title": "Représentation de marques & distribution",
+      "description": "Représentation exclusive de marques internationales : importation, conformité réglementaire et distribution au Cameroun et dans la zone CEMAC.",
+      "practice": "Représentant exclusif de PENSAN Kalem et PENSAN Kidz.",
+      "caseHeading": "Étude de cas : PENSAN au Cameroun & dans la CEMAC",
+      "caseText": "Peng Global Holding est le représentant exclusif des marques de papeterie turques PENSAN Kalem et PENSAN Kidz pour le Cameroun et la zone CEMAC. Nous assurons l'importation, la conformité réglementaire et la distribution jusqu'au point de vente — de l'usine au rayon.",
+      "label": "Représentation"
+    },
+    "importExport": {
+      "title": "Import & export",
+      "description": "Services complets de commerce international : approvisionnement, douanes, logistique et gestion de la chaîne d'approvisionnement, en conformité avec la réglementation locale.",
+      "practice": "De l'approvisionnement à la livraison, douanes et logistique gérées en interne.",
+      "label": "Commerce"
+    },
+    "contracts": {
+      "title": "Marchés publics & privés",
+      "description": "Fourniture de produits et de services de qualité aux institutions publiques, aux organisations de développement et aux clients du secteur privé.",
+      "practice": "Réponse structurée aux appels d'offres et exécution fiable pour les acheteurs institutionnels.",
+      "label": "Marchés"
+    },
+    "machinery": {
+      "title": "Location d'engins lourds & de véhicules",
+      "description": "Équipements modernes et solutions de transport pour les projets d'infrastructures, de construction, miniers, agricoles et industriels en Afrique centrale.",
+      "practice": "Équipements et transport adaptés aux exigences de chaque projet.",
+      "label": "Équipement"
+    }
+  },
+  "about": {
+    "heading": "À propos de Peng Global Holding",
+    "story": {
+      "heading": "Qui sommes-nous",
+      "p1": "Peng Global Holding est une société camerounaise construite autour d'une mission : offrir aux marques internationales un accès fiable au Cameroun et à la zone CEMAC. Nous représentons, importons et distribuons — et nous assumons la responsabilité de toute la chaîne, de la conformité réglementaire jusqu'au point de vente.",
+      "p2": "Notre engagement de référence est la représentation exclusive des marques de papeterie turques PENSAN Kalem et PENSAN Kidz pour le Cameroun et la CEMAC. À travers notre filiale d'édition Peng Edition, nous développons et distribuons également des ouvrages éducatifs pour le système scolaire national, dont deux titres inscrits sur la liste officielle des manuels scolaires du secondaire au Cameroun."
+    },
+    "valueProp": {
+      "heading": "Pourquoi le Cameroun — et pourquoi nous",
+      "p1": "Le Cameroun est la porte d'entrée du marché CEMAC : six pays partageant une monnaie, un cadre douanier et une demande croissante de produits internationaux de qualité. Entrer sur ce marché exige une connaissance locale — de la réglementation, de la distribution et des pratiques commerciales réelles.",
+      "p2": "C'est ce que nous apportons. Un fabricant étranger qui travaille avec Peng Global Holding dispose d'un partenaire unique et responsable : analyse d'entrée sur le marché, importation et conformité gérées correctement, et accès à un réseau de distribution établi."
+    },
+    "commitment": {
+      "heading": "Notre engagement",
+      "text": "Nous n'affirmons que ce que nous pouvons prouver. Nos partenariats sont exclusifs et documentés, nos livres figurent sur la liste officielle nationale, et notre croissance repose sur les résultats livrés à nos partenaires actuels."
+    },
+    "leadership": {
+      "heading": "Notre équipe de direction",
+      "ceoTitle": "Fondateur & Directeur Général",
+      "ceoText": "Befue Charlie-Bey dirige la stratégie d'entreprise de Peng Global Holding et la vision éditoriale de Peng Edition. Poète, dramaturge et éducateur, il a également été principal du Collège Protestant Luc Bell à Douala.",
+      "mdTitle": "Directeur des Opérations",
+      "mdText": "Co-dirige les opérations, les relations commerciales internationales, la conformité douanière et les chaînes logistiques d'engins lourds au Cameroun et dans la zone CEMAC."
+    }
+  },
+  "pengEdition": {
+    "heading": "Peng Edition",
+    "tagline": "Éduquer le monde, un livre à la fois",
+    "holdingMark": "Une société du groupe Peng Global Holding",
+    "about": {
+      "p1": "Peng Edition est la filiale d'édition de Peng Global Holding, basée au Cameroun. Nous développons et distribuons des ouvrages éducatifs et littéraires pour le système scolaire national ; deux de nos titres sont inscrits sur la liste officielle des manuels scolaires du secondaire au Cameroun.",
+      "p2": "Nous collaborons avec des auteurs, des établissements scolaires et des librairies au Cameroun et dans la zone CEMAC, et nous élargissons notre catalogue en littérature et en éducation. Les éditeurs, institutions et auteurs souhaitant travailler avec nous peuvent contacter notre équipe éditoriale via la page contact."
+    },
+    "capabilities": {
+      "heading": "Nos savoir-faire",
+      "items": [
+        "Édition scolaire pour le programme national",
+        "Édition littéraire en anglais et en français",
+        "Services éditoriaux pour auteurs et institutions",
+        "Édition numérique"
+      ]
+    },
+    "booksHeading": "Nos livres",
+    "booksCta": "Voir nos livres",
+    "prescribed": "Officiellement prescrit — liste des manuels scolaires du secondaire au Cameroun",
+    "schools": {
+      "heading": "Établissements scolaires & librairies",
+      "p1": "Les deux titres sont disponibles pour adoption scolaire et commandes en volume. Nous livrons directement les établissements et les librairies partout au Cameroun, avec une distribution dans la zone CEMAC.",
+      "p2": "Pour passer commande ou discuter d'une adoption pour votre établissement, contactez-nous avec le type de demande « Livres » : nous vous répondrons avec les prix, la disponibilité et les modalités de livraison.",
+      "cta": "Commander ou se renseigner"
+    },
+    "authorHeading": "L'auteur",
+    "author": {
+      "name": "Charlie-Bey",
+      "bio": "Né dans la région du Sud-Ouest du Cameroun, Befue Charlie-Bey a étudié la littérature anglaise ainsi que les arts du spectacle et les arts visuels à l'Université de Buea, dont il est sorti major de sa promotion. Poète, romancier et dramaturge, il a enseigné la langue et la littérature anglaises au niveau secondaire et est actuellement principal du Collège Protestant Luc Bell à Douala."
+    },
+    "books": {
+      "fireside": {
+        "title": "Fireside Tales",
+        "author": "Charlie-Bey",
+        "subject": "Littérature anglaise",
+        "level": "Form One (6e/5e)",
+        "isbn": "978-9956-39-300-8",
+        "price": "2 000 FCFA",
+        "description": "Un recueil de neuf contes issus des régions des Grassfields, du littoral et de la forêt du Cameroun, rédigés dans un anglais accessible. Manuel officiellement prescrit sur la liste des manuels scolaires du secondaire au Cameroun."
+      },
+      "poems": {
+        "title": "My Cameroon and Other Poems",
+        "author": "Charlie-Bey",
+        "subject": "Littérature anglaise",
+        "level": "Form Three (4e/3e)",
+        "isbn": "978-9956-34-304-6",
+        "price": "1 800 FCFA",
+        "description": "Une anthologie de poèmes célébrant le patrimoine camerounais tout en développant l'analyse littéraire et les compétences linguistiques. Officiellement prescrit pour la Form Three."
+      },
+      "labels": {
+        "author": "Auteur",
+        "subject": "Matière",
+        "level": "Niveau",
+        "isbn": "ISBN",
+        "price": "Prix"
+      }
+    }
+  },
+  "contact": {
+    "heading": "Contactez-nous",
+    "intro": "Dites-nous ce dont vous avez besoin — partenariat et représentation, commande de livres ou toute autre question. Nous répondons à chaque demande sérieuse.",
+    "form": {
+      "name": "Nom complet",
+      "organization": "Organisation",
+      "email": "Adresse e-mail",
+      "phone": "Téléphone / WhatsApp",
+      "inquiryType": "Type de demande",
+      "types": {
+        "partnership": "Partenariat",
+        "books": "Livres / Commande de livres",
+        "other": "Autre"
+      },
+      "message": "Message",
+      "submit": "Envoyer le message",
+      "sending": "Envoi en cours…",
+      "success": "Merci — votre message a bien été envoyé. Nous vous répondrons rapidement.",
+      "error": "Une erreur est survenue et votre message n'a pas été envoyé. Veuillez réessayer ou nous écrire directement.",
+      "rateLimited": "Trop de messages envoyés depuis cette connexion. Veuillez patienter un instant avant de réessayer.",
+      "required": "Obligatoire",
+      "optional": "Facultatif"
+    },
+    "details": {
+      "heading": "Nous joindre directement",
+      "emailLabel": "E-mail",
+      "phoneLabel": "Téléphone / WhatsApp",
+      "addressLabel": "Adresse",
+      "email": "info@penglobalholding.com",
+      "phone": "+237 670 87 87 30",
+      "address": "Douala, Cameroun",
+      "phone2": "+237 683 14 81 81",
+      "email2": "peng@penglobalholding.com"
+    }
+  },
+  "footer": {
+    "tagline": "Connecter les marques internationales à l'Afrique centrale.",
+    "navHeading": "Navigation",
+    "contactHeading": "Contact",
+    "legalHeading": "Légal",
+    "legalNotice": "Mentions légales",
+    "privacy": "Politique de confidentialité",
+    "copyright": "© {year} Peng Global Holding. Tous droits réservés."
+  },
+  "legal": {
+    "heading": "Mentions légales",
+    "companyHeading": "Informations sur la société",
+    "companyName": "Peng Global Holding",
+    "rccm": "Registre du commerce (RCCM) : [à fournir]",
+    "address": "Siège social : Douala, Cameroun [à confirmer]",
+    "publisherHeading": "Publication",
+    "publisherText": "Ce site est édité par Peng Global Holding. Contact : contact@penglobalholding.com.",
+    "hostingHeading": "Hébergement",
+    "hostingText": "Ce site est hébergé par Vercel Inc., 340 S Lemon Ave #4133, Walnut, CA 91789, États-Unis."
+  },
+  "privacy": {
+    "heading": "Politique de confidentialité",
+    "intro": "Cette politique explique quelles données personnelles ce site collecte et comment elles sont utilisées.",
+    "dataHeading": "Données collectées",
+    "dataText": "Lorsque vous soumettez le formulaire de contact, nous collectons les informations que vous fournissez : nom, organisation, adresse e-mail, numéro de téléphone, type de demande et votre message. Ces données servent uniquement à répondre à votre demande et sont transmises à notre boîte de réception professionnelle. Elles ne sont ni vendues ni partagées avec des tiers.",
+    "analyticsHeading": "Mesure d'audience",
+    "analyticsText": "Nous utilisons un outil de mesure d'audience respectueux de la vie privée pour compter les pages vues et les envois de formulaire de manière agrégée. Aucun profil personnel n'est constitué et aucun traceur publicitaire n'est utilisé.",
+    "rightsHeading": "Vos droits",
+    "rightsText": "Vous pouvez demander à tout moment l'accès, la rectification ou la suppression de vos données personnelles en écrivant à contact@penglobalholding.com."
+  },
+  "notFound": {
+    "heading": "Page introuvable",
+    "text": "La page que vous cherchez n'existe pas ou a été déplacée.",
+    "cta": "Retour à l'accueil"
+  },
+  "photo": {
+    "pending": "Photographie à venir",
+    "warehouse": "Entrepôt & profondeur de stock",
+    "shelf": "Produit en rayon",
+    "freight": "Fret & logistique",
+    "city": "Douala · Cameroun",
+    "hero1": "Conteneurs & port",
+    "hero2": "Entrepôt & stock",
+    "hero3": "Distribution en détail",
+    "slidePrev": "Image précédente",
+    "slideNext": "Image suivante",
+    "slideGo": "Afficher l'image {n}"
+  }
+}
