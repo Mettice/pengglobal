@@ -12,6 +12,72 @@ const ConnectionGlobe = dynamic(() => import("./ConnectionGlobe"), {
   ssr: false,
 });
 
+/**
+ * The route as a flat engraving — the same graticule, arc and markers as
+ * the WebGL globe, in about a kilobyte of inline SVG.
+ *
+ * Meridians are ellipses of decreasing width, which is exactly what
+ * longitude lines project to on a sphere, so this reads as the same object
+ * seen without the renderer rather than as a different illustration.
+ */
+function StaticGlobe({
+  originLabel,
+  destinationLabel,
+}: {
+  originLabel: string;
+  destinationLabel: string;
+}) {
+  return (
+    <svg
+      viewBox="0 0 220 220"
+      role="img"
+      aria-label={`${originLabel} → ${destinationLabel}`}
+      className="aspect-square w-full max-w-[360px]"
+    >
+      <circle cx="110" cy="110" r="88" fill="#0b0b0b" />
+
+      <g fill="none" stroke="#78be20" strokeOpacity="0.32" strokeWidth="1">
+        {/* Parallels */}
+        <ellipse cx="110" cy="110" rx="88" ry="30" />
+        <ellipse cx="110" cy="66" rx="76" ry="22" />
+        <ellipse cx="110" cy="154" rx="76" ry="22" />
+        {/* Meridians */}
+        <ellipse cx="110" cy="110" rx="30" ry="88" />
+        <ellipse cx="110" cy="110" rx="60" ry="88" />
+      </g>
+
+      <circle
+        cx="110"
+        cy="110"
+        r="88"
+        fill="none"
+        stroke="#8fd62c"
+        strokeOpacity="0.55"
+      />
+
+      {/* The route */}
+      <path
+        d="M 143 66 Q 168 108 112 143"
+        fill="none"
+        stroke="#f97316"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+      />
+
+      <circle cx="143" cy="66" r="4.5" fill="#f4f2ec" />
+      <circle cx="112" cy="143" r="6" fill="#8fd62c" />
+      <circle
+        cx="112"
+        cy="143"
+        r="11"
+        fill="none"
+        stroke="#8fd62c"
+        strokeOpacity="0.5"
+      />
+    </svg>
+  );
+}
+
 export default function ReachSection() {
   const t = useTranslations("home.reach");
   const enhanced = useEnhanced();
@@ -64,16 +130,19 @@ export default function ReachSection() {
 
         <div className="flex justify-center">
           {enhanced ? (
-            <ConnectionGlobe />
+            <ConnectionGlobe
+              originLabel={t("originPin")}
+              destinationLabel={t("destinationPin")}
+            />
           ) : (
-            /* Static fallback — no WebGL, no JS cost. */
-            <div
-              aria-hidden
-              className="relative aspect-square w-full max-w-[360px] rounded-full border border-paper/10 bg-[radial-gradient(circle_at_35%_30%,rgba(120,190,32,0.3),rgba(11,11,11,0.9)_65%)]"
-            >
-              <span className="absolute left-[58%] top-[26%] h-2.5 w-2.5 rounded-full bg-orange" />
-              <span className="absolute left-[46%] top-[62%] h-3.5 w-3.5 rounded-full bg-lime" />
-            </div>
+            /* Static fallback — no WebGL, no JS, no image request.
+               This is what the performance-critical audience actually
+               sees, so it draws the same graticule and the same route
+               rather than standing in as an abstract blob. */
+            <StaticGlobe
+              originLabel={t("originPin")}
+              destinationLabel={t("destinationPin")}
+            />
           )}
         </div>
       </div>

@@ -81,6 +81,8 @@
       "body": "Market entry into Cameroon and CEMAC fails on the details: regulation, customs, and last-mile distribution. We take responsibility for the entire route, so a foreign manufacturer deals with one accountable partner instead of six.",
       "origin": "International manufacturer",
       "destination": "Cameroon & CEMAC",
+      "originPin": "Istanbul",
+      "destinationPin": "Douala",
       "point1": "Import, customs clearance, and regulatory compliance handled in-house.",
       "point2": "Established distribution into retail across Cameroon.",
       "point3": "One partner accountable from the factory to the point of sale.",
@@ -174,6 +176,13 @@
     "heading": "Services",
     "intro": "Four service lines, built on real operations in Cameroon and the CEMAC region.",
     "inPractice": "In practice",
+    "route": {
+      "eyebrow": "The route",
+      "heading": "One line, drawn end to end",
+      "beat1": "A manufacturer signs a single representation agreement.",
+      "beat2": "Import, clearance and regulatory compliance are handled in-house.",
+      "beat3": "Product reaches retail across Cameroon and the CEMAC region."
+    },
     "representation": {
       "title": "Brand Representation & Distribution",
       "description": "Exclusive representation of international brands, from import and regulatory compliance to retail distribution across Cameroon and CEMAC.",

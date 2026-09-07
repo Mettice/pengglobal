@@ -81,6 +81,8 @@
       "body": "L'entrée sur le marché camerounais et CEMAC échoue sur les détails : réglementation, douanes et distribution du dernier kilomètre. Nous prenons en charge l'ensemble du parcours : un fabricant étranger traite avec un seul partenaire responsable, et non six.",
       "origin": "Fabricant international",
       "destination": "Cameroun & CEMAC",
+      "originPin": "Istanbul",
+      "destinationPin": "Douala",
       "point1": "Importation, dédouanement et conformité réglementaire gérés en interne.",
       "point2": "Distribution établie vers le commerce de détail partout au Cameroun.",
       "point3": "Un seul partenaire responsable, de l'usine au point de vente.",
@@ -174,6 +176,13 @@
     "heading": "Services",
     "intro": "Quatre métiers, fondés sur des opérations réelles au Cameroun et dans la zone CEMAC.",
     "inPractice": "Exemple concret",
+    "route": {
+      "eyebrow": "Le parcours",
+      "heading": "Une seule ligne, tracée d'un bout à l'autre",
+      "beat1": "Un fabricant signe un unique contrat de représentation.",
+      "beat2": "Importation, dédouanement et conformité réglementaire gérés en interne.",
+      "beat3": "Le produit atteint le commerce de détail au Cameroun et dans la zone CEMAC."
+    },
     "representation": {
       "title": "Représentation de marques & distribution",
       "description": "Représentation exclusive de marques internationales : importation, conformité réglementaire et distribution au Cameroun et dans la zone CEMAC.",
