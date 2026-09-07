@@ -263,7 +263,7 @@
     "authorHeading": "The author",
     "author": {
       "name": "Charlie-Bey",
-      "bio": "Born in the South West Region of Cameroon, Befue Charlie-Bey studied Literature in English and Performing and Visual Arts at the University of Buea, graduating top of his class. A poet, novelist, and playwright, he has taught English language and literature at secondary and high school level and currently serves as principal of Collège Protestant Luc Bell in Douala."
+      "bio": "Born in the South West Region of Cameroon, Befue Charlie-Bey studied Literature in English and Performing and Visual Arts at the University of Buea, graduating top of his class. A poet, novelist, and playwright, he has taught English language and literature at secondary and high school level. He is Creative Director and CEO of NAN MEDIA Ltd, a book publishing, film production and audiovisual content firm based in Douala, and currently serves as principal of Collège Protestant Luc Bell."
     },
     "books": {
       "fireside": {
@@ -273,7 +273,8 @@
         "level": "Form One",
         "isbn": "978-9956-39-300-8",
         "price": "2,000 FCFA",
-        "description": "A collection of nine tales drawn from the grassfield, coastal, and forest regions of Cameroon, written in accessible English. Officially prescribed on the Cameroon secondary school textbook list."
+        "description": "A collection of nine tales drawn from the grassfield, coastal, and forest regions of Cameroon, written in accessible English. Officially prescribed on the Cameroon secondary school textbook list.",
+        "blurb": "This collection of nine tales drawn from the grassfield, coastal and forest regions of Cameroon and well-crafted in simple English is nothing less than a bag of wit and the transmission of the African experience of yore. To the African, the tale is a vessel of wisdom and everyone is bound to drink from it for morals and spiritual upliftment."
       },
       "poems": {
         "title": "My Cameroon and Other Poems",

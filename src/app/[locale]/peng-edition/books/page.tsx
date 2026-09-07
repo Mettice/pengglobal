@@ -92,6 +92,7 @@ export default function BooksPage({
               <BookCard
                 bookKey={book.key}
                 accent={i === 0 ? "orange" : "lime"}
+                hasBlurb={book.hasBlurb}
               />
             </Reveal>
           ))}

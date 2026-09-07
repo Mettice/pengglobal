@@ -263,7 +263,7 @@
     "authorHeading": "L'auteur",
     "author": {
       "name": "Charlie-Bey",
-      "bio": "Né dans la région du Sud-Ouest du Cameroun, Befue Charlie-Bey a étudié la littérature anglaise ainsi que les arts du spectacle et les arts visuels à l'Université de Buea, dont il est sorti major de sa promotion. Poète, romancier et dramaturge, il a enseigné la langue et la littérature anglaises au niveau secondaire et est actuellement principal du Collège Protestant Luc Bell à Douala."
+      "bio": "Né dans la région du Sud-Ouest du Cameroun, Befue Charlie-Bey a étudié la littérature anglaise ainsi que les arts du spectacle et les arts visuels à l'Université de Buea, dont il est sorti major de sa promotion. Poète, romancier et dramaturge, il a enseigné la langue et la littérature anglaises au niveau secondaire. Il est directeur de la création et PDG de NAN MEDIA Ltd, maison d'édition et société de production audiovisuelle basée à Douala, et il est actuellement principal du Collège Protestant Luc Bell."
     },
     "books": {
       "fireside": {
@@ -273,7 +273,8 @@
         "level": "Form One (6e/5e)",
         "isbn": "978-9956-39-300-8",
         "price": "2 000 FCFA",
-        "description": "Un recueil de neuf contes issus des régions des Grassfields, du littoral et de la forêt du Cameroun, rédigés dans un anglais accessible. Manuel officiellement prescrit sur la liste des manuels scolaires du secondaire au Cameroun."
+        "description": "Un recueil de neuf contes issus des régions des Grassfields, du littoral et de la forêt du Cameroun, rédigés dans un anglais accessible. Manuel officiellement prescrit sur la liste des manuels scolaires du secondaire au Cameroun.",
+        "blurb": "Ce recueil de neuf contes issus des régions des Grassfields, du littoral et de la forêt du Cameroun, écrits dans un anglais simple et soigné, n'est rien de moins qu'un trésor d'esprit et la transmission de l'expérience africaine d'autrefois. Pour l'Africain, le conte est un vase de sagesse auquel chacun est appelé à puiser, pour la morale et pour l'élévation spirituelle."
       },
       "poems": {
         "title": "My Cameroon and Other Poems",
