@@ -91,7 +91,6 @@ export default function BooksPage({
             <Reveal key={book.key} delay={i * 0.08}>
               <BookCard
                 bookKey={book.key}
-                cover={book.cover}
                 accent={i === 0 ? "orange" : "lime"}
               />
             </Reveal>

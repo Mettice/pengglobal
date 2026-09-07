@@ -7,7 +7,7 @@ import { setRequestLocale } from "next-intl/server";
 import { routing } from "@/i18n/routing";
 import { pageMetadata } from "@/lib/seo";
 import { Link } from "@/i18n/navigation";
-import { BOOKS } from "@/components/BookCard";
+import Book3D, { BOOK_FACES } from "@/components/Book3D";
 import { Reveal, Stagger, Item, MaskLine } from "@/components/motion/Kinetic";
 
 const CAPABILITY_INDEXES = [0, 1, 2, 3] as const;
@@ -30,7 +30,6 @@ export default function PengEditionPage({
   const { locale } = use(params);
   setRequestLocale(locale);
   const t = useTranslations("pengEdition");
-  const tBooks = useTranslations("pengEdition.books");
 
   return (
     <>
@@ -77,31 +76,20 @@ export default function PengEditionPage({
               </div>
             </div>
 
-            {/* The two titles, front boards only */}
-            <Stagger className="flex justify-center gap-5" gap={0.12}>
-              {BOOKS.map((book, i) => (
+            {/* The two titles, as objects rather than pictures of covers */}
+            <Stagger
+              className="flex items-end justify-center gap-8 pb-8 sm:gap-14"
+              gap={0.14}
+            >
+              {BOOK_FACES.map((book, i) => (
                 <Item key={book.key}>
-                  <div className="relative">
-                    <span
-                      aria-hidden
-                      className={`absolute -bottom-2 -left-2 h-full w-full ${
-                        i === 0 ? "bg-orange" : "bg-lime"
-                      }`}
-                    />
-                    <span
-                      className={`relative block w-[140px] border-2 border-paper sm:w-[186px] ${
-                        i === 1 ? "mt-10" : ""
-                      }`}
-                    >
-                      <Image
-                        src={book.cover}
-                        alt={`${tBooks(`${book.key}.title`)} — ${tBooks(`${book.key}.author`)}`}
-                        width={372}
-                        height={524}
-                        className="book-front"
-                      />
-                    </span>
-                  </div>
+                  <Book3D
+                    bookKey={book.key}
+                    width={book.width}
+                    driftDelay={i === 0 ? "0s" : "-4.5s"}
+                    priority
+                    className={i === 1 ? "sm:-mb-10" : ""}
+                  />
                 </Item>
               ))}
             </Stagger>

@@ -7,7 +7,7 @@ import { notFound } from "next/navigation";
 import { Link } from "@/i18n/navigation";
 import { routing } from "@/i18n/routing";
 import { pageMetadata } from "@/lib/seo";
-import { BOOKS } from "@/components/BookCard";
+import Book3D, { BOOK_FACES } from "@/components/Book3D";
 import ServiceCards from "@/components/ServiceCards";
 import KineticHero from "@/components/KineticHero";
 import ReachSection from "@/components/ReachSection";
@@ -44,7 +44,6 @@ export default function HomePage({
   setRequestLocale(locale);
   const heroVariant = hero === "full" ? "full" : "split";
   const t = useTranslations("home");
-  const tBooks = useTranslations("pengEdition.books");
   const tPe = useTranslations("pengEdition");
 
   return (
@@ -171,23 +170,18 @@ export default function HomePage({
               </Link>
             </Reveal>
 
-            <Stagger className="flex justify-center gap-5" gap={0.12}>
-              {BOOKS.map((book, i) => (
+            <Stagger
+              className="flex items-end justify-center gap-8 pb-6 sm:gap-12"
+              gap={0.12}
+            >
+              {BOOK_FACES.map((book, i) => (
                 <Item key={book.key}>
-                  <Link
-                    href="/peng-edition/books"
-                    className={`block w-[130px] border-2 border-paper transition-transform duration-500 hover:-translate-y-2 sm:w-[168px] ${
-                      i === 1 ? "mt-10" : ""
-                    }`}
-                  >
-                    <Image
-                      src={book.cover}
-                      alt={`${tBooks(`${book.key}.title`)} — ${tBooks(`${book.key}.author`)}`}
-                      width={340}
-                      height={479}
-                      className="book-front"
-                    />
-                  </Link>
+                  <Book3D
+                    bookKey={book.key}
+                    width={168}
+                    driftDelay={i === 0 ? "0s" : "-4.5s"}
+                    className={i === 1 ? "sm:-mb-8" : ""}
+                  />
                 </Item>
               ))}
             </Stagger>

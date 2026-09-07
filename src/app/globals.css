@@ -306,14 +306,205 @@ body {
     calc(var(--mark-w) * -0.2736); /* 333/614, 168/614 */
 }
 
-/* Book covers are supplied as wraparound spreads (back | spine | front).
-   A portrait frame plus right-anchored cover crops to the front board. */
-.book-front {
-  aspect-ratio: 71 / 100;
-  object-fit: cover;
-  object-position: right center;
+/* ---------- The books, as objects -------------------------------- */
+/* Peng Edition's two titles are the only physical products in the group,
+   and the only proof that needs no caveat. They are built as real solids
+   rather than pictures of covers: the spine face is the actual spine
+   artwork cut from the print spread, so the object is the book, not an
+   impression of one.
+   Geometry derives from --board-w so a book scales as a single unit. */
+.book3d-scene {
+  perspective: 1600px;
+  perspective-origin: 50% 40%;
+  display: inline-block;
+}
+
+.book3d {
+  --board-w: 220px;
+  --board-h: calc(var(--board-w) / 0.67); /* measured 2:3 trade paperback */
+  --thickness: calc(var(--board-w) * 0.072); /* measured off the spine cut */
+  /* Positive rotateY brings the LEFT edge forward, which is the spine.
+     Negative would present the fore-edge and hide the one face carrying
+     the title artwork. */
+  --turn: 26deg; /* resting angle: enough to read the spine */
+  --lift: 0px;
+
+  position: relative;
+  display: block;
+  width: var(--board-w);
+  height: var(--board-h);
+  transform-style: preserve-3d;
+  transform: translateY(var(--lift)) rotateY(var(--turn));
+  transition: transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* No filter, opacity, mask or clip-path may be set on .book3d. They are
+   grouping properties: any one of them forces transform-style back to
+   flat, which collapses the spine to a hairline and leaves a rotated
+   picture of a cover instead of a book. Depth comes from .book3d-shadow
+   and the per-face shading instead. */
+
+/* Turning toward the reader on hover/focus reads as picking the book up.
+   Focus-within covers keyboard users, since the link is inside. */
+.book3d-scene:hover .book3d,
+.book3d-scene:focus-within .book3d {
+  --turn: 7deg;
+  --lift: -12px;
+}
+
+.book3d__face {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  backface-visibility: hidden;
+  /* Cast from the boards themselves — the object has no filter, so this
+     is what gives each face weight against the one behind it. */
+  box-shadow: 0 14px 26px rgb(0 0 0 / 0.38);
+}
+
+.book3d__face img {
   display: block;
   width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.book3d__front {
+  transform: translateZ(calc(var(--thickness) / 2));
+}
+
+/* A board curves into its spine, so the hinge edge sits in shadow and the
+   outer edge catches the light. Without this the front reads as a flat
+   card floating in front of the spine rather than joined to it. */
+.book3d__front::after,
+.book3d__back::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    to right,
+    rgb(0 0 0 / 0.42) 0%,
+    rgb(0 0 0 / 0.12) 4%,
+    rgb(0 0 0 / 0) 14%,
+    rgb(0 0 0 / 0) 88%,
+    rgb(255 255 255 / 0.1) 100%
+  );
+}
+
+/* The back board's hinge is on its other side once it is flipped. */
+.book3d__back::after {
+  scale: -1 1;
+}
+
+.book3d__back {
+  transform: rotateY(180deg) translateZ(calc(var(--thickness) / 2));
+}
+
+/* The real spine, hinged at the left board edge. */
+.book3d__spine {
+  width: var(--thickness);
+  left: 0;
+  transform-origin: left center;
+  transform: rotateY(-90deg) translateX(calc(var(--thickness) / -2));
+}
+
+/* Fore-edge: the paper block. Ruled with a repeating gradient because
+   page edges catch light in bands, and a flat fill reads as plastic. */
+.book3d__pages {
+  width: var(--thickness);
+  left: auto;
+  right: 0;
+  transform-origin: right center;
+  transform: rotateY(90deg) translateX(calc(var(--thickness) / 2));
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      #efe9dc 0 1px,
+      #cfc7b6 1px 2px
+    ),
+    #e6dfd0;
+}
+
+/* Head and tail of the paper block, so the solid closes at top-down and
+   bottom-up viewing angles. */
+.book3d__edge {
+  left: 0;
+  right: 0;
+  height: var(--thickness);
+  background: linear-gradient(to right, #d8d0bf, #f1ece1 40%, #cfc7b6);
+}
+
+.book3d__head {
+  top: 0;
+  transform-origin: center top;
+  transform: rotateX(90deg) translateZ(calc(var(--thickness) / -2));
+}
+
+.book3d__tail {
+  top: auto;
+  bottom: 0;
+  transform-origin: center bottom;
+  transform: rotateX(-90deg) translateZ(calc(var(--thickness) / -2));
+}
+
+/* Contact shadow on the ground plane, separate from the object so it can
+   spread as the book lifts rather than travelling with it. */
+.book3d-shadow {
+  position: absolute;
+  left: 50%;
+  bottom: -22px;
+  width: 84%;
+  height: 20px;
+  translate: -50% 0;
+  border-radius: 50%;
+  background: radial-gradient(
+    ellipse at center,
+    rgb(0 0 0 / 0.5),
+    transparent 70%
+  );
+  transition:
+    width 700ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 700ms ease;
+}
+
+.book3d-scene:hover .book3d-shadow,
+.book3d-scene:focus-within .book3d-shadow {
+  width: 96%;
+  opacity: 0.65;
+}
+
+/* Idle drift, so the shelf breathes instead of sitting still. Applied to
+   a wrapper rather than .book3d itself, so the hover transform and the
+   idle animation never fight over the same property.
+   Motion-safe only: this runs forever, which is exactly the kind of
+   movement prefers-reduced-motion exists to stop. */
+@media (prefers-reduced-motion: no-preference) {
+  .book3d-float {
+    animation: book3d-drift 9s ease-in-out infinite;
+    animation-delay: var(--drift-delay, 0s);
+  }
+}
+
+@keyframes book3d-drift {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-10px) rotate(-0.6deg);
+  }
+}
+
+/* Reduced motion keeps the affordance but drops the animation: the book
+   still turns toward you on hover, it just arrives rather than travels.
+   Removing the turn entirely would cost the only cue that the object is
+   interactive. */
+@media (prefers-reduced-motion: reduce) {
+  .book3d,
+  .book3d-shadow {
+    transition-duration: 1ms;
+  }
 }
 
 /* ---------- Duotone photography --------------------------------- */
@@ -382,6 +573,30 @@ body {
   }
   to {
     transform: scale(1.08);
+  }
+}
+
+/* ---------- Scroll-scrubbed frame sequence ----------------------- */
+/* The track's height is set in CSS, not JavaScript, so the layout is
+   final at first paint. Deciding it from the enhancement hook would mean
+   the section resized from auto to 260vh after hydration — a large shift
+   in the middle of the page.
+   The query mirrors useEnhanced(): desktop width, a real pointer, and no
+   stated preference against motion. Anything else gets the ordinary
+   stacked block with a single finished frame. */
+.seq-track {
+  position: relative;
+}
+
+@media (min-width: 1024px) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .seq-track {
+    height: 260vh;
+  }
+
+  .seq-stage {
+    position: sticky;
+    top: 0;
+    height: 100vh;
   }
 }
 

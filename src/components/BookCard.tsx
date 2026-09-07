@@ -1,20 +1,19 @@
-import Image from "next/image";
 import { useTranslations } from "next-intl";
+import Book3D from "./Book3D";
 
-// Covers are supplied as wraparound spreads; .book-front crops each to
-// its front board. Swap these paths if front-only files arrive.
+// `cover` is the cut front board, not the original spread: it is what
+// structured data should advertise, since a search result showing a
+// flattened back-and-front spread reads as a printing error.
 export const BOOKS = [
-  { key: "fireside", cover: "/images/firesidetales.jpeg" },
-  { key: "poems", cover: "/images/my%20cameroon.jpg" },
+  { key: "fireside", cover: "/images/books/fireside-front.webp" },
+  { key: "poems", cover: "/images/books/poems-front.webp" },
 ] as const;
 
 export default function BookCard({
   bookKey,
-  cover,
   accent = "orange",
 }: {
   bookKey: (typeof BOOKS)[number]["key"];
-  cover: string;
   accent?: "orange" | "lime";
 }) {
   const t = useTranslations("pengEdition.books");
@@ -28,23 +27,24 @@ export default function BookCard({
   ] as const;
 
   return (
-    <article className="grid gap-8 border-t-2 border-ink pt-8 sm:grid-cols-[186px_1fr] sm:gap-10">
-      <div className="relative w-[150px] sm:w-[186px]">
+    <article className="grid gap-10 border-t-2 border-ink pt-8 sm:grid-cols-[210px_1fr] sm:gap-12">
+      {/* A colour block behind the object, set on the ground plane rather
+          than offset like a flat card's drop shadow — the book already
+          casts its own. */}
+      <div className="relative">
         <span
           aria-hidden
-          className={`absolute -bottom-2 -left-2 h-full w-full ${
+          className={`absolute bottom-0 left-0 h-[62%] w-[74%] ${
             accent === "orange" ? "bg-orange" : "bg-lime"
           }`}
         />
-        <span className="relative block border-2 border-ink">
-          <Image
-            src={cover}
-            alt={`${t(`${bookKey}.title`)} — ${t(`${bookKey}.author`)}`}
-            width={372}
-            height={524}
-            className="book-front"
+        <div className="relative pl-4 pt-4">
+          <Book3D
+            bookKey={bookKey}
+            width={170}
+            driftDelay={accent === "orange" ? "0s" : "-4.5s"}
           />
-        </span>
+        </div>
       </div>
 
       <div>
