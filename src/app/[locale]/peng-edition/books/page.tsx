@@ -102,7 +102,7 @@ export default function BooksPage({
       <section className="bg-orange py-20 sm:py-28">
         <div className="mx-auto max-w-[1240px] px-4 sm:px-8">
           <Reveal>
-            <span className="kin-mono text-ink/60">{t("schools.heading")}</span>
+            <span className="kin-mono text-ink/80">{t("schools.heading")}</span>
             <p className="kin-display mt-6 max-w-[18ch] text-[clamp(1.8rem,5vw,3.4rem)] text-ink">
               {t("schools.p1")}
             </p>

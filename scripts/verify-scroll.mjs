@@ -101,12 +101,46 @@ const COLLECT = `(() => {
   const pathOf = ${PATH_FN};
   const TEXT_TAGS = new Set(['H1','H2','H3','H4','H5','H6','P','LI','A','BLOCKQUOTE','DT','DD','SPAN','FIGCAPTION','BUTTON','LABEL','TD','TH']);
 
-  const parseColour = (s) => {
-    const m = s.match(/rgba?\\(([^)]+)\\)/);
-    if (!m) return null;
-    const p = m[1].split(',').map(Number);
-    return { r: p[0], g: p[1], b: p[2], a: p.length > 3 ? p[3] : 1 };
+  // Tailwind 4 opacity modifiers (text-paper/80) compute to oklab(), not
+  // rgb(). An rgb-only parser silently skipped every such element.
+  const fromOklab = (L, A, B) => {
+    const l = (L + 0.3963377774*A + 0.2158037573*B) ** 3;
+    const m = (L - 0.1055613458*A - 0.0638541728*B) ** 3;
+    const s = (L - 0.0894841775*A - 1.2914855480*B) ** 3;
+    const lin = [
+      4.0767416621*l - 3.3077115913*m + 0.2309699292*s,
+      -1.2684380046*l + 2.6097574011*m - 0.3413193965*s,
+      -0.0041960863*l - 0.7034186147*m + 1.7076147010*s,
+    ];
+    const enc = (v) => {
+      v = Math.min(1, Math.max(0, v));
+      return 255 * (v <= 0.0031308 ? 12.92*v : 1.055*Math.pow(v, 1/2.4) - 0.055);
+    };
+    return lin.map(enc);
   };
+  const parseColour = (s) => {
+    let m = s.match(/rgba?\\(([^)]+)\\)/);
+    if (m) {
+      const p = m[1].split(/[\\s,\\/]+/).filter(Boolean).map(Number);
+      return { r: p[0], g: p[1], b: p[2], a: p.length > 3 ? p[3] : 1 };
+    }
+    m = s.match(/oklab\\(([^)]+)\\)/);
+    if (m) {
+      const [main, alpha] = m[1].split('/');
+      const p = main.trim().split(/\\s+/).map((v) => v.endsWith('%') ? parseFloat(v)/100 : parseFloat(v));
+      const [r, g, b] = fromOklab(p[0], p[1], p[2]);
+      const a = alpha === undefined ? 1 : (alpha.trim().endsWith('%') ? parseFloat(alpha)/100 : parseFloat(alpha));
+      return { r, g, b, a };
+    }
+    return null;
+  };
+  const over = (fg, bg) => ({
+    r: fg.a*fg.r + (1-fg.a)*bg.r,
+    g: fg.a*fg.g + (1-fg.a)*bg.g,
+    b: fg.a*fg.b + (1-fg.a)*bg.b,
+    a: 1,
+  });
+  const IMAGE_TAGS = new Set(['IMG','VIDEO','CANVAS','PICTURE','IFRAME']);
   const lum = (c) => {
     const f = (v) => { v /= 255; return v <= 0.03928 ? v/12.92 : Math.pow((v+0.055)/1.055, 2.4); };
     return 0.2126*f(c.r) + 0.7152*f(c.g) + 0.0722*f(c.b);
@@ -134,20 +168,36 @@ const COLLECT = `(() => {
     const cs = getComputedStyle(el);
     const fg = parseColour(cs.color);
 
-    // Resolve the background by walking up for the first opaque colour.
-    let bg = null, imageBehind = false, a = el;
-    while (a && a.nodeType === 1) {
-      const acs = getComputedStyle(a);
-      if (acs.backgroundImage && acs.backgroundImage !== 'none') imageBehind = true;
-      if (a.querySelector && a.querySelector(':scope > canvas, :scope > img, :scope > video')) imageBehind = true;
-      const c = parseColour(acs.backgroundColor);
+    // Resolve the background from what is actually painted under the
+    // text, not from the ancestor chain. A fixed header over a hero has no
+    // ancestor carrying the footage; walking up found the page's paper
+    // ground and reported paper-on-paper for text that sits on video.
+    // Probe the centre of the part that is actually on screen. Clamping
+    // the full-box centre instead put the point on the sticky header for
+    // half-scrolled elements, and measured text against the wrong thing.
+    const px = Math.min(innerWidth - 1, Math.max(0, rect.left + rect.width / 2));
+    const py = (Math.max(0, rect.top) + Math.min(innerHeight, rect.bottom)) / 2;
+    const stack = document.elementsFromPoint(px, py);
+    const at = stack.indexOf(el);
+    // Skip if anything that is not part of el paints above it there — the
+    // text is covered at this point, so its contrast is not what shows.
+    const occluded = at === -1 || stack.slice(0, at).some((s) => !el.contains(s));
+    let bg = null, imageBehind = false;
+    for (const s of occluded ? [] : stack.slice(at)) {
+      const scs = getComputedStyle(s);
+      if (IMAGE_TAGS.has(s.tagName) || (scs.backgroundImage && scs.backgroundImage !== 'none')) {
+        imageBehind = true;
+        break;
+      }
+      const c = parseColour(scs.backgroundColor);
       if (c && c.a >= 0.95) { bg = c; break; }
-      a = a.parentElement;
     }
+    if (!occluded && !bg && !imageBehind) bg = parseColour(getComputedStyle(document.body).backgroundColor);
 
     let contrast = null;
-    if (fg && bg && !imageBehind) {
-      const l1 = lum(fg), l2 = lum(bg);
+    if (!occluded && fg && bg && !imageBehind) {
+      const shown = fg.a < 1 ? over(fg, bg) : fg;
+      const l1 = lum(shown), l2 = lum(bg);
       contrast = (Math.max(l1,l2) + 0.05) / (Math.min(l1,l2) + 0.05);
     }
 
@@ -191,6 +241,7 @@ async function checkPage(context, url) {
       "document.documentElement.scrollHeight - innerHeight",
     );
     const maxOpacity = new Map();
+    const worstContrast = new Map();
     const texts = new Map();
     const shots = [];
     let overflow = 0;
@@ -207,17 +258,21 @@ async function checkPage(context, url) {
         const prev = maxOpacity.get(el.path) ?? 0;
         if (el.opacity > prev) maxOpacity.set(el.path, el.opacity);
         texts.set(el.path, el);
+        // Keep each element's worst reading across samples; report once.
         if (el.contrast !== null) {
-          const min = el.large ? 3 : 4.5;
-          if (el.contrast < min) {
-            problems.push(
-              `contrast ${el.contrast.toFixed(2)} < ${min}  "${el.text}"`,
-            );
-          }
+          const seen = worstContrast.get(el.path);
+          if (!seen || el.contrast < seen.contrast) worstContrast.set(el.path, el);
         }
       }
       shots.push(await page.screenshot({ type: "png" }));
       if (height === 0) break;
+    }
+
+    for (const el of worstContrast.values()) {
+      const min = el.large ? 3 : 4.5;
+      if (el.contrast < min) {
+        problems.push(`contrast ${el.contrast.toFixed(2)} < ${min}  "${el.text}"`);
+      }
     }
 
     for (const [path, max] of maxOpacity) {

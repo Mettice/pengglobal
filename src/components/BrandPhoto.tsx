@@ -48,8 +48,9 @@ export default function BrandPhoto({
     // Designed empty state: names the shot that belongs here so the gap
     // is legible as a decision, not an oversight.
     const edge = onInk ? "border-paper/30" : "border-ink/25";
-    const strong = onInk ? "text-paper/60" : "text-ink/45";
-    const faint = onInk ? "text-paper/35" : "text-ink/30";
+    // Faint is still AA: an empty slot should read as quiet, not illegible.
+    const strong = onInk ? "text-paper/70" : "text-ink/70";
+    const faint = onInk ? "text-paper/55" : "text-ink/60";
     const ground = onInk ? "bg-paper/5" : "bg-paper-2";
 
     return (

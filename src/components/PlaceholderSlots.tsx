@@ -42,7 +42,7 @@ export function PartnerSlots() {
                   aria-hidden
                   className="flex h-16 w-full items-center justify-center border border-dashed border-ink/25"
                 >
-                  <span className="kin-mono text-ink/30">Logo</span>
+                  <span className="kin-mono text-ink/60">Logo</span>
                 </span>
               </div>
             </Item>
@@ -74,10 +74,10 @@ export function TestimonialSlots() {
           {[0, 1, 2].map((i) => (
             <Item key={i}>
               <figure className="flex h-full min-h-[220px] flex-col justify-between border-2 border-dashed border-ink/25 p-6">
-                <span aria-hidden className="kin-display text-5xl text-ink/12">
+                <span aria-hidden className="kin-display text-5xl leading-[0.88] text-ink/12">
                   &ldquo;
                 </span>
-                <figcaption className="kin-mono text-ink/30">
+                <figcaption className="kin-mono text-ink/60">
                   {t("pending")}
                 </figcaption>
               </figure>

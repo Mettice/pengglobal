@@ -45,18 +45,25 @@ export default function Book3D({
   // The board is 2:3; faces are rendered at 2x for retina.
   const boardH = Math.round(width / 0.67);
 
+  // Books are usually shown in pairs, so each is capped to 38vw: two plus
+  // their gap still fit a 390px phone. A fixed width let the pair reach
+  // 532px there, which widened its grid column and scrolled the page
+  // sideways. Every face dimension derives from --board-w, so capping it
+  // scales the whole solid.
+  const boardW = `min(${width}px, 38vw)`;
+
   return (
     <div className={`book3d-float ${className}`} style={{ "--drift-delay": driftDelay } as React.CSSProperties}>
       <Link
         href="/peng-edition/books"
         aria-label={`${title} — ${author}`}
-        className="book3d-scene relative block"
+        className="book3d-scene relative"
       >
         <span aria-hidden className="book3d-shadow" />
 
         <span
           className="book3d"
-          style={{ "--board-w": `${width}px` } as React.CSSProperties}
+          style={{ "--board-w": boardW } as React.CSSProperties}
         >
           <span className="book3d__face book3d__front">
             <Image
@@ -65,7 +72,7 @@ export default function Book3D({
               width={width * 2}
               height={boardH * 2}
               priority={priority}
-              sizes={`${width}px`}
+              sizes={boardW}
             />
           </span>
 

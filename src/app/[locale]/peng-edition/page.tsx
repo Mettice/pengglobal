@@ -133,7 +133,7 @@ export default function PengEditionPage({
                   <span className="kin-mono text-orange-deep transition-colors group-hover:text-orange">
                     {String(i + 1).padStart(2, "0")}
                   </span>
-                  <h3 className="kin-display mt-5 text-xl text-ink transition-colors group-hover:text-paper">
+                  <h3 className="kin-display mt-5 text-xl leading-[0.88] text-ink transition-colors group-hover:text-paper">
                     {t(`capabilities.items.${i}`)}
                   </h3>
                 </div>
@@ -164,7 +164,7 @@ export default function PengEditionPage({
       <section className="bg-orange py-20 sm:py-28">
         <div className="mx-auto max-w-[1240px] px-4 sm:px-8">
           <Reveal>
-            <span className="kin-mono text-ink/60">{t("schools.heading")}</span>
+            <span className="kin-mono text-ink/80">{t("schools.heading")}</span>
             <p className="kin-display mt-6 max-w-[18ch] text-[clamp(1.8rem,5.4vw,3.6rem)] text-ink">
               {t("schools.p1")}
             </p>

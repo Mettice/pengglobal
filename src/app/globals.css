@@ -52,6 +52,18 @@ body {
   color: var(--color-ink);
 }
 
+/* Everything below is a component rule, and lives in Tailwind's
+   components layer so that a utility on the same element wins.
+
+   Tailwind 4 emits utilities inside @layer utilities. Rules outside any
+   layer beat every layered rule regardless of specificity or order, so
+   while these sat unlayered, any utility that touched a property they
+   set was silently ignored: `text-paper` beside `.kin-chip` rendered
+   ink on ink, `normal-case` beside `.kin-display` still shouted, and
+   `mt-4` beside `.kin-rule` did nothing. Layer order is
+   theme < base < components < utilities. */
+@layer components {
+
 /* ---------- Display type: the graphic element -------------------- */
 .kin-display {
   font-family: var(--font-display);
@@ -669,3 +681,53 @@ body {
   transform: scaleX(1);
   transform-origin: left;
 }
+
+/* ---------- Entrance: rise ---------------------------------------- */
+/* The companion to .kin-mask for blocks rather than lines. Same rule:
+   the default state is finished and visible, and the rise only applies
+   where motion is welcome — so copy and calls to action never depend on
+   a script completing. */
+@media (prefers-reduced-motion: no-preference) {
+  .kin-rise {
+    animation: kin-rise 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation-delay: var(--rise-delay, 0s);
+  }
+}
+
+@keyframes kin-rise {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ---------- Scroll cue -------------------------------------------- */
+/* A 1px line that draws down and fades. scaleY rather than height, so
+   the loop never triggers layout. */
+@media (prefers-reduced-motion: no-preference) {
+  .kin-scroll-cue {
+    transform-origin: top;
+    animation: kin-scroll-cue 1.8s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+  }
+}
+
+@keyframes kin-scroll-cue {
+  0% {
+    transform: scaleY(0);
+    opacity: 1;
+  }
+  60% {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scaleY(1);
+    opacity: 0;
+  }
+}
+
+} /* @layer components */

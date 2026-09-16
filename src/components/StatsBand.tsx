@@ -26,7 +26,7 @@ export default function StatsBand() {
       <div className="mx-auto max-w-[1240px] px-4 sm:px-8">
         <div className="flex flex-wrap items-baseline justify-between gap-3 border-b border-paper/20 pb-4">
           <span className="kin-mono kin-green-mark">{t("eyebrow")}</span>
-          <span className="kin-mono text-paper/40">{t("since")}</span>
+          <span className="kin-mono text-paper/55">{t("since")}</span>
         </div>
 
         <Stagger
