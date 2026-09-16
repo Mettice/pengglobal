@@ -1,121 +1,220 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { useTranslations } from "next-intl";
-import { motion, useReducedMotion } from "motion/react";
+import { motion, useMotionValue, useSpring } from "motion/react";
 import { Link } from "@/i18n/navigation";
+import { useEnhanced } from "@/lib/useEnhanced";
+import { HERO_ID } from "@/lib/hero";
 import { MaskLine } from "./motion/Kinetic";
-import HeroSlideshow, { type HeroSlide } from "./HeroSlideshow";
 
-const EASE = [0.22, 1, 0.36, 1] as const;
+/** Encoded by scripts/build-hero.mjs from media/hero-source.mp4. */
+const POSTER = "/hero/poster.webp";
+
+/** How far, in px, the footage drifts toward the pointer at the edges. */
+const PARALLAX_PX = 18;
 
 /**
- * The three hero images, in rotation order.
+ * Full-viewport cinematic hero.
  *
- * Each `src` is empty until real photography is licensed; the slideshow
- * shows a labelled pending frame in its place and keeps rotating, so the
- * motion is visible before any file exists. Drop a path under /public
- * here and it appears in the rotation with no other change.
- * See docs/photography-spec.md for what to buy.
+ * Layers, back to front: graded port footage (poster always, video faded
+ * in over it on capable desktops), a scrim that carries text contrast,
+ * grain, then the copy.
+ *
+ * The poster is never replaced by the video. The enhancement gate only
+ * opens after hydration, so swapping one element for the other would
+ * flash; instead the video mounts on top at opacity 0 and fades in once
+ * it is actually playing. The poster is the LCP element either way.
+ *
+ * All copy renders and is visible without JavaScript: headline lines use
+ * the CSS-only .kin-mask reveal and the lower block uses .kin-rise, both
+ * of which default to their finished state.
  */
-const HERO_SLIDES: HeroSlide[] = [
-  { labelKey: "hero1" },
-  { labelKey: "hero2" },
-  { labelKey: "hero3" },
-];
-
-/** The four service lines, surfaced in the hero as the offering. */
-const SERVICE_KEYS = [
-  "representation",
-  "importExport",
-  "contracts",
-  "machinery",
-] as const;
-
-export type HeroVariant = "split" | "full";
-
-/**
- * The hero message. `onInk` flips it for the full-bleed variant, where it
- * sits over a darkened photograph rather than on paper.
- */
-function HeroMessage({ onInk }: { onInk: boolean }) {
+export default function KineticHero() {
   const t = useTranslations("home.hero");
-  const tServices = useTranslations("services");
-  const reduced = useReducedMotion();
+  const enhanced = useEnhanced();
+  const sectionRef = useRef<HTMLElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [playing, setPlaying] = useState(false);
+
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  const smoothX = useSpring(x, { stiffness: 60, damping: 20 });
+  const smoothY = useSpring(y, { stiffness: 60, damping: 20 });
+
+  // Pointer parallax, and pause the footage while the hero is off screen
+  // so a long page does not decode video nobody can see.
+  useEffect(() => {
+    if (!enhanced) {
+      x.set(0);
+      y.set(0);
+      return;
+    }
+
+    let inView = true;
+
+    const onMove = (e: PointerEvent) => {
+      if (!inView) return;
+      const cx = window.innerWidth / 2;
+      const cy = window.innerHeight / 2;
+      x.set(((e.clientX - cx) / cx) * PARALLAX_PX);
+      y.set(((e.clientY - cy) / cy) * PARALLAX_PX);
+    };
+
+    const observer = new IntersectionObserver(([entry]) => {
+      inView = entry.isIntersecting;
+      const video = videoRef.current;
+      if (!video) return;
+      if (inView) video.play().catch(() => {});
+      else video.pause();
+    });
+    if (sectionRef.current) observer.observe(sectionRef.current);
+
+    window.addEventListener("pointermove", onMove, { passive: true });
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("pointermove", onMove);
+    };
+  }, [enhanced, x, y]);
+
+  // React does not reliably reflect `muted` before autoplay is attempted,
+  // and browsers refuse to autoplay unmuted video — set it on the element.
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!enhanced || !video) return;
+    video.muted = true;
+    video.play().catch(() => {});
+  }, [enhanced]);
+
+  const proof = [t("chip1"), t("chip2"), t("meta2")];
 
   return (
-    <div className={onInk ? "kin-on-ink" : ""}>
-      <h1
-        className={`kin-display text-[clamp(2.5rem,6.6vw,4.9rem)] ${
-          onInk ? "text-paper" : "text-ink"
-        }`}
+    <>
+      <section
+        ref={sectionRef}
+        id={HERO_ID}
+        className="kin-on-ink relative flex min-h-[max(640px,100svh)] flex-col overflow-hidden"
       >
-        <MaskLine delay={0.05}>{t("line1")}</MaskLine>
-        <MaskLine delay={0.17}>
-          {/* Brand orange reaches only 2.5:1 on paper — under even the
-              3:1 allowed for large text — so the accent word takes the
-              deeper orange on light grounds and the bright one on ink. */}
-          <span className={onInk ? "kin-italic text-orange" : "kin-italic text-orange-deep"}>
-            {t("line2a")}
-          </span>{" "}
-          {t("line2b")}
-        </MaskLine>
-        <MaskLine delay={0.29}>
-          <span className="kin-accent-green">{t("line3")}</span>
-        </MaskLine>
-      </h1>
-
-      <motion.div
-        initial={{ opacity: 0, y: 16 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{
-          duration: reduced ? 0 : 0.7,
-          delay: reduced ? 0 : 0.5,
-          ease: EASE,
-        }}
-      >
-        <p
-          className={`mt-7 max-w-[50ch] text-[1.05rem] leading-relaxed ${
-            onInk ? "text-paper/80" : "text-ink-soft"
-          }`}
+        {/* ---- Footage ---- */}
+        <motion.div
+          aria-hidden
+          style={{ x: smoothX, y: smoothY }}
+          className="absolute inset-0 z-0 origin-center scale-[1.08]"
         >
-          {t("subtitle")}
-        </p>
-
-        {/* The offering, stated plainly — this is the holding's business */}
-        <ul className="mt-7 flex flex-wrap gap-x-6 gap-y-2">
-          {SERVICE_KEYS.map((key) => (
-            <li
-              key={key}
-              className={`kin-mono flex items-center gap-2 ${
-                onInk ? "text-paper/70" : "text-ink-soft"
+          <Image
+            src={POSTER}
+            alt=""
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover object-right"
+          />
+          {enhanced && (
+            <video
+              ref={videoRef}
+              className={`absolute inset-0 h-full w-full object-cover object-right transition-opacity duration-1000 ${
+                playing ? "opacity-100" : "opacity-0"
               }`}
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="none"
+              poster={POSTER}
+              onLoadedMetadata={(e) => {
+                e.currentTarget.playbackRate = 1.15;
+              }}
+              onPlaying={() => setPlaying(true)}
             >
-              <span aria-hidden className="h-1.5 w-1.5 shrink-0 bg-lime" />
-              {tServices(`${key}.label`)}
-            </li>
-          ))}
-        </ul>
+              <source
+                src="/hero/loop.av1.webm"
+                type='video/webm; codecs="av01.0.05M.08"'
+              />
+              <source src="/hero/loop.h264.mp4" type="video/mp4" />
+            </video>
+          )}
+        </motion.div>
 
-        {/* Proof chips — real claims only, each in its brand's colour */}
-        <div className="mt-7 flex flex-wrap gap-2">
-          <span className="kin-chip kin-chip--pensan">{t("chip1")}</span>
-          <span className="kin-chip kin-chip--orange">{t("chip2")}</span>
-          <span className="kin-chip kin-chip--lime">{t("chip3")}</span>
-        </div>
+        {/* ---- Scrim: carries text contrast, so the grade does not have to.
+             Heaviest at the base, where the lower block sits, and left,
+             where the headline sits; the sun is top-right. ---- */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 z-10 bg-gradient-to-t from-ink via-ink/25 to-ink/45"
+        />
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 z-10 bg-gradient-to-r from-ink/55 via-ink/10 to-transparent"
+        />
+        <div aria-hidden className="kin-grain pointer-events-none absolute inset-0 z-10" />
 
-        <div className="mt-9 flex flex-wrap gap-3">
-          <Link href="/contact" className="kin-btn">
-            {t("cta1")}
-          </Link>
-          <Link href="/peng-edition" className="kin-btn kin-btn--ghost">
-            {t("cta2")}
-          </Link>
+        {/* ---- Copy. A flex column rather than two absolutely placed
+             blocks, so headline and lower block can never collide on a
+             short viewport — the section grows instead. ---- */}
+        <div className="relative z-20 mx-auto flex w-full max-w-[1240px] flex-1 flex-col justify-between gap-12 px-4 pb-10 pt-[calc(68px+9svh)] sm:px-8 sm:pb-12">
+          <h1 className="kin-display text-[length:clamp(3rem,min(8.4vw,13svh),7.5rem)] text-paper">
+            <MaskLine delay={0.05}>{t("line1")}</MaskLine>
+            <MaskLine delay={0.17}>
+              {/* Bright orange is 7:1 on ink, so it is legible here. */}
+              <span className="kin-italic text-orange">{t("line2a")}</span>{" "}
+              <span className="text-paper/55">{t("line2b")}</span>
+            </MaskLine>
+            <MaskLine delay={0.29}>
+              <span className="text-lime-bright">{t("line3")}</span>
+            </MaskLine>
+          </h1>
+
+          <div
+            className="kin-rise"
+            style={{ "--rise-delay": "0.5s" } as React.CSSProperties}
+          >
+            <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
+              <p className="max-w-[46ch] text-[15px] leading-relaxed text-paper/85">
+                {t("subtitle")}
+              </p>
+              <div className="flex flex-wrap gap-3">
+                <Link href="/contact" className="kin-btn">
+                  {t("cta1")}
+                </Link>
+                <Link href="/peng-edition" className="kin-btn kin-btn--ghost">
+                  {t("cta2")}
+                </Link>
+              </div>
+            </div>
+
+            <div className="mt-8 flex flex-wrap items-center gap-x-4 gap-y-3 border-t border-paper/15 pt-5">
+              {proof.map((item, i) => (
+                <span key={item} className="flex items-center gap-4">
+                  {i > 0 && (
+                    <span aria-hidden className="inline-block h-1.5 w-1.5 bg-lime" />
+                  )}
+                  <span className="kin-mono text-paper/65">{item}</span>
+                </span>
+              ))}
+
+              {/* Scroll cue — part of this row rather than separately
+                  positioned, so it cannot overlap the proof items. */}
+              <span
+                aria-hidden
+                className="ml-auto hidden items-center gap-3 sm:flex"
+              >
+                <span className="kin-mono text-[0.65rem] tracking-[0.2em] text-paper/70">
+                  {t("scroll")}
+                </span>
+                <span className="kin-scroll-cue block h-10 w-px bg-paper/70" />
+              </span>
+            </div>
+          </div>
         </div>
-      </motion.div>
-    </div>
+      </section>
+
+      <CapabilityMarquee />
+    </>
   );
 }
 
+/** The capability rail that has always followed the hero. */
 function CapabilityMarquee() {
   const tMarquee = useTranslations("home.marquee");
   const items = (["a", "b", "c", "d", "e"] as const).map((k) => tMarquee(k));
@@ -142,73 +241,5 @@ function CapabilityMarquee() {
         ))}
       </div>
     </div>
-  );
-}
-
-export default function KineticHero({
-  variant = "split",
-}: {
-  variant?: HeroVariant;
-}) {
-  const t = useTranslations("home.hero");
-  const reduced = useReducedMotion();
-
-  /* ---- Full bleed: photograph edge to edge, message over it ---- */
-  if (variant === "full") {
-    return (
-      <section className="relative overflow-hidden bg-ink">
-        <div className="relative min-h-[clamp(560px,82vh,820px)]">
-          <HeroSlideshow slides={HERO_SLIDES} variant="fill" />
-
-          {/* Scrim: strongest bottom-left where the message sits, so the
-              type stays legible whatever the photograph does. */}
-          <div
-            aria-hidden
-            className="pointer-events-none absolute inset-0 bg-gradient-to-tr from-ink via-ink/80 to-ink/25"
-          />
-
-          <div className="relative flex min-h-[clamp(560px,82vh,820px)] items-end">
-            <div className="mx-auto w-full max-w-[1240px] px-4 pb-20 pt-24 sm:px-8">
-              <div className="max-w-3xl">
-                <HeroMessage onInk />
-              </div>
-            </div>
-          </div>
-        </div>
-        <CapabilityMarquee />
-      </section>
-    );
-  }
-
-  /* ---- Split: type left, rotating panel right ---- */
-  return (
-    <section className="kin-grain relative overflow-hidden bg-paper">
-      <hr className="kin-rule" />
-
-      <div className="mx-auto max-w-[1240px] px-4 sm:px-8">
-        <div className="flex items-baseline justify-between gap-4 border-b border-ink/15 py-3.5">
-          <span className="kin-mono text-ink-faint">{t("meta1")}</span>
-          <span className="kin-mono text-ink-faint">{t("meta2")}</span>
-        </div>
-
-        <div className="grid items-center gap-10 py-12 lg:grid-cols-[1.1fr_0.9fr] lg:gap-14 lg:py-16">
-          <HeroMessage onInk={false} />
-
-          <motion.div
-            initial={{ opacity: 0, y: 32 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{
-              duration: reduced ? 0 : 0.9,
-              delay: reduced ? 0 : 0.3,
-              ease: EASE,
-            }}
-          >
-            <HeroSlideshow slides={HERO_SLIDES} />
-          </motion.div>
-        </div>
-      </div>
-
-      <CapabilityMarquee />
-    </section>
   );
 }

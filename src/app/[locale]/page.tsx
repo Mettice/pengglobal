@@ -25,30 +25,19 @@ export async function generateMetadata({
   return pageMetadata(locale, "home", "/");
 }
 
-/**
- * TEMPORARY: hero layout is switchable while the format is being chosen.
- *   /en          → split (default)
- *   /en?hero=full → full-bleed photograph with the message over it
- * Once a variant is picked, hardcode it and drop `searchParams` so this
- * page goes back to being statically rendered.
- */
 export default function HomePage({
   params,
-  searchParams,
 }: {
   params: Promise<{ locale: string }>;
-  searchParams: Promise<{ hero?: string }>;
 }) {
   const { locale } = use(params);
-  const { hero } = use(searchParams);
   setRequestLocale(locale);
-  const heroVariant = hero === "full" ? "full" : "split";
   const t = useTranslations("home");
   const tPe = useTranslations("pengEdition");
 
   return (
     <>
-      <KineticHero variant={heroVariant} />
+      <KineticHero />
 
       {/* ---- Introduction: statement type on paper ---- */}
       <section className="bg-paper py-20 sm:py-28">
