@@ -127,7 +127,10 @@ export default function PengEditionPage({
             {CAPABILITY_INDEXES.map((i) => (
               <Item key={i}>
                 <div className="group h-full bg-paper p-7 transition-colors duration-300 hover:bg-ink">
-                  <span className="kin-mono text-orange">
+                  {/* Deep orange while the card is paper; the card
+                      inverts to ink on hover, where bright orange is
+                      both legible and correct. */}
+                  <span className="kin-mono text-orange-deep transition-colors group-hover:text-orange">
                     {String(i + 1).padStart(2, "0")}
                   </span>
                   <h3 className="kin-display mt-5 text-xl text-ink transition-colors group-hover:text-paper">

@@ -51,7 +51,12 @@ function HeroMessage({ onInk }: { onInk: boolean }) {
       >
         <MaskLine delay={0.05}>{t("line1")}</MaskLine>
         <MaskLine delay={0.17}>
-          <span className="kin-italic text-orange">{t("line2a")}</span>{" "}
+          {/* Brand orange reaches only 2.5:1 on paper — under even the
+              3:1 allowed for large text — so the accent word takes the
+              deeper orange on light grounds and the bright one on ink. */}
+          <span className={onInk ? "kin-italic text-orange" : "kin-italic text-orange-deep"}>
+            {t("line2a")}
+          </span>{" "}
           {t("line2b")}
         </MaskLine>
         <MaskLine delay={0.29}>

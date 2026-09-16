@@ -96,7 +96,7 @@ export default function ReachSection() {
 
           {/* The route, stated as hard-edged nodes rather than soft pills */}
           <div className="mt-9 flex flex-wrap items-center gap-3">
-            <span className="kin-chip border-paper/40 text-paper">
+            <span className="kin-chip">
               {t("origin")}
             </span>
             <span aria-hidden className="kin-mono text-lime-bright">

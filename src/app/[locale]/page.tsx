@@ -159,7 +159,7 @@ export default function HomePage({
                 {["badgeSchools", "badgeBookshops", "badgeCemac"].map((key) => (
                   <span
                     key={key}
-                    className="kin-chip border-paper/40 text-paper"
+                    className="kin-chip"
                   >
                     {t(`catalogue.${key}`)}
                   </span>

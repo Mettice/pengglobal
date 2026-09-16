@@ -18,14 +18,19 @@
   --color-ink: #0b0b0b;
   --color-ink-2: #1a1a18;
   --color-ink-soft: #4a4741;
-  --color-ink-faint: #6d6a63;
+  /* Darkened from #6d6a63, which cleared 4.5:1 on --color-paper but only
+     reached 4.36 on --color-paper-2. Labels set in it are 0.7rem mono,
+     i.e. exactly the size that cannot afford to be marginal. */
+  --color-ink-faint: #68655e;
 
   /* Colour is rationed and every hue is a real brand asset:
      green = Peng Global Holding, orange = Peng Edition, navy = PENSAN. */
   --color-orange: #f97316; /* Peng Edition */
   --color-orange-deep: #c2410c;
   --color-lime: #78be20; /* Peng Global Holding */
-  --color-lime-deep: #4d7d13;
+  /* Darkened from #4d7d13 (4.41:1 on paper, 3.99 on paper-2), which
+     failed AA wherever it set small mono labels. */
+  --color-lime-deep: #446e11;
   --color-lime-bright: #8fd62c;
   --color-pensan: #2a3b74; /* PENSAN Pantone Blue 072C */
 
@@ -105,6 +110,20 @@ body {
   font-weight: 500;
   background: transparent;
   color: var(--color-ink);
+}
+
+/* On ink grounds the plain chip inverts, exactly as .kin-btn does.
+   This has to live here rather than as utility classes on the element:
+   Tailwind 4 emits utilities inside @layer utilities, while this file's
+   kin-* rules are unlayered, and unlayered rules beat layered ones
+   whatever their specificity or order. So a `text-paper` next to
+   `.kin-chip` was silently ignored, rendering ink text on an ink
+   ground — invisible badges.
+   The :not() keeps the coloured variants — lime, orange, pensan, fill —
+   carrying their own foreground. */
+.kin-on-ink .kin-chip:not([class*="kin-chip--"]) {
+  border-color: color-mix(in oklab, var(--color-paper) 40%, transparent);
+  color: var(--color-paper);
 }
 
 .kin-chip--fill {
