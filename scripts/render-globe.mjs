@@ -652,6 +652,15 @@ if (PREVIEW) {
   // The poster is not frame 0. It is the only image mobile and
   // reduced-motion visitors see, and frame 0 is the empty globe before
   // the route is drawn — so take the moment the route has arrived.
+  // Mobile pair. Below lg the globe is a block at most ~1000 CSS px wide,
+  // so 960x540 is enough and roughly a third of the pixels. Same single
+  // keyframe, so the loop behaves identically.
+  const small = ["-vf", "scale=960:540:flags=lanczos"];
+  await ffmpeg(["-framerate", String(FPS), "-i", src, ...small, "-c:v", "libsvtav1", "-preset", "5", "-crf", "42", "-pix_fmt", "yuv420p", "-g", oneKey, path.join(OUT, "loop-sm.av1.webm")]);
+  await ffmpeg(["-framerate", String(FPS), "-i", src, ...small, "-c:v", "libx264", "-preset", "slow", "-crf", "32", "-pix_fmt", "yuv420p",
+    "-x264-params", `keyint=${oneKey}:min-keyint=${oneKey}:scenecut=0:ipratio=1.0:pbratio=1.0`,
+    "-movflags", "+faststart", path.join(OUT, "loop-sm.h264.mp4")]);
+
   const posterFrame = Math.round((TIMELINE.draw[1] + 0.3) * FPS);
   await sharp(path.join(FRAMES_DIR, `${String(posterFrame).padStart(4, "0")}.png`))
     .resize(1600)
@@ -659,7 +668,7 @@ if (PREVIEW) {
     .toFile(path.join(OUT, "poster.webp"));
   if (!KEEP_FRAMES) await rm(FRAMES_DIR, { recursive: true, force: true });
 
-  for (const f of ["poster.webp", "loop.av1.webm", "loop.h264.mp4"]) {
+  for (const f of ["poster.webp", "loop.av1.webm", "loop.h264.mp4", "loop-sm.av1.webm", "loop-sm.h264.mp4"]) {
     const { size } = await stat(path.join(OUT, f));
     console.log(`${path.join(OUT, f).padEnd(28)} ${(size / 1024).toFixed(0).padStart(6)} KB`);
   }

@@ -8,7 +8,7 @@ import {
   useTransform,
   useMotionValueEvent,
 } from "motion/react";
-import { useEnhanced } from "@/lib/useEnhanced";
+import { useAmbientVideo, useEnhanced } from "@/lib/useEnhanced";
 
 /**
  * A frame sequence scrubbed by scroll position.
@@ -27,6 +27,11 @@ import { useEnhanced } from "@/lib/useEnhanced";
  * Whether this scrubs at all is decided in CSS (.seq-track) so the page
  * height is settled before hydration. This component only decides whether
  * to mount the canvas.
+ *
+ * Where it does not scrub (touch screens, narrow windows), the route is
+ * still drawn: a 3s clip of the same frames (draw-sm.*) plays once as the
+ * section comes into view and ends on the final frame, which is the
+ * still underneath — so nothing changes when it stops.
  */
 export default function ScrollSequence({
   name,
@@ -46,6 +51,11 @@ export default function ScrollSequence({
   beats: string[];
 }) {
   const enhanced = useEnhanced();
+  const ambient = useAmbientVideo("(max-width: 1023px)");
+  const playOnce = !enhanced && ambient.allowed;
+  const clipRef = useRef<HTMLVideoElement>(null);
+  const mediaRef = useRef<HTMLDivElement>(null);
+  const [clipPlaying, setClipPlaying] = useState(false);
   const trackRef = useRef<HTMLElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const imagesRef = useRef<(HTMLImageElement | undefined)[]>([]);
@@ -126,6 +136,24 @@ export default function ScrollSequence({
 
   useEffect(() => () => cancelAnimationFrame(rafRef.current), []);
 
+  // --- Play the clip once, when most of the picture is on screen ------
+  useEffect(() => {
+    const clip = clipRef.current;
+    const media = mediaRef.current;
+    if (!playOnce || !clip || !media) return;
+    clip.muted = true;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        observer.disconnect();
+        clip.play().catch(() => {});
+      },
+      { threshold: 0.6 },
+    );
+    observer.observe(media);
+    return () => observer.disconnect();
+  }, [playOnce]);
+
   // Beats cross-fade across the scrub. Driven by motion values so the
   // captions never trigger a React render while scrolling.
   const beatOpacity = [
@@ -136,43 +164,76 @@ export default function ScrollSequence({
 
   return (
     <section ref={trackRef} className="seq-track kin-on-ink">
-      <div className="seq-stage flex items-center overflow-hidden">
-        {enhanced ? (
-          <canvas
-            ref={canvasRef}
-            width={width}
-            height={height}
-            aria-hidden
-            /* object-right, not centre: cover crops horizontally, and on a
+      <div className="seq-stage flex flex-col overflow-hidden lg:flex-row lg:items-center">
+        {/* Below lg the picture is its own block under the copy: as a
+            background on a phone it sat behind the text and the wash, and
+            the route — the point — could not be seen. */}
+        <div
+          ref={mediaRef}
+          aria-hidden
+          className="relative order-last aspect-video w-full lg:absolute lg:inset-0 lg:order-none lg:aspect-auto"
+        >
+          {enhanced ? (
+            <canvas
+              ref={canvasRef}
+              width={width}
+              height={height}
+              aria-hidden
+              /* object-right, not centre: cover crops horizontally, and on a
                tall window that removes ~260px from each side — enough to
                take the destination marker off screen. Anchoring right means
                the crop only ever eats the left, which is where the ink wash
                and the copy already are. */
-            className={`absolute inset-0 h-full w-full object-cover object-right transition-opacity duration-700 ${
-              ready ? "opacity-100" : "opacity-70"
-            }`}
-          />
-        ) : (
-          /* The finished route — the single most informative frame, and
-             the only one anyone gets who is not scrubbing. */
-          <Image
-            src={frameSrc(frames - 1)}
-            alt=""
-            width={width}
-            height={height}
-            aria-hidden
-            className="absolute inset-0 h-full w-full object-cover object-right"
-          />
-        )}
+              className={`absolute inset-0 h-full w-full object-cover object-right transition-opacity duration-700 ${
+                ready ? "opacity-100" : "opacity-70"
+              }`}
+            />
+          ) : (
+            /* The finished route — the single most informative frame. It is
+             all reduced-motion visitors get, and where the clip below
+             plays, it is the frame the clip ends on. */
+            <Image
+              src={frameSrc(frames - 1)}
+              alt=""
+              width={width}
+              height={height}
+              aria-hidden
+              className="absolute inset-0 h-full w-full object-cover object-right"
+            />
+          )}
+          {playOnce && (
+            <video
+              ref={clipRef}
+              aria-hidden
+              muted
+              playsInline
+              preload="metadata"
+              disablePictureInPicture
+              onPlaying={() => setClipPlaying(true)}
+              className={`absolute inset-0 h-full w-full object-cover object-right transition-opacity duration-300 ${
+                clipPlaying ? "opacity-100" : "opacity-0"
+              }`}
+            >
+              <source
+                src={`/sequence/${name}/draw-sm.av1.webm`}
+                type='video/webm; codecs="av01.0.04M.08"'
+              />
+              <source
+                src={`/sequence/${name}/draw-sm.h264.mp4`}
+                type="video/mp4"
+              />
+            </video>
+          )}
+        </div>
 
         {/* Ink wash under the copy so it stays readable over any frame.
             Cleared by ~70% across so it never sits over the drawn route. */}
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-0 bg-gradient-to-r from-ink from-15% via-ink/55 via-45% to-transparent to-70%"
+          className="pointer-events-none absolute inset-0 hidden bg-gradient-to-r from-ink from-15% via-ink/55 via-45% to-transparent to-70% lg:block"
         />
 
-        <div className="relative mx-auto w-full max-w-[1240px] px-4 py-20 sm:px-8">
+        <div className="relative mx-auto w-full max-w-[1240px] px-4 pb-6 pt-16 sm:px-8 lg:py-20">
           <span className="kin-mono kin-green-mark">{eyebrow}</span>
           <h2 className="kin-display mt-5 max-w-[16ch] text-[clamp(1.9rem,4.8vw,3.4rem)] text-paper">
             {heading}

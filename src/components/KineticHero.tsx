@@ -5,12 +5,15 @@ import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { motion, useMotionValue, useSpring } from "motion/react";
 import { Link } from "@/i18n/navigation";
-import { useEnhanced } from "@/lib/useEnhanced";
+import { useAmbientVideo, useEnhanced } from "@/lib/useEnhanced";
 import { HERO_ID } from "@/lib/hero";
 import { MaskLine } from "./motion/Kinetic";
 
 /** Encoded by scripts/build-hero.mjs from media/hero-source.mp4. */
 const POSTER = "/hero/poster.webp";
+
+/** Portrait screens get the 3:4 cut (loop-sm.*); see build-hero.mjs. */
+const PORTRAIT = "(max-aspect-ratio: 1/1)";
 
 /** How far, in px, the footage drifts toward the pointer at the edges. */
 const PARALLAX_PX = 18;
@@ -19,8 +22,11 @@ const PARALLAX_PX = 18;
  * Full-viewport cinematic hero.
  *
  * Layers, back to front: graded port footage (poster always, video faded
- * in over it on capable desktops), a scrim that carries text contrast,
+ * in over it), a scrim that carries text contrast,
  * grain, then the copy.
+ *
+ * The footage plays everywhere motion is welcome — phones included, from
+ * a 3:4 cut about half the size. Pointer parallax stays desktop-only.
  *
  * The poster is never replaced by the video. The enhancement gate only
  * opens after hydration, so swapping one element for the other would
@@ -34,58 +40,53 @@ const PARALLAX_PX = 18;
 export default function KineticHero() {
   const t = useTranslations("home.hero");
   const enhanced = useEnhanced();
+  const video = useAmbientVideo(PORTRAIT);
+  const variant = video.small ? "-sm" : "";
   const sectionRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [playing, setPlaying] = useState(false);
+  // Which cut is actually playing, so a rotation that swaps the cut fades
+  // the new one in rather than showing it before its first frame.
+  const [playing, setPlaying] = useState<string | null>(null);
 
   const x = useMotionValue(0);
   const y = useMotionValue(0);
   const smoothX = useSpring(x, { stiffness: 60, damping: 20 });
   const smoothY = useSpring(y, { stiffness: 60, damping: 20 });
 
-  // Pointer parallax, and pause the footage while the hero is off screen
-  // so a long page does not decode video nobody can see.
+  // Pointer parallax (desktop only).
   useEffect(() => {
     if (!enhanced) {
       x.set(0);
       y.set(0);
       return;
     }
-
-    let inView = true;
-
     const onMove = (e: PointerEvent) => {
-      if (!inView) return;
       const cx = window.innerWidth / 2;
       const cy = window.innerHeight / 2;
       x.set(((e.clientX - cx) / cx) * PARALLAX_PX);
       y.set(((e.clientY - cy) / cy) * PARALLAX_PX);
     };
-
-    const observer = new IntersectionObserver(([entry]) => {
-      inView = entry.isIntersecting;
-      const video = videoRef.current;
-      if (!video) return;
-      if (inView) video.play().catch(() => {});
-      else video.pause();
-    });
-    if (sectionRef.current) observer.observe(sectionRef.current);
-
     window.addEventListener("pointermove", onMove, { passive: true });
-    return () => {
-      observer.disconnect();
-      window.removeEventListener("pointermove", onMove);
-    };
+    return () => window.removeEventListener("pointermove", onMove);
   }, [enhanced, x, y]);
 
-  // React does not reliably reflect `muted` before autoplay is attempted,
-  // and browsers refuse to autoplay unmuted video — set it on the element.
+  // Start the footage, and pause it while the hero is off screen so a
+  // long page does not decode video nobody can see. React does not
+  // reliably reflect `muted` before autoplay is attempted, and browsers
+  // refuse to autoplay unmuted video — so it is set on the element.
   useEffect(() => {
-    const video = videoRef.current;
-    if (!enhanced || !video) return;
-    video.muted = true;
-    video.play().catch(() => {});
-  }, [enhanced]);
+    const el = videoRef.current;
+    const section = sectionRef.current;
+    if (!video.allowed || !el || !section) return;
+    el.muted = true;
+    el.play().catch(() => {});
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) el.play().catch(() => {});
+      else el.pause();
+    });
+    observer.observe(section);
+    return () => observer.disconnect();
+  }, [video.allowed, variant]);
 
   const proof = [t("chip1"), t("chip2"), t("meta2")];
 
@@ -110,11 +111,12 @@ export default function KineticHero() {
             sizes="100vw"
             className="object-cover object-right"
           />
-          {enhanced && (
+          {video.allowed && (
             <video
+              key={variant}
               ref={videoRef}
               className={`absolute inset-0 h-full w-full object-cover object-right transition-opacity duration-1000 ${
-                playing ? "opacity-100" : "opacity-0"
+                playing === variant ? "opacity-100" : "opacity-0"
               }`}
               autoPlay
               muted
@@ -125,13 +127,13 @@ export default function KineticHero() {
               onLoadedMetadata={(e) => {
                 e.currentTarget.playbackRate = 1.15;
               }}
-              onPlaying={() => setPlaying(true)}
+              onPlaying={() => setPlaying(variant)}
             >
               <source
-                src="/hero/loop.av1.webm"
+                src={`/hero/loop${variant}.av1.webm`}
                 type='video/webm; codecs="av01.0.05M.08"'
               />
-              <source src="/hero/loop.h264.mp4" type="video/mp4" />
+              <source src={`/hero/loop${variant}.h264.mp4`} type="video/mp4" />
             </video>
           )}
         </motion.div>

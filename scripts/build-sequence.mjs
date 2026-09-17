@@ -25,6 +25,10 @@
  *
  * Output: public/sequence/<name>/0001.webp …  plus src/lib/sequences.json
  * so the component never hardcodes a frame count.
+ *
+ * Also draw-sm.av1.webm / draw-sm.h264.mp4 in the same folder: the same
+ * frames as a 3s clip at 960px, which touch screens play once as the
+ * section comes into view instead of scrubbing 60 full-size frames.
  */
 import sharp from "sharp";
 import { mkdir, rm, readdir, writeFile, readFile, stat } from "node:fs/promises";
@@ -303,6 +307,27 @@ if (video) {
 } else {
   console.log("Rendering placeholder sequence…");
   await buildPlaceholder();
+}
+
+// The play-once clip. Frames go through PNG because ffmpeg's WebP
+// reader is unreliable across builds.
+{
+  const tmp = path.join(OUT_DIR, "_png");
+  await mkdir(tmp, { recursive: true });
+  for (let i = 1; i <= FRAME_COUNT; i++) {
+    const n = String(i).padStart(4, "0");
+    await sharp(`${OUT_DIR}/${n}.webp`).png().toFile(path.join(tmp, `${n}.png`));
+  }
+  const ffmpeg = (args) =>
+    run("ffmpeg", ["-hide_banner", "-loglevel", "error", "-y",
+      "-framerate", "20", "-i", path.join(tmp, "%04d.png"),
+      "-vf", "scale=960:540:flags=lanczos", "-an", "-pix_fmt", "yuv420p", ...args]);
+  await ffmpeg(["-c:v", "libsvtav1", "-preset", "5", "-crf", "40", path.join(OUT_DIR, "draw-sm.av1.webm")]);
+  await ffmpeg(["-c:v", "libx264", "-preset", "slow", "-crf", "28", "-movflags", "+faststart", path.join(OUT_DIR, "draw-sm.h264.mp4")]);
+  await rm(tmp, { recursive: true, force: true });
+  for (const f of ["draw-sm.av1.webm", "draw-sm.h264.mp4"]) {
+    console.log(`${f.padEnd(20)} ${((await stat(path.join(OUT_DIR, f))).size / 1024).toFixed(0)} KB`);
+  }
 }
 
 // Record the shape of the sequence so the component cannot drift from it.

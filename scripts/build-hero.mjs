@@ -11,6 +11,7 @@
  *   poster.webp      frame 0, graded — also the LCP image
  *   loop.av1.webm    SVT-AV1, preferred where supported
  *   loop.h264.mp4    H.264 fallback, faststart for progressive start
+ *   loop-sm.*        the same pair cut to 3:4 for portrait screens
  *
  * The poster is cut from the video's own first frame rather than made
  * separately, so it is pixel-identical to where playback begins and
@@ -53,35 +54,46 @@ await ffmpeg(["-i", SOURCE, "-frames:v", "1", "-vf", GRADE, tmp]);
 await sharp(tmp).webp({ quality: 78 }).toFile(path.join(OUT, "poster.webp"));
 await rm(tmp);
 
-// H.264 — the universal fallback. Keyframes every 2s are plenty for
-// looped playback; this is not a scrubbed sequence.
-await ffmpeg([
-  "-i", SOURCE,
-  "-vf", GRADE,
-  "-an",
-  "-c:v", "libx264",
-  "-preset", "slow",
-  "-crf", "26",
-  "-pix_fmt", "yuv420p",
-  "-g", "48",
-  "-movflags", "+faststart",
-  path.join(OUT, "loop.h264.mp4"),
-]);
+// Desktop takes the full frame; phones take a 3:4 cut from the right
+// edge. The hero is object-right, so in portrait the right edge is all
+// anyone sees — the cut ships only those pixels, at native resolution,
+// and a 3:4 box still covers every phone and portrait tablet.
+const VARIANTS = [
+  { suffix: "", vf: GRADE },
+  { suffix: "-sm", vf: `crop=ih*3/4:ih:iw-ih*3/4:0,${GRADE}` },
+];
 
-// AV1 — roughly half the bytes at matching quality where supported.
-await ffmpeg([
-  "-i", SOURCE,
-  "-vf", GRADE,
-  "-an",
-  "-c:v", "libsvtav1",
-  "-preset", "6",
-  "-crf", "38",
-  "-pix_fmt", "yuv420p",
-  "-g", "48",
-  path.join(OUT, "loop.av1.webm"),
-]);
+for (const { suffix, vf } of VARIANTS) {
+  // H.264 — the universal fallback. Keyframes every 2s are plenty for
+  // looped playback; this is not a scrubbed sequence.
+  await ffmpeg([
+    "-i", SOURCE,
+    "-vf", vf,
+    "-an",
+    "-c:v", "libx264",
+    "-preset", "slow",
+    "-crf", "26",
+    "-pix_fmt", "yuv420p",
+    "-g", "48",
+    "-movflags", "+faststart",
+    path.join(OUT, `loop${suffix}.h264.mp4`),
+  ]);
 
-for (const f of ["poster.webp", "loop.av1.webm", "loop.h264.mp4"]) {
+  // AV1 — roughly half the bytes at matching quality where supported.
+  await ffmpeg([
+    "-i", SOURCE,
+    "-vf", vf,
+    "-an",
+    "-c:v", "libsvtav1",
+    "-preset", "6",
+    "-crf", "38",
+    "-pix_fmt", "yuv420p",
+    "-g", "48",
+    path.join(OUT, `loop${suffix}.av1.webm`),
+  ]);
+}
+
+for (const f of ["poster.webp", "loop.av1.webm", "loop.h264.mp4", "loop-sm.av1.webm", "loop-sm.h264.mp4"]) {
   const { size } = await stat(path.join(OUT, f));
   console.log(`${path.join(OUT, f).padEnd(28)} ${(size / 1024).toFixed(0).padStart(6)} KB`);
 }

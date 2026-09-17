@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
-import { useEnhanced } from "@/lib/useEnhanced";
+import { useAmbientVideo } from "@/lib/useEnhanced";
 import { useEntrance } from "@/lib/useEntrance";
 import { Item, Stagger } from "./motion/Kinetic";
 
@@ -13,6 +13,9 @@ import { Item, Stagger } from "./motion/Kinetic";
  * real Istanbul → Douala route, drawn once per loop.
  */
 const POSTER = "/globe/poster.webp";
+
+/** Below lg the globe is a block, served from the 960px cut (loop-sm.*). */
+const SMALL = "(max-width: 1023px)";
 
 const delay = (s: number) => ({ "--d": `${s}s` }) as React.CSSProperties;
 
@@ -24,48 +27,49 @@ const delay = (s: number) => ({ "--d": `${s}s` }) as React.CSSProperties;
  * full-bleed on a phone would put the route straight behind the
  * paragraph, and the route is the point.
  *
- * The video mounts only on capable desktops, and only as the section
- * approaches, so it never competes with the hero loop on first load. It
- * pauses once far off screen. The poster, which shows the route already
- * drawn, is what everyone else sees.
+ * The video mounts only as the section approaches, so it never competes
+ * with the hero loop on first load, and pauses once far off screen.
+ * Phones get the smaller cut. The poster, which shows the route already
+ * drawn, is what reduced-motion and data-saver visitors see.
  */
 export default function ReachSection() {
   const t = useTranslations("home.reach");
   const tContact = useTranslations("home.contactCta");
-  const enhanced = useEnhanced();
+  const video = useAmbientVideo(SMALL);
+  const variant = video.small ? "-sm" : "";
   const stageRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
   const [near, setNear] = useState(false);
-  const [playing, setPlaying] = useState(false);
+  const [playing, setPlaying] = useState<string | null>(null);
 
   useEntrance(stageRef);
 
   useEffect(() => {
     const stage = stageRef.current;
-    if (!enhanced || !stage) return;
+    if (!video.allowed || !stage) return;
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) setNear(true);
-        const video = videoRef.current;
-        if (!video) return;
-        if (entry.isIntersecting) video.play().catch(() => {});
-        else video.pause();
+        const el = videoRef.current;
+        if (!el) return;
+        if (entry.isIntersecting) el.play().catch(() => {});
+        else el.pause();
       },
       { rootMargin: "50% 0px" },
     );
     observer.observe(stage);
     return () => observer.disconnect();
-  }, [enhanced]);
+  }, [video.allowed]);
 
-  const showVideo = enhanced && near;
+  const showVideo = video.allowed && near;
 
   // React does not reliably reflect `muted` before autoplay is attempted.
   useEffect(() => {
-    const video = videoRef.current;
-    if (!showVideo || !video) return;
-    video.muted = true;
-    video.play().catch(() => {});
-  }, [showVideo]);
+    const el = videoRef.current;
+    if (!showVideo || !el) return;
+    el.muted = true;
+    el.play().catch(() => {});
+  }, [showVideo, variant]);
 
   return (
     <section aria-labelledby="reach-heading" className="kin-on-ink relative">
@@ -87,9 +91,10 @@ export default function ReachSection() {
           />
           {showVideo && (
             <video
+              key={variant}
               ref={videoRef}
               className={`absolute inset-0 h-full w-full object-cover object-bottom transition-opacity duration-1000 ${
-                playing ? "opacity-100" : "opacity-0"
+                playing === variant ? "opacity-100" : "opacity-0"
               }`}
               autoPlay
               muted
@@ -98,13 +103,13 @@ export default function ReachSection() {
               preload="auto"
               disablePictureInPicture
               poster={POSTER}
-              onPlaying={() => setPlaying(true)}
+              onPlaying={() => setPlaying(variant)}
             >
               <source
-                src="/globe/loop.av1.webm"
+                src={`/globe/loop${variant}.av1.webm`}
                 type='video/webm; codecs="av01.0.08M.08"'
               />
-              <source src="/globe/loop.h264.mp4" type="video/mp4" />
+              <source src={`/globe/loop${variant}.h264.mp4`} type="video/mp4" />
             </video>
           )}
           {/* Blends the block into the copy above it on small screens. */}
