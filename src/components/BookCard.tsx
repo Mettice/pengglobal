@@ -33,7 +33,11 @@ export default function BookCard({
   ] as const;
 
   return (
-    <article className="grid gap-10 border-t-2 border-ink pt-8 sm:grid-cols-[210px_1fr] sm:gap-12">
+    // The id is the shelf's jump target; scroll-mt clears the sticky header.
+    <article
+      id={bookKey}
+      className="grid scroll-mt-24 gap-10 border-t-2 border-ink pt-8 sm:grid-cols-[210px_1fr] sm:gap-12"
+    >
       {/* A colour block behind the object, set on the ground plane rather
           than offset like a flat card's drop shadow — the book already
           casts its own. */}

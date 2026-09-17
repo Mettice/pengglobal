@@ -538,6 +538,109 @@ body {
   }
 }
 
+/* ---------- The shelf -------------------------------------------- */
+/* A long row of the books standing at a steep angle, receding up and to
+   the right, where the one under the pointer turns to face the reader
+   and comes forward. Proportions measured off the reference: covers turn
+   ~58°, each book steps 0.4 of a board width, the far end sits a little
+   higher and smaller.
+
+   The row shares one perspective, so every book recedes toward the same
+   point. Slots keep preserve-3d so each solid is projected by that shared
+   camera rather than flattened into its slot. Overlap is ordered by
+   z-index — nearer books, to the left, paint on top.
+
+   Slots ignore the pointer and their faces take it: a slot's own box is
+   the unturned board, far wider than the turned book on screen, and
+   would steal the hover from its right-hand neighbour. */
+.shelf {
+  --shelf-w: clamp(140px, 18.5vw, 290px);
+  --step: calc(var(--shelf-w) * 0.4);
+  --rise: calc(var(--shelf-w) * -0.034);
+  --depth: -18px;
+  position: absolute;
+  inset: 0;
+  perspective: 1500px;
+  perspective-origin: 62% 0%;
+}
+
+.shelf-slot {
+  --pop: 0;
+  position: absolute;
+  left: calc(var(--shelf-w) * -0.45 + var(--i) * var(--step));
+  bottom: calc(var(--shelf-w) * -0.3);
+  z-index: calc(40 - var(--i));
+  transform-style: preserve-3d;
+  transform: translate3d(
+    0,
+    calc(var(--i) * var(--rise) - var(--pop) * var(--shelf-w) * 0.14),
+    calc(var(--i) * var(--depth) + var(--pop) * var(--shelf-w) * 0.95)
+  );
+  transition: transform 560ms cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
+}
+
+.shelf-slot .book3d {
+  --board-w: var(--shelf-w);
+  --turn: -58deg;
+  transition-duration: 560ms;
+}
+
+.shelf-slot .book3d__face {
+  pointer-events: auto;
+}
+
+/* Paper block for a face that is not the fore-edge (a book turned
+   around shows its pages on the other side). */
+.book3d__paper {
+  background:
+    repeating-linear-gradient(to bottom, #efe9dc 0 1px, #cfc7b6 1px 2px),
+    #e6dfd0;
+}
+
+/* A back cover shown as the face: its hinge is on the right. */
+.book3d__front--flip::after {
+  scale: -1 1;
+}
+
+/* A title pill is hovered: every copy of that title leans out a little. */
+.shelf-slot[data-lit] {
+  --pop: 0.4;
+}
+
+.shelf-slot[data-lit] .book3d {
+  --turn: -30deg;
+}
+
+/* The one book in focus: whichever is under the pointer, or the idle
+   spotlight while the pointer is elsewhere. */
+.shelf:not(:hover) .shelf-slot[data-active],
+.shelf-slot:hover {
+  --pop: 1;
+  z-index: 60;
+}
+
+.shelf:not(:hover) .shelf-slot[data-active] .book3d,
+.shelf-slot:hover .book3d {
+  --turn: 0deg;
+}
+
+/* Phones see only the near end of the row; skip rendering the rest. */
+@media (max-width: 767px) {
+  .shelf-slot[data-far] {
+    display: none;
+  }
+}
+
+/* Both selectors: .shelf-slot .book3d outranks the plain .book3d rule
+   above, so it needs its own reduced-motion override. */
+@media (prefers-reduced-motion: reduce) {
+  .shelf-slot,
+  .shelf-slot .book3d {
+    transition-duration: 1ms;
+  }
+}
+
 /* ---------- Duotone photography --------------------------------- */
 /* Photography is treated, never dropped in raw. Every image is pushed
    to greyscale then re-inked in two brand tones, so a mixed bag of

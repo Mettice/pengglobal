@@ -5,8 +5,9 @@ import { hasLocale, useLocale, useTranslations } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
 import { routing } from "@/i18n/routing";
 import { pageMetadata, SITE_URL } from "@/lib/seo";
-import { Link } from "@/i18n/navigation";
 import BookCard, { BOOKS } from "@/components/BookCard";
+import SchoolsBand from "@/components/SchoolsBand";
+import BookShelf from "@/components/BookShelf";
 import { Reveal, MaskLine } from "@/components/motion/Kinetic";
 
 export async function generateMetadata({
@@ -70,18 +71,33 @@ export default function BooksPage({
     <>
       <BookJsonLd />
 
-      <section className="kin-on-ink kin-grain">
-        <div className="mx-auto max-w-[1240px] px-4 sm:px-8">
-          <div className="flex flex-wrap items-center justify-between gap-4 border-b border-paper/20 py-4">
-            <span className="kin-mono flex items-center gap-2 text-paper/60">
-              <span aria-hidden className="h-2.5 w-2.5 bg-lime" />
-              {t("holdingMark")}
-            </span>
-            <span className="kin-mono text-orange">02 · Titles</span>
+      {/* The shelf. A literary serif wordmark over a long row of the
+          books — the one sub-brand page where the serif leads, because
+          this is a publisher's shelf. */}
+      {/* isolate keeps the stage's own layering (rail, pills, gradient,
+          popped books) inside the section — without it those z-indexes
+          competed with the sticky header and slid over it on scroll. */}
+      <section className="kin-on-ink relative isolate overflow-hidden">
+        {/* Phones get a shorter stage: at full height the smaller books
+            left a band of empty black under the wordmark. */}
+        <div className="relative min-h-[480px] sm:min-h-[max(600px,82svh)]">
+          <div className="relative z-[90] mx-auto max-w-[1240px] px-4 sm:px-8">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-paper/20 py-4">
+              <span className="kin-mono flex items-center gap-2 text-paper/60">
+                <span aria-hidden className="h-2.5 w-2.5 bg-lime" />
+                {t("holdingMark")}
+              </span>
+              <span className="kin-mono text-orange">02 · Titles</span>
+            </div>
           </div>
-          <h1 className="kin-display py-14 text-[clamp(2.4rem,8vw,5.4rem)] text-paper sm:py-20">
+
+          <h1 className="relative z-[5] pt-[5svh] text-center font-serif text-[clamp(4rem,13vw,11.5rem)] font-normal leading-[0.9] tracking-[-0.035em] text-paper">
             <MaskLine>{t("booksHeading")}</MaskLine>
           </h1>
+
+          <div className="absolute inset-x-0 bottom-0 top-[34%]">
+            <BookShelf />
+          </div>
         </div>
       </section>
 
@@ -99,22 +115,7 @@ export default function BooksPage({
         </div>
       </section>
 
-      <section className="bg-orange py-20 sm:py-28">
-        <div className="mx-auto max-w-[1240px] px-4 sm:px-8">
-          <Reveal>
-            <span className="kin-mono text-ink/80">{t("schools.heading")}</span>
-            <p className="kin-display mt-6 max-w-[18ch] text-[clamp(1.8rem,5vw,3.4rem)] text-ink">
-              {t("schools.p1")}
-            </p>
-            <Link
-              href={{ pathname: "/contact", query: { type: "books" } }}
-              className="kin-btn mt-10"
-            >
-              {t("schools.cta")}
-            </Link>
-          </Reveal>
-        </div>
-      </section>
+      <SchoolsBand />
     </>
   );
 }
