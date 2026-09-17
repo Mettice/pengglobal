@@ -730,4 +730,95 @@ body {
   }
 }
 
+/* ---------- Scroll-armed entrance --------------------------------- */
+/* A choreographed entrance for sections below the fold, driven by
+   useEntrance(). The element's data-entrance attribute is the state:
+
+     absent  the finished design — SSR, no JavaScript, reduced motion,
+             or a section the reader has already scrolled past
+     armed   cast offstage; only ever set while the section is below the
+             viewport, so nobody sees copy disappear
+     go      playing; removed once the last piece lands, so these rules
+             stop matching and the page is left as plain static design
+
+   Four behaviours:
+     .ent-mask > span   line rises out of a mask — display lines only
+     .ent-focus         lifts while a blur settles — supporting copy
+     .ent-settle        rises with a slight scale — buttons
+     .ent-lift          rises — labels
+   Per-element delay comes from --d. */
+.ent-mask {
+  display: block;
+  overflow: hidden;
+}
+
+.ent-mask > span {
+  display: block;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  [data-entrance="armed"] .ent-mask > span {
+    transform: translateY(105%);
+  }
+
+  [data-entrance="armed"] :is(.ent-lift, .ent-focus, .ent-settle) {
+    opacity: 0;
+  }
+
+  [data-entrance="go"] .ent-mask > span {
+    animation: kin-line-rise 1.05s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: var(--d, 0s);
+  }
+
+  [data-entrance="go"] .ent-focus {
+    animation: ent-focus 0.85s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: var(--d, 0s);
+  }
+
+  [data-entrance="go"] .ent-settle {
+    animation: ent-settle 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: var(--d, 0s);
+  }
+
+  [data-entrance="go"] .ent-lift {
+    animation: ent-lift 0.6s cubic-bezier(0.25, 0.8, 0.3, 1) both;
+    animation-delay: var(--d, 0s);
+  }
+}
+
+@keyframes ent-focus {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: blur(0);
+  }
+}
+
+@keyframes ent-settle {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.972);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes ent-lift {
+  from {
+    opacity: 0;
+    transform: translateY(9px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 } /* @layer components */
