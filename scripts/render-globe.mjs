@@ -245,6 +245,7 @@ function graticule(radius) {
 
 let renderer, scene, camera, globe, rim, bead, pulse, curve, cfg, baseY;
 let arc, arcIndexCount, origin, dest;
+let glow, satellite, orbit, streaks = [];
 
 const clamp01 = (x) => Math.min(1, Math.max(0, x));
 const ramp = (t, [a, b]) => clamp01((t - a) / (b - a));
@@ -329,6 +330,95 @@ window.__init = (c) => {
   globe.add(graticule(1.002));
   globe.add(dotCloud(c.seaDots, 1.0, LIME, 0.24, 3.2));
   globe.add(dotCloud(c.landDots, 1.001, LIME_BRIGHT, 0.95, 4.6));
+
+  // Faceted lattice: the icosahedral shell a planet is modelled from.
+  globe.add(new THREE.LineSegments(
+    new THREE.EdgesGeometry(new THREE.IcosahedronGeometry(1.02, 2)),
+    new THREE.LineBasicMaterial({ color: LIME, transparent: true, opacity: 0.075 }),
+  ));
+
+  // Atmosphere: an additive shell just outside the limb. Camera-facing
+  // and rotation-invariant, so it never ghosts in the loop blend.
+  glow = new THREE.Mesh(
+    new THREE.SphereGeometry(1.14, 96, 64),
+    new THREE.ShaderMaterial({
+      transparent: true,
+      depthWrite: false,
+      side: THREE.BackSide,
+      blending: THREE.AdditiveBlending,
+      uniforms: { uColor: { value: new THREE.Color(LIME_BRIGHT) }, uAmt: { value: 0.5 } },
+      // Per-fragment view direction, not a fixed +Z: the planet sits well
+      // below the optical centre, and a fixed direction painted the shell
+      // as a flat, hard-edged band. On this back-facing shell the dot
+      // product runs from 0 at its own silhouette to about -0.48 where it
+      // meets the planet's limb (sqrt(1 - (1/1.14)^2)), so normalising by
+      // that gives a glow that is brightest at the limb and gone at the
+      // shell's edge.
+      vertexShader: ${"`"}
+        varying vec3 vN; varying vec3 vV;
+        void main(){ vec4 mv = modelViewMatrix * vec4(position, 1.0);
+          vN = normalize(normalMatrix * normal); vV = normalize(-mv.xyz);
+          gl_Position = projectionMatrix * mv; }
+      ${"`"},
+      fragmentShader: ${"`"}
+        uniform vec3 uColor; uniform float uAmt; varying vec3 vN; varying vec3 vV;
+        void main(){ float d = clamp(-dot(vN, vV) / 0.48, 0.0, 1.0);
+          float i = pow(d, 2.6);
+          gl_FragColor = vec4(uColor * i * uAmt, 1.0); }
+      ${"`"},
+    }),
+  );
+  glow.position.copy(globe.position);
+  scene.add(glow);
+
+  // An orbit in its own tilted plane, fixed in world space: the
+  // satellite's period is the loop, so it never ghosts either.
+  orbit = new THREE.Group();
+  orbit.position.copy(globe.position);
+  orbit.rotation.set(1.22, 0, -0.32);
+  scene.add(orbit);
+  {
+    const pts = [];
+    for (let i = 0; i <= 256; i++) {
+      const a = i / 256 * Math.PI * 2;
+      pts.push(new THREE.Vector3(Math.cos(a) * 1.3, 0, Math.sin(a) * 1.3));
+    }
+    orbit.add(new THREE.Line(
+      new THREE.BufferGeometry().setFromPoints(pts),
+      new THREE.LineBasicMaterial({ color: LIME_BRIGHT, transparent: true, opacity: 0.16 }),
+    ));
+    satellite = new THREE.Group();
+    satellite.add(new THREE.Mesh(new THREE.BoxGeometry(0.02, 0.012, 0.012), new THREE.MeshBasicMaterial({ color: PAPER })));
+    const panel = new THREE.MeshBasicMaterial({ color: LIME_BRIGHT, side: THREE.DoubleSide });
+    const wing = new THREE.PlaneGeometry(0.028, 0.009);
+    const left = new THREE.Mesh(wing, panel); left.position.x = -0.026; satellite.add(left);
+    const right = new THREE.Mesh(wing, panel); right.position.x = 0.026; satellite.add(right);
+    orbit.add(satellite);
+  }
+
+  // Light streaks running along parallels — abstract signal, not routes.
+  // Head bright, tail dark; additive, so dark reads as transparent.
+  for (const [lat, lead] of [[20, 0], [38, 2.1], [54, 4.4]]) {
+    const SPAN = 26, SEG = 48;
+    const path = new THREE.CatmullRomCurve3(
+      Array.from({ length: SEG + 1 }, (_, i) => toVector(lat, -SPAN + i / SEG * SPAN, 1.006)),
+    );
+    const geo = new THREE.TubeGeometry(path, SEG, 0.0032, 6, false);
+    const colors = new Float32Array(geo.attributes.position.count * 3);
+    const lime = new THREE.Color(LIME_BRIGHT);
+    for (let i = 0; i < geo.attributes.position.count; i++) {
+      const ring = Math.floor(i / 7); // radialSegments + 1
+      const k = Math.pow(ring / SEG, 2.2);
+      colors[i * 3] = lime.r * k; colors[i * 3 + 1] = lime.g * k; colors[i * 3 + 2] = lime.b * k;
+    }
+    geo.setAttribute("color", new THREE.BufferAttribute(colors, 3));
+    const holder = new THREE.Group();
+    holder.add(new THREE.Mesh(geo, new THREE.MeshBasicMaterial({
+      vertexColors: true, transparent: true, blending: THREE.AdditiveBlending, depthWrite: false,
+    })));
+    globe.add(holder);
+    streaks.push({ holder, lead });
+  }
 
   // The one real route.
   const start = toVector(c.from.lat, c.from.lon);
@@ -425,6 +515,21 @@ window.__render = (t) => {
   }
 
   rim.uniforms.uAmt.value = 0.68 + 0.14 * Math.sin(2 * Math.PI * t / cfg.LOOP_S);
+  glow.material.uniforms.uAmt.value = 0.3 + 0.1 * Math.sin(2 * Math.PI * t / cfg.LOOP_S);
+
+  // One orbit per loop.
+  const orbitA = 2 * Math.PI * t / cfg.LOOP_S;
+  satellite.position.set(Math.cos(orbitA) * 1.3, 0, Math.sin(orbitA) * 1.3);
+  satellite.rotation.y = -orbitA;
+
+  // Streaks lap their parallel once per loop, and are gone before the
+  // blend window — they turn with the planet, so they would double.
+  const streakOn = ramp(ph, [0.4, 1.0]) * (1 - ramp(ph, [7.8, 8.4]));
+  for (const s of streaks) {
+    s.holder.rotation.y = 2 * Math.PI * (t / cfg.LOOP_S) + s.lead;
+    s.holder.children[0].material.opacity = streakOn;
+    s.holder.visible = streakOn > 0.001;
+  }
 
   renderer.render(scene, camera);
   return renderer.domElement.toDataURL("image/png");
