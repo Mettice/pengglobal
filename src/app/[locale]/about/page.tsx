@@ -20,6 +20,16 @@ export async function generateMetadata({
   return pageMetadata(locale, "about", "/about");
 }
 
+/**
+ * Portraits cut to matching 4:5 frames by scripts/prepare-portraits.mjs.
+ * Names come from the catalogue; an empty name is simply not shown, so a
+ * missing one never renders as a placeholder.
+ */
+const LEADERS = [
+  { key: "ceo", src: "/images/leaders/ceo.webp", accent: "bg-lime" },
+  { key: "md", src: "/images/leaders/md.webp", accent: "bg-orange" },
+] as const;
+
 export default function AboutPage({
   params,
 }: {
@@ -32,9 +42,18 @@ export default function AboutPage({
   const tContact = useTranslations("home.contactCta");
   const tPhoto = useTranslations("photo");
 
+  const leaders = LEADERS.map((l) => ({
+    ...l,
+    name: t(`leadership.${l.key}Name`),
+    title: t(`leadership.${l.key}Title`),
+    text: t(`leadership.${l.key}Text`),
+  }));
+
   return (
     <>
-      {/* Masthead */}
+      {/* Masthead — the heading beside the people behind it. The
+          portraits rise in CSS, so they never depend on a script to be
+          seen above the fold. */}
       <section className="kin-grain bg-paper">
         <hr className="kin-rule" />
         <div className="mx-auto max-w-[1240px] px-4 sm:px-8">
@@ -44,12 +63,51 @@ export default function AboutPage({
             </span>
             <span className="kin-mono text-ink-faint">Douala · Cameroon</span>
           </div>
-          <h1 className="kin-display py-14 text-[clamp(2.4rem,8vw,5.4rem)] text-ink sm:py-20">
-            <MaskLine>{t("heading")}</MaskLine>
-          </h1>
-          <p className="kin-italic max-w-[34ch] pb-14 text-[clamp(1.2rem,3vw,2rem)] text-lime-deep sm:pb-20">
-            Holding your hands in a changing world
-          </p>
+
+          <div className="grid items-center gap-14 pb-20 pt-12 sm:pb-24 sm:pt-16 lg:grid-cols-[1.05fr_0.95fr]">
+            <div>
+              <h1 className="kin-display text-[clamp(2.4rem,7vw,5.4rem)] text-ink">
+                <MaskLine>{t("heading")}</MaskLine>
+              </h1>
+              <p className="kin-italic mt-8 max-w-[34ch] text-[clamp(1.2rem,3vw,2rem)] text-lime-deep">
+                Holding your hands in a changing world
+              </p>
+            </div>
+
+            <div className="grid grid-cols-2 gap-6 sm:gap-10">
+              {leaders.map((l, i) => (
+                <figure
+                  key={l.key}
+                  className={`kin-rise ${i === 1 ? "mt-12 sm:mt-20" : ""}`}
+                  style={{ "--rise-delay": `${0.35 + i * 0.15}s` } as React.CSSProperties}
+                >
+                  <div className="relative">
+                    <span
+                      aria-hidden
+                      className={`absolute -bottom-3 -left-3 h-full w-full ${l.accent}`}
+                    />
+                    <Image
+                      src={l.src}
+                      alt={l.name ? `${l.name}, ${l.title}` : l.title}
+                      width={800}
+                      height={1000}
+                      priority
+                      sizes="(min-width: 1024px) 260px, 45vw"
+                      className="relative block aspect-[4/5] w-full border-2 border-ink object-cover"
+                    />
+                  </div>
+                  <figcaption className="mt-6">
+                    <span className="kin-mono block text-ink-faint">{l.title}</span>
+                    {l.name && (
+                      <span className="kin-display mt-2 block text-[clamp(1.05rem,1.9vw,1.5rem)] leading-[0.95] text-ink">
+                        {l.name}
+                      </span>
+                    )}
+                  </figcaption>
+                </figure>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 
@@ -69,11 +127,36 @@ export default function AboutPage({
         </div>
       </section>
 
+      {/* Leadership */}
+      <section className="bg-paper-2 py-20 sm:py-28">
+        <div className="mx-auto max-w-[1240px] px-4 sm:px-8">
+          <Reveal>
+            <span className="kin-mono text-lime-deep">02</span>
+            <h2 className="kin-display mt-4 text-[clamp(1.7rem,4vw,2.8rem)] text-ink">
+              {t("leadership.heading")}
+            </h2>
+          </Reveal>
+          <div className="mt-12 grid gap-10 md:grid-cols-2 md:gap-14">
+            {leaders.map((l, i) => (
+              <Reveal key={l.key} delay={i * 0.08}>
+                <div className="border-t-2 border-ink pt-6">
+                  <span className="kin-mono block text-ink-faint">{l.title}</span>
+                  <h3 className="kin-display mt-3 text-[clamp(1.3rem,2.6vw,1.9rem)] leading-[0.95] text-ink">
+                    {l.name || l.title}
+                  </h3>
+                  <p className="mt-5 max-w-[52ch] leading-relaxed text-ink-soft">{l.text}</p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Value proposition, paired with the warehouse frame */}
       <section className="bg-paper py-20 sm:py-28">
         <div className="mx-auto grid max-w-[1240px] gap-12 px-4 sm:px-8 lg:grid-cols-2 lg:items-center">
           <Reveal>
-            <span className="kin-mono text-lime-deep">02</span>
+            <span className="kin-mono text-lime-deep">03</span>
             <h2 className="kin-display mt-4 text-[clamp(1.7rem,4vw,2.8rem)] text-ink">
               {t("valueProp.heading")}
             </h2>
@@ -95,38 +178,30 @@ export default function AboutPage({
         </div>
       </section>
 
-      {/* Commitment — the due-diligence promise, given its own weight */}
+      {/* Commitment. Display type carries only the short promise; the
+          detail sits beside it in sentence case, where it can be read. */}
       <section className="bg-lime py-20 sm:py-28">
-        <div className="mx-auto max-w-[1240px] px-4 sm:px-8">
+        <div className="mx-auto grid max-w-[1240px] gap-10 px-4 sm:px-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-end">
           <Reveal>
-            <span className="kin-mono text-ink/80">
-              {t("commitment.heading")}
-            </span>
-            <p className="kin-display mt-6 max-w-[20ch] text-[clamp(1.8rem,5.4vw,3.8rem)] text-ink">
+            <span className="kin-mono text-ink/80">{t("commitment.heading")}</span>
+            <h2 className="kin-display mt-6 max-w-[14ch] text-[clamp(2.2rem,5.4vw,4.2rem)] text-ink">
+              {t("commitment.headline")}
+            </h2>
+          </Reveal>
+          <Reveal delay={0.1}>
+            <p className="max-w-[44ch] text-lg leading-relaxed text-ink">
               {t("commitment.text")}
             </p>
-            <Link href="/contact" className="kin-btn mt-10">
+            <Link href="/contact" className="kin-btn mt-8">
               {tContact("button")}
             </Link>
           </Reveal>
         </div>
       </section>
 
-      {/* Registration details */}
-      <section className="bg-paper py-14">
-        <div className="mx-auto max-w-[1240px] px-4 sm:px-8">
-          <Image
-            src="/images/LOGO.jpg"
-            alt="Peng Global Holding"
-            width={260}
-            height={156}
-            className="kin-logo h-14 w-auto"
-          />
-          <p className="kin-mono mt-6 text-ink-faint">
-            {tLegal("rccm")} · {tLegal("address")}
-          </p>
-        </div>
-      </section>
+      {/* The registration strip is left out until the RCCM number is
+          supplied: it rendered "[to be supplied]" to visitors. The
+          legal notice page still carries the registration record. */}
     </>
   );
 }

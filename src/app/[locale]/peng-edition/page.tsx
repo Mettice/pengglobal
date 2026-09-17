@@ -8,6 +8,7 @@ import { routing } from "@/i18n/routing";
 import { pageMetadata } from "@/lib/seo";
 import { Link } from "@/i18n/navigation";
 import Book3D, { BOOK_FACES } from "@/components/Book3D";
+import SchoolsBand from "@/components/SchoolsBand";
 import { Reveal, Stagger, Item, MaskLine } from "@/components/motion/Kinetic";
 
 const CAPABILITY_INDEXES = [0, 1, 2, 3] as const;
@@ -161,25 +162,7 @@ export default function PengEditionPage({
       </section>
 
       {/* Schools & bookshops */}
-      <section className="bg-orange py-20 sm:py-28">
-        <div className="mx-auto max-w-[1240px] px-4 sm:px-8">
-          <Reveal>
-            <span className="kin-mono text-ink/80">{t("schools.heading")}</span>
-            <p className="kin-display mt-6 max-w-[18ch] text-[clamp(1.8rem,5.4vw,3.6rem)] text-ink">
-              {t("schools.p1")}
-            </p>
-            <p className="mt-6 max-w-[54ch] leading-relaxed text-ink/80">
-              {t("schools.p2")}
-            </p>
-            <Link
-              href={{ pathname: "/contact", query: { type: "books" } }}
-              className="kin-btn mt-10"
-            >
-              {t("schools.cta")}
-            </Link>
-          </Reveal>
-        </div>
-      </section>
+      <SchoolsBand />
     </>
   );
 }

@@ -223,12 +223,15 @@
     },
     "commitment": {
       "heading": "Our commitment",
-      "text": "We only claim what we can prove. Our partnerships are exclusive and documented, our books are on the official national list, and our growth is built on delivering for the partners we already have."
+      "headline": "We only claim what we can prove.",
+      "text": "Our partnerships are exclusive and documented, our books are on the official national list, and our growth is built on delivering for the partners we already have."
     },
     "leadership": {
       "heading": "Our Leadership Team",
+      "ceoName": "Befue Charlie-Bey",
       "ceoTitle": "Founder & Chief Executive Officer",
       "ceoText": "Befue Charlie-Bey leads the corporate direction of Peng Global Holding and the creative vision of Peng Edition. He is a published poet, playwright, and educator who has served as principal of Collège Protestant Luc Bell in Douala.",
+      "mdName": "",
       "mdTitle": "Managing Director",
       "mdText": "Co-directs the operations, international trade relationships, customs compliance, and heavy machinery logistics chains across Cameroon and the CEMAC market."
     }
@@ -255,7 +258,8 @@
     "prescribed": "Officially prescribed — Cameroon secondary school textbook list",
     "schools": {
       "heading": "For schools & bookshops",
-      "p1": "Both titles are available for school adoption and bulk orders. We supply schools and bookshops directly across Cameroon, with distribution into the wider CEMAC region.",
+      "headline": "Both titles are available for school adoption and bulk orders.",
+      "p1": "We supply schools and bookshops directly across Cameroon, with distribution into the wider CEMAC region.",
       "p2": "To place an order or discuss adoption for your school, contact us with the \"Books\" inquiry type and we will respond with pricing, availability, and delivery details.",
       "cta": "Order or ask about our books"
     },
@@ -285,6 +289,7 @@
         "description": "An anthology of poems celebrating Cameroon's heritage while building skills in literary analysis and language. Officially prescribed for Form Three."
       },
       "labels": {
+        "titlesNav": "Our titles",
         "author": "Author",
         "subject": "Subject",
         "level": "Level",

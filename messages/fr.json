@@ -223,12 +223,15 @@
     },
     "commitment": {
       "heading": "Notre engagement",
-      "text": "Nous n'affirmons que ce que nous pouvons prouver. Nos partenariats sont exclusifs et documentés, nos livres figurent sur la liste officielle nationale, et notre croissance repose sur les résultats livrés à nos partenaires actuels."
+      "headline": "Nous n'affirmons que ce que nous pouvons prouver.",
+      "text": "Nos partenariats sont exclusifs et documentés, nos livres figurent sur la liste officielle nationale, et notre croissance repose sur les résultats livrés à nos partenaires actuels."
     },
     "leadership": {
       "heading": "Notre équipe de direction",
+      "ceoName": "Befue Charlie-Bey",
       "ceoTitle": "Fondateur & Directeur Général",
       "ceoText": "Befue Charlie-Bey dirige la stratégie d'entreprise de Peng Global Holding et la vision éditoriale de Peng Edition. Poète, dramaturge et éducateur, il a également été principal du Collège Protestant Luc Bell à Douala.",
+      "mdName": "",
       "mdTitle": "Directeur des Opérations",
       "mdText": "Co-dirige les opérations, les relations commerciales internationales, la conformité douanière et les chaînes logistiques d'engins lourds au Cameroun et dans la zone CEMAC."
     }
@@ -255,7 +258,8 @@
     "prescribed": "Officiellement prescrit — liste des manuels scolaires du secondaire au Cameroun",
     "schools": {
       "heading": "Établissements scolaires & librairies",
-      "p1": "Les deux titres sont disponibles pour adoption scolaire et commandes en volume. Nous livrons directement les établissements et les librairies partout au Cameroun, avec une distribution dans la zone CEMAC.",
+      "headline": "Les deux titres sont disponibles pour adoption scolaire et commandes en volume.",
+      "p1": "Nous livrons directement les établissements et les librairies partout au Cameroun, avec une distribution dans la zone CEMAC.",
       "p2": "Pour passer commande ou discuter d'une adoption pour votre établissement, contactez-nous avec le type de demande « Livres » : nous vous répondrons avec les prix, la disponibilité et les modalités de livraison.",
       "cta": "Commander ou se renseigner"
     },
@@ -285,6 +289,7 @@
         "description": "Une anthologie de poèmes célébrant le patrimoine camerounais tout en développant l'analyse littéraire et les compétences linguistiques. Officiellement prescrit pour la Form Three."
       },
       "labels": {
+        "titlesNav": "Nos titres",
         "author": "Auteur",
         "subject": "Matière",
         "level": "Niveau",
