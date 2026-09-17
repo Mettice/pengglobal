@@ -33,23 +33,20 @@ export default function GroupMap() {
     <div className="relative">
       {/* The holding */}
       <div
-        className="kin-rise flex items-center gap-5 border-2 border-ink bg-paper px-5 py-4 sm:px-6 sm:py-5"
+        className="kin-rise border-2 border-ink bg-paper px-5 py-4 sm:px-6 sm:py-5"
         style={rise(0.25)}
       >
+        <span className="kin-mono block text-ink-faint">{t("holding")}</span>
+        {/* The full lockup, tagline included — at this size it reads. */}
         <Image
-          src="/images/partners/peng-p.png"
-          alt=""
-          width={241}
-          height={240}
+          src="/images/brand/peng-global.png"
+          alt="Peng Global Holding"
+          width={959}
+          height={218}
           priority
-          className="h-14 w-14 shrink-0 sm:h-16 sm:w-16"
+          sizes="(min-width: 1024px) 420px, 90vw"
+          className="mt-3 h-auto w-full max-w-[420px]"
         />
-        <div>
-          <span className="kin-mono block text-ink-faint">{t("holding")}</span>
-          <span className="kin-display mt-1.5 block text-[clamp(1.25rem,2.2vw,1.75rem)] leading-[0.95] text-ink">
-            Peng Global Holding
-          </span>
-        </div>
       </div>
 
       <div className="relative grid grid-cols-[38%_58%] justify-between pt-14">

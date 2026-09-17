@@ -76,25 +76,23 @@ export default function Header() {
         className="mx-auto flex max-w-[1240px] items-center justify-between gap-4 px-4 sm:px-8"
         style={{ height: HEADER_HEIGHT }}
       >
-        {/* The supplied wordmark is green type on white. On paper, multiply
-            drops the white so it prints onto the ground; over the hero it
-            needs its own paper tile to stay legible. The tile's padding is
-            present in both states so the logo never shifts. */}
+        {/* The brand lockup, cut to real transparency by
+            scripts/prepare-logos.mjs — the green reads on paper and over
+            the hero alike, so it needs no tile in either state. */}
         <Link
           href="/"
-          className={`flex items-center transition-colors duration-300 ${
-            isHome ? "px-2 py-1" : ""
-          } ${dark ? "bg-paper" : ""}`}
+          className="flex shrink-0 items-center"
           onClick={() => setOpen(false)}
           aria-label="Peng Global Holding"
         >
           <Image
-            src="/images/LOGO.jpg"
+            src="/images/brand/peng-global-compact.png"
             alt="Peng Global Holding"
-            width={200}
-            height={120}
+            width={959}
+            height={218}
             priority
-            className="kin-logo h-11 w-auto"
+            sizes="200px"
+            className="h-9 w-auto sm:h-10"
           />
         </Link>
 
