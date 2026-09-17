@@ -9,6 +9,8 @@ import { Link } from "@/i18n/navigation";
 import ServiceCards from "@/components/ServiceCards";
 import { Reveal, MaskLine } from "@/components/motion/Kinetic";
 import BrandPhoto from "@/components/BrandPhoto";
+import ScrollSequence from "@/components/ScrollSequence";
+import sequences from "@/lib/sequences.json";
 
 export async function generateMetadata({
   params,
@@ -77,6 +79,19 @@ export default function ServicesPage({
           </div>
         </div>
       </section>
+
+      {/* The route, drawn. Sits immediately before the PENSAN case so the
+          line the reader just watched being drawn resolves into the one
+          worked example that proves it. */}
+      <ScrollSequence
+        name="route"
+        frames={sequences.route.frames}
+        width={sequences.route.width}
+        height={sequences.route.height}
+        eyebrow={t("route.eyebrow")}
+        heading={t("route.heading")}
+        beats={[t("route.beat1"), t("route.beat2"), t("route.beat3")]}
+      />
 
       {/* PENSAN worked example — the anchor proof, on the holding's green */}
       <section className="kin-on-ink py-20 sm:py-28">

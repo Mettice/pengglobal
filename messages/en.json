@@ -77,7 +77,8 @@
     },
     "reach": {
       "eyebrow": "How the route works",
-      "heading": "From an international factory to a Cameroonian shelf",
+      "heading1": "From an international factory",
+      "heading2": "to a Cameroonian shelf",
       "body": "Market entry into Cameroon and CEMAC fails on the details: regulation, customs, and last-mile distribution. We take responsibility for the entire route, so a foreign manufacturer deals with one accountable partner instead of six.",
       "origin": "International manufacturer",
       "destination": "Cameroon & CEMAC",
@@ -151,7 +152,7 @@
     },
     "slots": {
       "partnersLabel": "Partners & brands",
-      "partnersNote": "Partner marks are added here once supplied and verified.",
+      "partnersNote": "Brands we work with across Cameroon and the CEMAC region.",
       "pending": "Awaiting client asset",
       "voicesLabel": "Client voices",
       "voicesHeading": "What partners say",
@@ -174,6 +175,13 @@
     "heading": "Services",
     "intro": "Four service lines, built on real operations in Cameroon and the CEMAC region.",
     "inPractice": "In practice",
+    "route": {
+      "eyebrow": "The route",
+      "heading": "One line, drawn end to end",
+      "beat1": "A manufacturer signs a single representation agreement.",
+      "beat2": "Import, clearance and regulatory compliance are handled in-house.",
+      "beat3": "Product reaches retail across Cameroon and the CEMAC region."
+    },
     "representation": {
       "title": "Brand Representation & Distribution",
       "description": "Exclusive representation of international brands, from import and regulatory compliance to retail distribution across Cameroon and CEMAC.",
@@ -203,6 +211,11 @@
   },
   "about": {
     "heading": "About Peng Global Holding",
+    "group": {
+      "holding": "The holding",
+      "subsidiary": "Publishing subsidiary",
+      "brands": "Brands we work with"
+    },
     "story": {
       "heading": "Who we are",
       "p1": "Peng Global Holding is a Cameroonian company built around one job: giving international brands a dependable route into Cameroon and the CEMAC region. We represent, import, and distribute — and we take responsibility for the whole chain, from regulatory compliance to the point of sale.",
@@ -215,12 +228,15 @@
     },
     "commitment": {
       "heading": "Our commitment",
-      "text": "We only claim what we can prove. Our partnerships are exclusive and documented, our books are on the official national list, and our growth is built on delivering for the partners we already have."
+      "headline": "We only claim what we can prove.",
+      "text": "Our partnerships are exclusive and documented, our books are on the official national list, and our growth is built on delivering for the partners we already have."
     },
     "leadership": {
       "heading": "Our Leadership Team",
-      "ceoTitle": "Founder & Chief Executive Officer",
-      "ceoText": "Befue Charlie-Bey leads the corporate direction of Peng Global Holding and the creative vision of Peng Edition. He is a published poet, playwright, and educator who has served as principal of Collège Protestant Luc Bell in Douala.",
+      "ceoName": "Che Gilbert Peng",
+      "ceoTitle": "Chief Executive Officer",
+      "ceoText": "Leads the corporate direction of Peng Global Holding and its subsidiaries, including the publishing house Peng Edition.",
+      "mdName": "Natasha Peng",
       "mdTitle": "Managing Director",
       "mdText": "Co-directs the operations, international trade relationships, customs compliance, and heavy machinery logistics chains across Cameroon and the CEMAC market."
     }
@@ -247,14 +263,15 @@
     "prescribed": "Officially prescribed — Cameroon secondary school textbook list",
     "schools": {
       "heading": "For schools & bookshops",
-      "p1": "Both titles are available for school adoption and bulk orders. We supply schools and bookshops directly across Cameroon, with distribution into the wider CEMAC region.",
+      "headline": "Both titles are available for school adoption and bulk orders.",
+      "p1": "We supply schools and bookshops directly across Cameroon, with distribution into the wider CEMAC region.",
       "p2": "To place an order or discuss adoption for your school, contact us with the \"Books\" inquiry type and we will respond with pricing, availability, and delivery details.",
       "cta": "Order or ask about our books"
     },
     "authorHeading": "The author",
     "author": {
       "name": "Charlie-Bey",
-      "bio": "Born in the South West Region of Cameroon, Befue Charlie-Bey studied Literature in English and Performing and Visual Arts at the University of Buea, graduating top of his class. A poet, novelist, and playwright, he has taught English language and literature at secondary and high school level and currently serves as principal of Collège Protestant Luc Bell in Douala."
+      "bio": "Born in the South West Region of Cameroon, Befue Charlie-Bey studied Literature in English and Performing and Visual Arts at the University of Buea, graduating top of his class. A poet, novelist, and playwright, he has taught English language and literature at secondary and high school level. He is Creative Director and CEO of NAN MEDIA Ltd, a book publishing, film production and audiovisual content firm based in Douala, and currently serves as principal of Collège Protestant Luc Bell."
     },
     "books": {
       "fireside": {
@@ -264,7 +281,8 @@
         "level": "Form One",
         "isbn": "978-9956-39-300-8",
         "price": "2,000 FCFA",
-        "description": "A collection of nine tales drawn from the grassfield, coastal, and forest regions of Cameroon, written in accessible English. Officially prescribed on the Cameroon secondary school textbook list."
+        "description": "A collection of nine tales drawn from the grassfield, coastal, and forest regions of Cameroon, written in accessible English. Officially prescribed on the Cameroon secondary school textbook list.",
+        "blurb": "This collection of nine tales drawn from the grassfield, coastal and forest regions of Cameroon and well-crafted in simple English is nothing less than a bag of wit and the transmission of the African experience of yore. To the African, the tale is a vessel of wisdom and everyone is bound to drink from it for morals and spiritual upliftment."
       },
       "poems": {
         "title": "My Cameroon and Other Poems",
@@ -276,6 +294,7 @@
         "description": "An anthology of poems celebrating Cameroon's heritage while building skills in literary analysis and language. Officially prescribed for Form Three."
       },
       "labels": {
+        "titlesNav": "Our titles",
         "author": "Author",
         "subject": "Subject",
         "level": "Level",

@@ -48,7 +48,7 @@ export default function Footer() {
             <h2 className="kin-mono text-paper/50">{t("contactHeading")}</h2>
             <ul className="mt-4 space-y-3 text-paper/85">
               <li>
-                <span className="kin-mono block text-paper/40">
+                <span className="kin-mono block text-paper/55">
                   {tContact("emailLabel")}
                 </span>
                 <a href={`mailto:${tContact("email")}`} className="kin-link">
@@ -56,13 +56,13 @@ export default function Footer() {
                 </a>
               </li>
               <li>
-                <span className="kin-mono block text-paper/40">
+                <span className="kin-mono block text-paper/55">
                   {tContact("phoneLabel")}
                 </span>
                 {tContact("phone")}
               </li>
               <li>
-                <span className="kin-mono block text-paper/40">
+                <span className="kin-mono block text-paper/55">
                   {tContact("addressLabel")}
                 </span>
                 {tContact("address")}
@@ -87,7 +87,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <p className="kin-mono border-t border-paper/20 py-6 text-paper/40">
+        <p className="kin-mono border-t border-paper/20 py-6 text-paper/55">
           {t("copyright", { year: new Date().getFullYear() })}
         </p>
       </div>

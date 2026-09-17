@@ -77,7 +77,8 @@
     },
     "reach": {
       "eyebrow": "Comment fonctionne le parcours",
-      "heading": "De l'usine internationale au rayon camerounais",
+      "heading1": "De l'usine internationale",
+      "heading2": "au rayon camerounais",
       "body": "L'entrée sur le marché camerounais et CEMAC échoue sur les détails : réglementation, douanes et distribution du dernier kilomètre. Nous prenons en charge l'ensemble du parcours : un fabricant étranger traite avec un seul partenaire responsable, et non six.",
       "origin": "Fabricant international",
       "destination": "Cameroun & CEMAC",
@@ -151,7 +152,7 @@
     },
     "slots": {
       "partnersLabel": "Partenaires & marques",
-      "partnersNote": "Les logos des partenaires seront ajoutés ici une fois fournis et vérifiés.",
+      "partnersNote": "Les marques avec lesquelles nous travaillons au Cameroun et dans la zone CEMAC.",
       "pending": "En attente du client",
       "voicesLabel": "Témoignages",
       "voicesHeading": "Ce que disent nos partenaires",
@@ -174,6 +175,13 @@
     "heading": "Services",
     "intro": "Quatre métiers, fondés sur des opérations réelles au Cameroun et dans la zone CEMAC.",
     "inPractice": "Exemple concret",
+    "route": {
+      "eyebrow": "Le parcours",
+      "heading": "Une seule ligne, tracée d'un bout à l'autre",
+      "beat1": "Un fabricant signe un unique contrat de représentation.",
+      "beat2": "Importation, dédouanement et conformité réglementaire gérés en interne.",
+      "beat3": "Le produit atteint le commerce de détail au Cameroun et dans la zone CEMAC."
+    },
     "representation": {
       "title": "Représentation de marques & distribution",
       "description": "Représentation exclusive de marques internationales : importation, conformité réglementaire et distribution au Cameroun et dans la zone CEMAC.",
@@ -203,6 +211,11 @@
   },
   "about": {
     "heading": "À propos de Peng Global Holding",
+    "group": {
+      "holding": "La holding",
+      "subsidiary": "Filiale d'édition",
+      "brands": "Marques partenaires"
+    },
     "story": {
       "heading": "Qui sommes-nous",
       "p1": "Peng Global Holding est une société camerounaise construite autour d'une mission : offrir aux marques internationales un accès fiable au Cameroun et à la zone CEMAC. Nous représentons, importons et distribuons — et nous assumons la responsabilité de toute la chaîne, de la conformité réglementaire jusqu'au point de vente.",
@@ -215,13 +228,16 @@
     },
     "commitment": {
       "heading": "Notre engagement",
-      "text": "Nous n'affirmons que ce que nous pouvons prouver. Nos partenariats sont exclusifs et documentés, nos livres figurent sur la liste officielle nationale, et notre croissance repose sur les résultats livrés à nos partenaires actuels."
+      "headline": "Nous n'affirmons que ce que nous pouvons prouver.",
+      "text": "Nos partenariats sont exclusifs et documentés, nos livres figurent sur la liste officielle nationale, et notre croissance repose sur les résultats livrés à nos partenaires actuels."
     },
     "leadership": {
       "heading": "Notre équipe de direction",
-      "ceoTitle": "Fondateur & Directeur Général",
-      "ceoText": "Befue Charlie-Bey dirige la stratégie d'entreprise de Peng Global Holding et la vision éditoriale de Peng Edition. Poète, dramaturge et éducateur, il a également été principal du Collège Protestant Luc Bell à Douala.",
-      "mdTitle": "Directeur des Opérations",
+      "ceoName": "Che Gilbert Peng",
+      "ceoTitle": "Directeur Général",
+      "ceoText": "Dirige la stratégie de Peng Global Holding et de ses filiales, dont la maison d'édition Peng Edition.",
+      "mdName": "Natasha Peng",
+      "mdTitle": "Directrice des Opérations",
       "mdText": "Co-dirige les opérations, les relations commerciales internationales, la conformité douanière et les chaînes logistiques d'engins lourds au Cameroun et dans la zone CEMAC."
     }
   },
@@ -247,14 +263,15 @@
     "prescribed": "Officiellement prescrit — liste des manuels scolaires du secondaire au Cameroun",
     "schools": {
       "heading": "Établissements scolaires & librairies",
-      "p1": "Les deux titres sont disponibles pour adoption scolaire et commandes en volume. Nous livrons directement les établissements et les librairies partout au Cameroun, avec une distribution dans la zone CEMAC.",
+      "headline": "Les deux titres sont disponibles pour adoption scolaire et commandes en volume.",
+      "p1": "Nous livrons directement les établissements et les librairies partout au Cameroun, avec une distribution dans la zone CEMAC.",
       "p2": "Pour passer commande ou discuter d'une adoption pour votre établissement, contactez-nous avec le type de demande « Livres » : nous vous répondrons avec les prix, la disponibilité et les modalités de livraison.",
       "cta": "Commander ou se renseigner"
     },
     "authorHeading": "L'auteur",
     "author": {
       "name": "Charlie-Bey",
-      "bio": "Né dans la région du Sud-Ouest du Cameroun, Befue Charlie-Bey a étudié la littérature anglaise ainsi que les arts du spectacle et les arts visuels à l'Université de Buea, dont il est sorti major de sa promotion. Poète, romancier et dramaturge, il a enseigné la langue et la littérature anglaises au niveau secondaire et est actuellement principal du Collège Protestant Luc Bell à Douala."
+      "bio": "Né dans la région du Sud-Ouest du Cameroun, Befue Charlie-Bey a étudié la littérature anglaise ainsi que les arts du spectacle et les arts visuels à l'Université de Buea, dont il est sorti major de sa promotion. Poète, romancier et dramaturge, il a enseigné la langue et la littérature anglaises au niveau secondaire. Il est directeur de la création et PDG de NAN MEDIA Ltd, maison d'édition et société de production audiovisuelle basée à Douala, et il est actuellement principal du Collège Protestant Luc Bell."
     },
     "books": {
       "fireside": {
@@ -264,7 +281,8 @@
         "level": "Form One (6e/5e)",
         "isbn": "978-9956-39-300-8",
         "price": "2 000 FCFA",
-        "description": "Un recueil de neuf contes issus des régions des Grassfields, du littoral et de la forêt du Cameroun, rédigés dans un anglais accessible. Manuel officiellement prescrit sur la liste des manuels scolaires du secondaire au Cameroun."
+        "description": "Un recueil de neuf contes issus des régions des Grassfields, du littoral et de la forêt du Cameroun, rédigés dans un anglais accessible. Manuel officiellement prescrit sur la liste des manuels scolaires du secondaire au Cameroun.",
+        "blurb": "Ce recueil de neuf contes issus des régions des Grassfields, du littoral et de la forêt du Cameroun, écrits dans un anglais simple et soigné, n'est rien de moins qu'un trésor d'esprit et la transmission de l'expérience africaine d'autrefois. Pour l'Africain, le conte est un vase de sagesse auquel chacun est appelé à puiser, pour la morale et pour l'élévation spirituelle."
       },
       "poems": {
         "title": "My Cameroon and Other Poems",
@@ -276,6 +294,7 @@
         "description": "Une anthologie de poèmes célébrant le patrimoine camerounais tout en développant l'analyse littéraire et les compétences linguistiques. Officiellement prescrit pour la Form Three."
       },
       "labels": {
+        "titlesNav": "Nos titres",
         "author": "Auteur",
         "subject": "Matière",
         "level": "Niveau",

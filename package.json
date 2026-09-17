@@ -6,19 +6,17 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "verify:scroll": "node scripts/verify-scroll.mjs"
   },
   "dependencies": {
-    "@react-three/drei": "^10.7.8",
-    "@react-three/fiber": "^9.7.0",
     "lenis": "^1.1.20",
     "motion": "^13.0.0",
     "next": "16.2.10",
     "next-intl": "^4.13.1",
     "react": "19.2.4",
     "react-dom": "19.2.4",
-    "resend": "^6.17.2",
-    "three": "^0.185.1"
+    "resend": "^6.17.2"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
@@ -27,7 +25,11 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.2.10",
+    "playwright": "^1.63.0",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "three": "^0.185.1",
+    "topojson-client": "^3.1.0",
+    "typescript": "^5",
+    "world-atlas": "^2.0.2"
   }
 }

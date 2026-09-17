@@ -18,14 +18,19 @@
   --color-ink: #0b0b0b;
   --color-ink-2: #1a1a18;
   --color-ink-soft: #4a4741;
-  --color-ink-faint: #6d6a63;
+  /* Darkened from #6d6a63, which cleared 4.5:1 on --color-paper but only
+     reached 4.36 on --color-paper-2. Labels set in it are 0.7rem mono,
+     i.e. exactly the size that cannot afford to be marginal. */
+  --color-ink-faint: #68655e;
 
   /* Colour is rationed and every hue is a real brand asset:
      green = Peng Global Holding, orange = Peng Edition, navy = PENSAN. */
   --color-orange: #f97316; /* Peng Edition */
   --color-orange-deep: #c2410c;
   --color-lime: #78be20; /* Peng Global Holding */
-  --color-lime-deep: #4d7d13;
+  /* Darkened from #4d7d13 (4.41:1 on paper, 3.99 on paper-2), which
+     failed AA wherever it set small mono labels. */
+  --color-lime-deep: #446e11;
   --color-lime-bright: #8fd62c;
   --color-pensan: #2a3b74; /* PENSAN Pantone Blue 072C */
 
@@ -46,6 +51,18 @@ body {
   background: var(--color-orange);
   color: var(--color-ink);
 }
+
+/* Everything below is a component rule, and lives in Tailwind's
+   components layer so that a utility on the same element wins.
+
+   Tailwind 4 emits utilities inside @layer utilities. Rules outside any
+   layer beat every layered rule regardless of specificity or order, so
+   while these sat unlayered, any utility that touched a property they
+   set was silently ignored: `text-paper` beside `.kin-chip` rendered
+   ink on ink, `normal-case` beside `.kin-display` still shouted, and
+   `mt-4` beside `.kin-rule` did nothing. Layer order is
+   theme < base < components < utilities. */
+@layer components {
 
 /* ---------- Display type: the graphic element -------------------- */
 .kin-display {
@@ -105,6 +122,20 @@ body {
   font-weight: 500;
   background: transparent;
   color: var(--color-ink);
+}
+
+/* On ink grounds the plain chip inverts, exactly as .kin-btn does.
+   This has to live here rather than as utility classes on the element:
+   Tailwind 4 emits utilities inside @layer utilities, while this file's
+   kin-* rules are unlayered, and unlayered rules beat layered ones
+   whatever their specificity or order. So a `text-paper` next to
+   `.kin-chip` was silently ignored, rendering ink text on an ink
+   ground — invisible badges.
+   The :not() keeps the coloured variants — lime, orange, pensan, fill —
+   carrying their own foreground. */
+.kin-on-ink .kin-chip:not([class*="kin-chip--"]) {
+  border-color: color-mix(in oklab, var(--color-paper) 40%, transparent);
+  color: var(--color-paper);
 }
 
 .kin-chip--fill {
@@ -306,14 +337,308 @@ body {
     calc(var(--mark-w) * -0.2736); /* 333/614, 168/614 */
 }
 
-/* Book covers are supplied as wraparound spreads (back | spine | front).
-   A portrait frame plus right-anchored cover crops to the front board. */
-.book-front {
-  aspect-ratio: 71 / 100;
-  object-fit: cover;
-  object-position: right center;
+/* ---------- The books, as objects -------------------------------- */
+/* Peng Edition's two titles are the only physical products in the group,
+   and the only proof that needs no caveat. They are built as real solids
+   rather than pictures of covers: the spine face is the actual spine
+   artwork cut from the print spread, so the object is the book, not an
+   impression of one.
+   Geometry derives from --board-w so a book scales as a single unit. */
+.book3d-scene {
+  perspective: 1600px;
+  perspective-origin: 50% 40%;
+  display: inline-block;
+}
+
+.book3d {
+  --board-w: 220px;
+  --board-h: calc(var(--board-w) / 0.67); /* measured 2:3 trade paperback */
+  --thickness: calc(var(--board-w) * 0.072); /* measured off the spine cut */
+  /* Positive rotateY brings the LEFT edge forward, which is the spine.
+     Negative would present the fore-edge and hide the one face carrying
+     the title artwork. */
+  --turn: 26deg; /* resting angle: enough to read the spine */
+  --lift: 0px;
+
+  position: relative;
+  display: block;
+  width: var(--board-w);
+  height: var(--board-h);
+  transform-style: preserve-3d;
+  transform: translateY(var(--lift)) rotateY(var(--turn));
+  transition: transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* No filter, opacity, mask or clip-path may be set on .book3d. They are
+   grouping properties: any one of them forces transform-style back to
+   flat, which collapses the spine to a hairline and leaves a rotated
+   picture of a cover instead of a book. Depth comes from .book3d-shadow
+   and the per-face shading instead. */
+
+/* Turning toward the reader on hover/focus reads as picking the book up.
+   Focus-within covers keyboard users, since the link is inside. */
+.book3d-scene:hover .book3d,
+.book3d-scene:focus-within .book3d {
+  --turn: 7deg;
+  --lift: -12px;
+}
+
+.book3d__face {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  backface-visibility: hidden;
+  /* Cast from the boards themselves — the object has no filter, so this
+     is what gives each face weight against the one behind it. */
+  box-shadow: 0 14px 26px rgb(0 0 0 / 0.38);
+}
+
+.book3d__face img {
   display: block;
   width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.book3d__front {
+  transform: translateZ(calc(var(--thickness) / 2));
+}
+
+/* A board curves into its spine, so the hinge edge sits in shadow and the
+   outer edge catches the light. Without this the front reads as a flat
+   card floating in front of the spine rather than joined to it. */
+.book3d__front::after,
+.book3d__back::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    to right,
+    rgb(0 0 0 / 0.42) 0%,
+    rgb(0 0 0 / 0.12) 4%,
+    rgb(0 0 0 / 0) 14%,
+    rgb(0 0 0 / 0) 88%,
+    rgb(255 255 255 / 0.1) 100%
+  );
+}
+
+/* The back board's hinge is on its other side once it is flipped. */
+.book3d__back::after {
+  scale: -1 1;
+}
+
+.book3d__back {
+  transform: rotateY(180deg) translateZ(calc(var(--thickness) / 2));
+}
+
+/* The real spine, hinged at the left board edge. */
+.book3d__spine {
+  width: var(--thickness);
+  left: 0;
+  transform-origin: left center;
+  transform: rotateY(-90deg) translateX(calc(var(--thickness) / -2));
+}
+
+/* Fore-edge: the paper block. Ruled with a repeating gradient because
+   page edges catch light in bands, and a flat fill reads as plastic. */
+.book3d__pages {
+  width: var(--thickness);
+  left: auto;
+  right: 0;
+  transform-origin: right center;
+  transform: rotateY(90deg) translateX(calc(var(--thickness) / 2));
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      #efe9dc 0 1px,
+      #cfc7b6 1px 2px
+    ),
+    #e6dfd0;
+}
+
+/* Head and tail of the paper block, so the solid closes at top-down and
+   bottom-up viewing angles. */
+.book3d__edge {
+  left: 0;
+  right: 0;
+  height: var(--thickness);
+  background: linear-gradient(to right, #d8d0bf, #f1ece1 40%, #cfc7b6);
+}
+
+.book3d__head {
+  top: 0;
+  transform-origin: center top;
+  transform: rotateX(90deg) translateZ(calc(var(--thickness) / -2));
+}
+
+.book3d__tail {
+  top: auto;
+  bottom: 0;
+  transform-origin: center bottom;
+  transform: rotateX(-90deg) translateZ(calc(var(--thickness) / -2));
+}
+
+/* Contact shadow on the ground plane, separate from the object so it can
+   spread as the book lifts rather than travelling with it. */
+.book3d-shadow {
+  position: absolute;
+  left: 50%;
+  bottom: -22px;
+  width: 84%;
+  height: 20px;
+  translate: -50% 0;
+  border-radius: 50%;
+  background: radial-gradient(
+    ellipse at center,
+    rgb(0 0 0 / 0.5),
+    transparent 70%
+  );
+  transition:
+    width 700ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 700ms ease;
+}
+
+.book3d-scene:hover .book3d-shadow,
+.book3d-scene:focus-within .book3d-shadow {
+  width: 96%;
+  opacity: 0.65;
+}
+
+/* Idle drift, so the shelf breathes instead of sitting still. Applied to
+   a wrapper rather than .book3d itself, so the hover transform and the
+   idle animation never fight over the same property.
+   Motion-safe only: this runs forever, which is exactly the kind of
+   movement prefers-reduced-motion exists to stop. */
+@media (prefers-reduced-motion: no-preference) {
+  .book3d-float {
+    animation: book3d-drift 9s ease-in-out infinite;
+    animation-delay: var(--drift-delay, 0s);
+  }
+}
+
+@keyframes book3d-drift {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-10px) rotate(-0.6deg);
+  }
+}
+
+/* Reduced motion keeps the affordance but drops the animation: the book
+   still turns toward you on hover, it just arrives rather than travels.
+   Removing the turn entirely would cost the only cue that the object is
+   interactive. */
+@media (prefers-reduced-motion: reduce) {
+  .book3d,
+  .book3d-shadow {
+    transition-duration: 1ms;
+  }
+}
+
+/* ---------- The shelf -------------------------------------------- */
+/* A long row of the books standing at a steep angle, receding up and to
+   the right, where the one under the pointer turns to face the reader
+   and comes forward. Proportions measured off the reference: covers turn
+   ~58°, each book steps 0.4 of a board width, the far end sits a little
+   higher and smaller.
+
+   The row shares one perspective, so every book recedes toward the same
+   point. Slots keep preserve-3d so each solid is projected by that shared
+   camera rather than flattened into its slot. Overlap is ordered by
+   z-index — nearer books, to the left, paint on top.
+
+   Slots ignore the pointer and their faces take it: a slot's own box is
+   the unturned board, far wider than the turned book on screen, and
+   would steal the hover from its right-hand neighbour. */
+.shelf {
+  --shelf-w: clamp(140px, 18.5vw, 290px);
+  --step: calc(var(--shelf-w) * 0.4);
+  --rise: calc(var(--shelf-w) * -0.034);
+  --depth: -18px;
+  position: absolute;
+  inset: 0;
+  perspective: 1500px;
+  perspective-origin: 62% 0%;
+}
+
+.shelf-slot {
+  --pop: 0;
+  position: absolute;
+  left: calc(var(--shelf-w) * -0.45 + var(--i) * var(--step));
+  bottom: calc(var(--shelf-w) * -0.3);
+  z-index: calc(40 - var(--i));
+  transform-style: preserve-3d;
+  transform: translate3d(
+    0,
+    calc(var(--i) * var(--rise) - var(--pop) * var(--shelf-w) * 0.14),
+    calc(var(--i) * var(--depth) + var(--pop) * var(--shelf-w) * 0.95)
+  );
+  transition: transform 560ms cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
+}
+
+.shelf-slot .book3d {
+  --board-w: var(--shelf-w);
+  --turn: -58deg;
+  transition-duration: 560ms;
+}
+
+.shelf-slot .book3d__face {
+  pointer-events: auto;
+}
+
+/* Paper block for a face that is not the fore-edge (a book turned
+   around shows its pages on the other side). */
+.book3d__paper {
+  background:
+    repeating-linear-gradient(to bottom, #efe9dc 0 1px, #cfc7b6 1px 2px),
+    #e6dfd0;
+}
+
+/* A back cover shown as the face: its hinge is on the right. */
+.book3d__front--flip::after {
+  scale: -1 1;
+}
+
+/* A title pill is hovered: every copy of that title leans out a little. */
+.shelf-slot[data-lit] {
+  --pop: 0.4;
+}
+
+.shelf-slot[data-lit] .book3d {
+  --turn: -30deg;
+}
+
+/* The one book in focus: whichever is under the pointer, or the idle
+   spotlight while the pointer is elsewhere. */
+.shelf:not(:hover) .shelf-slot[data-active],
+.shelf-slot:hover {
+  --pop: 1;
+  z-index: 60;
+}
+
+.shelf:not(:hover) .shelf-slot[data-active] .book3d,
+.shelf-slot:hover .book3d {
+  --turn: 0deg;
+}
+
+/* Phones see only the near end of the row; skip rendering the rest. */
+@media (max-width: 767px) {
+  .shelf-slot[data-far] {
+    display: none;
+  }
+}
+
+/* Both selectors: .shelf-slot .book3d outranks the plain .book3d rule
+   above, so it needs its own reduced-motion override. */
+@media (prefers-reduced-motion: reduce) {
+  .shelf-slot,
+  .shelf-slot .book3d {
+    transition-duration: 1ms;
+  }
 }
 
 /* ---------- Duotone photography --------------------------------- */
@@ -385,6 +710,30 @@ body {
   }
 }
 
+/* ---------- Scroll-scrubbed frame sequence ----------------------- */
+/* The track's height is set in CSS, not JavaScript, so the layout is
+   final at first paint. Deciding it from the enhancement hook would mean
+   the section resized from auto to 260vh after hydration — a large shift
+   in the middle of the page.
+   The query mirrors useEnhanced(): desktop width, a real pointer, and no
+   stated preference against motion. Anything else gets the ordinary
+   stacked block with a single finished frame. */
+.seq-track {
+  position: relative;
+}
+
+@media (min-width: 1024px) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .seq-track {
+    height: 260vh;
+  }
+
+  .seq-stage {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+  }
+}
+
 /* ---------- Green accents --------------------------------------- */
 /* The holding's own green, used to mark the parent brand inside
    otherwise black-and-orange (Peng Edition) territory. */
@@ -435,3 +784,185 @@ body {
   transform: scaleX(1);
   transform-origin: left;
 }
+
+/* ---------- Entrance: rise ---------------------------------------- */
+/* The companion to .kin-mask for blocks rather than lines. Same rule:
+   the default state is finished and visible, and the rise only applies
+   where motion is welcome — so copy and calls to action never depend on
+   a script completing. */
+@media (prefers-reduced-motion: no-preference) {
+  .kin-rise {
+    animation: kin-rise 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation-delay: var(--rise-delay, 0s);
+  }
+}
+
+@keyframes kin-rise {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ---------- Drawn rules ------------------------------------------- */
+/* Connector lines that draw themselves in, for diagrams. Default state
+   is drawn; the draw only runs where motion is welcome. */
+@media (prefers-reduced-motion: no-preference) {
+  .kin-draw-x,
+  .kin-draw-y {
+    animation-duration: 0.7s;
+    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+    animation-fill-mode: both;
+    animation-delay: var(--draw-delay, 0s);
+  }
+
+  .kin-draw-x {
+    transform-origin: center;
+    animation-name: kin-draw-x;
+  }
+
+  .kin-draw-y {
+    transform-origin: top;
+    animation-name: kin-draw-y;
+  }
+}
+
+@keyframes kin-draw-x {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: none;
+  }
+}
+
+@keyframes kin-draw-y {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: none;
+  }
+}
+
+/* ---------- Scroll cue -------------------------------------------- */
+/* A 1px line that draws down and fades. scaleY rather than height, so
+   the loop never triggers layout. */
+@media (prefers-reduced-motion: no-preference) {
+  .kin-scroll-cue {
+    transform-origin: top;
+    animation: kin-scroll-cue 1.8s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+  }
+}
+
+@keyframes kin-scroll-cue {
+  0% {
+    transform: scaleY(0);
+    opacity: 1;
+  }
+  60% {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scaleY(1);
+    opacity: 0;
+  }
+}
+
+/* ---------- Scroll-armed entrance --------------------------------- */
+/* A choreographed entrance for sections below the fold, driven by
+   useEntrance(). The element's data-entrance attribute is the state:
+
+     absent  the finished design — SSR, no JavaScript, reduced motion,
+             or a section the reader has already scrolled past
+     armed   cast offstage; only ever set while the section is below the
+             viewport, so nobody sees copy disappear
+     go      playing; removed once the last piece lands, so these rules
+             stop matching and the page is left as plain static design
+
+   Four behaviours:
+     .ent-mask > span   line rises out of a mask — display lines only
+     .ent-focus         lifts while a blur settles — supporting copy
+     .ent-settle        rises with a slight scale — buttons
+     .ent-lift          rises — labels
+   Per-element delay comes from --d. */
+.ent-mask {
+  display: block;
+  overflow: hidden;
+}
+
+.ent-mask > span {
+  display: block;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  [data-entrance="armed"] .ent-mask > span {
+    transform: translateY(105%);
+  }
+
+  [data-entrance="armed"] :is(.ent-lift, .ent-focus, .ent-settle) {
+    opacity: 0;
+  }
+
+  [data-entrance="go"] .ent-mask > span {
+    animation: kin-line-rise 1.05s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: var(--d, 0s);
+  }
+
+  [data-entrance="go"] .ent-focus {
+    animation: ent-focus 0.85s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: var(--d, 0s);
+  }
+
+  [data-entrance="go"] .ent-settle {
+    animation: ent-settle 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: var(--d, 0s);
+  }
+
+  [data-entrance="go"] .ent-lift {
+    animation: ent-lift 0.6s cubic-bezier(0.25, 0.8, 0.3, 1) both;
+    animation-delay: var(--d, 0s);
+  }
+}
+
+@keyframes ent-focus {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: blur(0);
+  }
+}
+
+@keyframes ent-settle {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.972);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes ent-lift {
+  from {
+    opacity: 0;
+    transform: translateY(9px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+} /* @layer components */

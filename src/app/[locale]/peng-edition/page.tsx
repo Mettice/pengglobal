@@ -7,7 +7,8 @@ import { setRequestLocale } from "next-intl/server";
 import { routing } from "@/i18n/routing";
 import { pageMetadata } from "@/lib/seo";
 import { Link } from "@/i18n/navigation";
-import { BOOKS } from "@/components/BookCard";
+import Book3D, { BOOK_FACES } from "@/components/Book3D";
+import SchoolsBand from "@/components/SchoolsBand";
 import { Reveal, Stagger, Item, MaskLine } from "@/components/motion/Kinetic";
 
 const CAPABILITY_INDEXES = [0, 1, 2, 3] as const;
@@ -30,7 +31,6 @@ export default function PengEditionPage({
   const { locale } = use(params);
   setRequestLocale(locale);
   const t = useTranslations("pengEdition");
-  const tBooks = useTranslations("pengEdition.books");
 
   return (
     <>
@@ -77,31 +77,20 @@ export default function PengEditionPage({
               </div>
             </div>
 
-            {/* The two titles, front boards only */}
-            <Stagger className="flex justify-center gap-5" gap={0.12}>
-              {BOOKS.map((book, i) => (
+            {/* The two titles, as objects rather than pictures of covers */}
+            <Stagger
+              className="flex items-end justify-center gap-8 pb-8 sm:gap-14"
+              gap={0.14}
+            >
+              {BOOK_FACES.map((book, i) => (
                 <Item key={book.key}>
-                  <div className="relative">
-                    <span
-                      aria-hidden
-                      className={`absolute -bottom-2 -left-2 h-full w-full ${
-                        i === 0 ? "bg-orange" : "bg-lime"
-                      }`}
-                    />
-                    <span
-                      className={`relative block w-[140px] border-2 border-paper sm:w-[186px] ${
-                        i === 1 ? "mt-10" : ""
-                      }`}
-                    >
-                      <Image
-                        src={book.cover}
-                        alt={`${tBooks(`${book.key}.title`)} — ${tBooks(`${book.key}.author`)}`}
-                        width={372}
-                        height={524}
-                        className="book-front"
-                      />
-                    </span>
-                  </div>
+                  <Book3D
+                    bookKey={book.key}
+                    width={book.width}
+                    driftDelay={i === 0 ? "0s" : "-4.5s"}
+                    priority
+                    className={i === 1 ? "sm:-mb-10" : ""}
+                  />
                 </Item>
               ))}
             </Stagger>
@@ -139,10 +128,13 @@ export default function PengEditionPage({
             {CAPABILITY_INDEXES.map((i) => (
               <Item key={i}>
                 <div className="group h-full bg-paper p-7 transition-colors duration-300 hover:bg-ink">
-                  <span className="kin-mono text-orange">
+                  {/* Deep orange while the card is paper; the card
+                      inverts to ink on hover, where bright orange is
+                      both legible and correct. */}
+                  <span className="kin-mono text-orange-deep transition-colors group-hover:text-orange">
                     {String(i + 1).padStart(2, "0")}
                   </span>
-                  <h3 className="kin-display mt-5 text-xl text-ink transition-colors group-hover:text-paper">
+                  <h3 className="kin-display mt-5 text-xl leading-[0.88] text-ink transition-colors group-hover:text-paper">
                     {t(`capabilities.items.${i}`)}
                   </h3>
                 </div>
@@ -170,25 +162,7 @@ export default function PengEditionPage({
       </section>
 
       {/* Schools & bookshops */}
-      <section className="bg-orange py-20 sm:py-28">
-        <div className="mx-auto max-w-[1240px] px-4 sm:px-8">
-          <Reveal>
-            <span className="kin-mono text-ink/60">{t("schools.heading")}</span>
-            <p className="kin-display mt-6 max-w-[18ch] text-[clamp(1.8rem,5.4vw,3.6rem)] text-ink">
-              {t("schools.p1")}
-            </p>
-            <p className="mt-6 max-w-[54ch] leading-relaxed text-ink/80">
-              {t("schools.p2")}
-            </p>
-            <Link
-              href={{ pathname: "/contact", query: { type: "books" } }}
-              className="kin-btn mt-10"
-            >
-              {t("schools.cta")}
-            </Link>
-          </Reveal>
-        </div>
-      </section>
+      <SchoolsBand />
     </>
   );
 }

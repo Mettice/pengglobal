@@ -63,7 +63,7 @@ export default function ServiceCards({
               </svg>
             </div>
 
-            <h3 className="kin-display mt-6 text-2xl text-ink transition-colors group-hover:text-paper sm:text-[1.7rem]">
+            <h3 className="kin-display mt-6 text-2xl leading-[0.88] text-ink transition-colors group-hover:text-paper sm:text-[1.7rem]">
               {t(`${key}.title`)}
             </h3>
 
