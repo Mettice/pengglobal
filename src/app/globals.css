@@ -808,6 +808,47 @@ body {
   }
 }
 
+/* ---------- Drawn rules ------------------------------------------- */
+/* Connector lines that draw themselves in, for diagrams. Default state
+   is drawn; the draw only runs where motion is welcome. */
+@media (prefers-reduced-motion: no-preference) {
+  .kin-draw-x,
+  .kin-draw-y {
+    animation-duration: 0.7s;
+    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+    animation-fill-mode: both;
+    animation-delay: var(--draw-delay, 0s);
+  }
+
+  .kin-draw-x {
+    transform-origin: center;
+    animation-name: kin-draw-x;
+  }
+
+  .kin-draw-y {
+    transform-origin: top;
+    animation-name: kin-draw-y;
+  }
+}
+
+@keyframes kin-draw-x {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: none;
+  }
+}
+
+@keyframes kin-draw-y {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: none;
+  }
+}
+
 /* ---------- Scroll cue -------------------------------------------- */
 /* A 1px line that draws down and fades. scaleY rather than height, so
    the loop never triggers layout. */

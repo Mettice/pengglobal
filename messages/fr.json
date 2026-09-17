@@ -211,6 +211,11 @@
   },
   "about": {
     "heading": "À propos de Peng Global Holding",
+    "group": {
+      "holding": "La holding",
+      "subsidiary": "Filiale d'édition",
+      "brands": "Marques partenaires"
+    },
     "story": {
       "heading": "Qui sommes-nous",
       "p1": "Peng Global Holding est une société camerounaise construite autour d'une mission : offrir aux marques internationales un accès fiable au Cameroun et à la zone CEMAC. Nous représentons, importons et distribuons — et nous assumons la responsabilité de toute la chaîne, de la conformité réglementaire jusqu'au point de vente.",

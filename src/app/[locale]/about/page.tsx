@@ -9,6 +9,7 @@ import { pageMetadata } from "@/lib/seo";
 import { Link } from "@/i18n/navigation";
 import { Reveal, MaskLine } from "@/components/motion/Kinetic";
 import BrandPhoto from "@/components/BrandPhoto";
+import GroupMap from "@/components/GroupMap";
 
 export async function generateMetadata({
   params,
@@ -51,9 +52,8 @@ export default function AboutPage({
 
   return (
     <>
-      {/* Masthead — the heading beside the people behind it. The
-          portraits rise in CSS, so they never depend on a script to be
-          seen above the fold. */}
+      {/* Masthead — the heading beside the shape of the group: the
+          holding, its subsidiary and the brands it works with. */}
       <section className="kin-grain bg-paper">
         <hr className="kin-rule" />
         <div className="mx-auto max-w-[1240px] px-4 sm:px-8">
@@ -74,39 +74,7 @@ export default function AboutPage({
               </p>
             </div>
 
-            <div className="grid grid-cols-2 gap-6 sm:gap-10">
-              {leaders.map((l, i) => (
-                <figure
-                  key={l.key}
-                  className={`kin-rise ${i === 1 ? "mt-12 sm:mt-20" : ""}`}
-                  style={{ "--rise-delay": `${0.35 + i * 0.15}s` } as React.CSSProperties}
-                >
-                  <div className="relative">
-                    <span
-                      aria-hidden
-                      className={`absolute -bottom-3 -left-3 h-full w-full ${l.accent}`}
-                    />
-                    <Image
-                      src={l.src}
-                      alt={l.name ? `${l.name}, ${l.title}` : l.title}
-                      width={800}
-                      height={1000}
-                      priority
-                      sizes="(min-width: 1024px) 260px, 45vw"
-                      className="relative block aspect-[4/5] w-full border-2 border-ink object-cover"
-                    />
-                  </div>
-                  <figcaption className="mt-6">
-                    <span className="kin-mono block text-ink-faint">{l.title}</span>
-                    {l.name && (
-                      <span className="kin-display mt-2 block text-[clamp(1.05rem,1.9vw,1.5rem)] leading-[0.95] text-ink">
-                        {l.name}
-                      </span>
-                    )}
-                  </figcaption>
-                </figure>
-              ))}
-            </div>
+            <GroupMap />
           </div>
         </div>
       </section>
@@ -136,16 +104,34 @@ export default function AboutPage({
               {t("leadership.heading")}
             </h2>
           </Reveal>
-          <div className="mt-12 grid gap-10 md:grid-cols-2 md:gap-14">
+          {/* Portraits at full size, the second set lower so the pair
+              reads as two people rather than a grid of thumbnails. */}
+          <div className="mt-14 grid gap-16 md:grid-cols-2 md:gap-12 lg:gap-20">
             {leaders.map((l, i) => (
-              <Reveal key={l.key} delay={i * 0.08}>
-                <div className="border-t-2 border-ink pt-6">
-                  <span className="kin-mono block text-ink-faint">{l.title}</span>
-                  <h3 className="kin-display mt-3 text-[clamp(1.3rem,2.6vw,1.9rem)] leading-[0.95] text-ink">
-                    {l.name || l.title}
-                  </h3>
-                  <p className="mt-5 max-w-[52ch] leading-relaxed text-ink-soft">{l.text}</p>
-                </div>
+              <Reveal key={l.key} delay={i * 0.1} className={i === 1 ? "md:mt-28" : ""}>
+                <figure>
+                  <div className="relative max-w-[440px]">
+                    <span
+                      aria-hidden
+                      className={`absolute -bottom-4 -left-4 h-full w-full ${l.accent}`}
+                    />
+                    <Image
+                      src={l.src}
+                      alt={l.name ? `${l.name}, ${l.title}` : l.title}
+                      width={800}
+                      height={1000}
+                      sizes="(min-width: 768px) 440px, 90vw"
+                      className="relative block aspect-[4/5] w-full border-2 border-ink object-cover"
+                    />
+                  </div>
+                  <figcaption className="mt-10 max-w-[440px] border-t-2 border-ink pt-5">
+                    <span className="kin-mono block text-ink-faint">{l.title}</span>
+                    <h3 className="kin-display mt-3 text-[clamp(1.8rem,3.4vw,2.6rem)] leading-[0.92] text-ink">
+                      {l.name || l.title}
+                    </h3>
+                    <p className="mt-5 leading-relaxed text-ink-soft">{l.text}</p>
+                  </figcaption>
+                </figure>
               </Reveal>
             ))}
           </div>
