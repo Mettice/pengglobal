@@ -152,7 +152,7 @@
     },
     "slots": {
       "partnersLabel": "Partners & brands",
-      "partnersNote": "Partner marks are added here once supplied and verified.",
+      "partnersNote": "Brands we work with across Cameroon and the CEMAC region.",
       "pending": "Awaiting client asset",
       "voicesLabel": "Client voices",
       "voicesHeading": "What partners say",
@@ -228,10 +228,10 @@
     },
     "leadership": {
       "heading": "Our Leadership Team",
-      "ceoName": "Befue Charlie-Bey",
-      "ceoTitle": "Founder & Chief Executive Officer",
-      "ceoText": "Befue Charlie-Bey leads the corporate direction of Peng Global Holding and the creative vision of Peng Edition. He is a published poet, playwright, and educator who has served as principal of Collège Protestant Luc Bell in Douala.",
-      "mdName": "",
+      "ceoName": "Che Gilbert Peng",
+      "ceoTitle": "Chief Executive Officer",
+      "ceoText": "Leads the corporate direction of Peng Global Holding and its subsidiaries, including the publishing house Peng Edition.",
+      "mdName": "Natasha Peng",
       "mdTitle": "Managing Director",
       "mdText": "Co-directs the operations, international trade relationships, customs compliance, and heavy machinery logistics chains across Cameroon and the CEMAC market."
     }

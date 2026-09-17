@@ -12,7 +12,7 @@ import ServiceCards from "@/components/ServiceCards";
 import KineticHero from "@/components/KineticHero";
 import ReachSection from "@/components/ReachSection";
 import StatsBand from "@/components/StatsBand";
-import { PartnerSlots, TestimonialSlots } from "@/components/PlaceholderSlots";
+import { PartnerLogos, TestimonialSlots } from "@/components/PlaceholderSlots";
 import { Reveal, Stagger, Item } from "@/components/motion/Kinetic";
 
 export async function generateMetadata({
@@ -98,8 +98,8 @@ export default function HomePage({
       {/* ---- Operating figures ---- */}
       <StatsBand />
 
-      {/* ---- Partner logo slots (awaiting real assets) ---- */}
-      <PartnerSlots />
+      {/* ---- Partners & brands ---- */}
+      <PartnerLogos />
 
       {/* ---- Services ---- */}
       <section className="bg-paper py-20 sm:py-28">
