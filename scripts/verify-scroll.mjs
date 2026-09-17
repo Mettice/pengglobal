@@ -229,6 +229,34 @@ async function frameDelta(a, b) {
   return sum / x.length;
 }
 
+/**
+ * Waits for entrance animations to land before measuring.
+ *
+ * A fixed pause flagged scroll-triggered entrances as never-visible: a
+ * 1.4s reveal sampled at 650ms reads as faded, and by the next sample the
+ * section has scrolled away. This waits for every finite animation to
+ * finish instead — looping ones (drift, marquee, scroll cue) never will,
+ * so they are ignored. An animation that has genuinely stalled never
+ * finishes either, so the cap is reached and the stalled state is what
+ * gets measured, which is what should be reported.
+ */
+async function settle(page) {
+  await page.waitForTimeout(250); // let scroll-triggered observers fire
+  await page.evaluate(
+    (cap) =>
+      Promise.race([
+        Promise.all(
+          document
+            .getAnimations()
+            .filter((a) => a.effect?.getTiming().iterations !== Infinity)
+            .map((a) => a.finished.catch(() => {})),
+        ),
+        new Promise((resolve) => setTimeout(resolve, cap)),
+      ]),
+    3000,
+  );
+}
+
 async function checkPage(context, url) {
   const page = await context.newPage();
   const problems = [];
@@ -249,7 +277,7 @@ async function checkPage(context, url) {
     for (let i = 0; i < SAMPLES; i++) {
       const y = height > 0 ? Math.round((i / (SAMPLES - 1)) * height) : 0;
       await page.evaluate((top) => scrollTo(0, top), y);
-      await page.waitForTimeout(650);
+      await settle(page);
 
       const { elements, overflow: ov } = await page.evaluate(COLLECT);
       overflow = Math.max(overflow, ov);
