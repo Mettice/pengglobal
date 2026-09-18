@@ -12,7 +12,8 @@ import ServiceCards from "@/components/ServiceCards";
 import KineticHero from "@/components/KineticHero";
 import ReachSection from "@/components/ReachSection";
 import StatsBand from "@/components/StatsBand";
-import { PartnerLogos, TestimonialSlots } from "@/components/PlaceholderSlots";
+import { PartnerLogos } from "@/components/PlaceholderSlots";
+import Testimonials from "@/components/Testimonials";
 import { Reveal, Stagger, Item } from "@/components/motion/Kinetic";
 
 export async function generateMetadata({
@@ -178,8 +179,8 @@ export default function HomePage({
         </div>
       </section>
 
-      {/* ---- Testimonial slots (awaiting verified quotes) ---- */}
-      <TestimonialSlots />
+      {/* ---- What clients say ---- */}
+      <Testimonials />
 
       {/* ---- Final CTA: one action ---- */}
       <section className="kin-on-ink kin-grain py-20 sm:py-28">

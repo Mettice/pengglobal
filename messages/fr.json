@@ -152,11 +152,26 @@
     },
     "slots": {
       "partnersLabel": "Partenaires & marques",
-      "partnersNote": "Les marques avec lesquelles nous travaillons au Cameroun et dans la zone CEMAC.",
-      "pending": "En attente du client",
-      "voicesLabel": "Témoignages",
-      "voicesHeading": "Ce que disent nos partenaires",
-      "voicesNote": "Les témoignages apparaîtront ici une fois confirmés par des clients nommés. Nous ne publions aucune citation non vérifiée."
+      "partnersNote": "Les marques avec lesquelles nous travaillons au Cameroun et dans la zone CEMAC."
+    },
+    "voices": {
+      "label": "Témoignages",
+      "heading": "Ce que disent nos partenaires",
+      "tunisia": {
+        "name": "Taahira Jilan",
+        "place": "Tunisie",
+        "quote": "Nous avons travaillé avec Peng Global Holding pour explorer les opportunités du marché camerounais. Leurs résultats sont arrivés dans les délais et leur accompagnement a été précieux tout au long du processus. Ils nous ont permis de décider en connaissance de cause, et nous leur en sommes reconnaissants."
+      },
+      "germany": {
+        "name": "Marcel Gottschalk",
+        "place": "Allemagne",
+        "quote": "Peng Global Holding est l'interlocuteur de référence pour toute représentation de marque internationale en Afrique centrale. Leur équipe d'experts, très professionnelle, propose des solutions et des recommandations adaptées à chaque besoin. Nous les recommandons vivement à quiconque souhaite se développer sur ce marché."
+      },
+      "turkey": {
+        "name": "Ruwaid Maroun",
+        "place": "Turquie",
+        "quote": "Peng Global Holding offre un service irréprochable à chaque étape. Leur service client est excellent et ils veillent avec soin à répondre à tous nos besoins. Ce sont des partenaires inestimables pour naviguer dans l'environnement commercial complexe de l'Afrique centrale. Vivement recommandé !"
+      }
     },
     "stats": {
       "eyebrow": "En chiffres",

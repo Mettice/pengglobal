@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useTranslations } from "next-intl";
-import { Stagger, Item, Reveal } from "./motion/Kinetic";
+import { Stagger, Item } from "./motion/Kinetic";
 
 /**
  * Brand marks supplied by the client, prepared by
@@ -49,46 +49,6 @@ export function PartnerLogos() {
 
         <p className="mt-4 max-w-[60ch] text-sm text-ink-faint">
           {t("partnersNote")}
-        </p>
-      </div>
-    </section>
-  );
-}
-
-/**
- * Designed empty frames for testimonials the client will supply. They
- * render as deliberate, styled slots — nothing here quotes anyone.
- */
-export function TestimonialSlots() {
-  const t = useTranslations("home.slots");
-
-  return (
-    <section className="bg-paper py-16 sm:py-24">
-      <div className="mx-auto max-w-[1240px] px-4 sm:px-8">
-        <Reveal>
-          <span className="kin-mono text-ink-faint">{t("voicesLabel")}</span>
-          <h2 className="kin-display mt-4 max-w-[16ch] text-[clamp(1.9rem,5vw,3.4rem)] text-ink">
-            {t("voicesHeading")}
-          </h2>
-        </Reveal>
-
-        <Stagger className="mt-10 grid gap-5 md:grid-cols-3">
-          {[0, 1, 2].map((i) => (
-            <Item key={i}>
-              <figure className="flex h-full min-h-[220px] flex-col justify-between border-2 border-dashed border-ink/25 p-6">
-                <span aria-hidden className="kin-display text-5xl leading-[0.88] text-ink/12">
-                  &ldquo;
-                </span>
-                <figcaption className="kin-mono text-ink/60">
-                  {t("pending")}
-                </figcaption>
-              </figure>
-            </Item>
-          ))}
-        </Stagger>
-
-        <p className="mt-5 max-w-[60ch] text-sm text-ink-faint">
-          {t("voicesNote")}
         </p>
       </div>
     </section>
