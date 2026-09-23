@@ -8,6 +8,7 @@ import { SITE_URL } from "@/lib/seo";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import LenisProvider from "@/components/LenisProvider";
+import ScrollProgress from "@/components/ScrollProgress";
 import "../globals.css";
 
 
@@ -102,6 +103,7 @@ export default async function LocaleLayout({
         />
         <NextIntlClientProvider>
           <LenisProvider>
+            <ScrollProgress />
             <Header />
             <main className="flex-1">{children}</main>
             <Footer />

@@ -3,7 +3,14 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
-import { motion, useMotionValue, useSpring } from "motion/react";
+import {
+  motion,
+  useMotionValue,
+  useSpring,
+  useScroll,
+  useTransform,
+  useReducedMotion,
+} from "motion/react";
 import { Link } from "@/i18n/navigation";
 import { useAmbientVideo, useEnhanced } from "@/lib/useEnhanced";
 import { HERO_ID } from "@/lib/hero";
@@ -90,6 +97,15 @@ export default function KineticHero() {
 
   const proof = [t("chip1"), t("chip3"), t("meta2")];
 
+  const reduced = useReducedMotion();
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"],
+  });
+  const scrollParallaxY = useTransform(scrollYProgress, [0, 1], ["0%", "18%"]);
+  const heroOpacity = useTransform(scrollYProgress, [0, 0.85], [1, 0.35]);
+  const cueOpacity = useTransform(scrollYProgress, [0, 0.25], [1, 0]);
+
   return (
     <>
       <section
@@ -100,42 +116,50 @@ export default function KineticHero() {
         {/* ---- Footage ---- */}
         <motion.div
           aria-hidden
-          style={{ x: smoothX, y: smoothY }}
-          className="absolute inset-0 z-0 origin-center scale-[1.08]"
+          style={{
+            y: reduced ? 0 : scrollParallaxY,
+            opacity: reduced ? 1 : heroOpacity,
+          }}
+          className="absolute inset-0 z-0 origin-center overflow-hidden"
         >
-          <Image
-            src={POSTER}
-            alt=""
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover object-right"
-          />
-          {video.allowed && (
-            <video
-              key={variant}
-              ref={videoRef}
-              className={`absolute inset-0 h-full w-full object-cover object-right transition-opacity duration-1000 ${
-                playing === variant ? "opacity-100" : "opacity-0"
-              }`}
-              autoPlay
-              muted
-              loop
-              playsInline
-              preload="none"
-              poster={POSTER}
-              onLoadedMetadata={(e) => {
-                e.currentTarget.playbackRate = 1.15;
-              }}
-              onPlaying={() => setPlaying(variant)}
-            >
-              <source
-                src={`/hero/loop${variant}.av1.webm`}
-                type='video/webm; codecs="av01.0.05M.08"'
-              />
-              <source src={`/hero/loop${variant}.h264.mp4`} type="video/mp4" />
-            </video>
-          )}
+          <motion.div
+            style={{ x: smoothX, y: smoothY }}
+            className="absolute inset-0 origin-center scale-[1.12]"
+          >
+            <Image
+              src={POSTER}
+              alt=""
+              fill
+              priority
+              sizes="100vw"
+              className="object-cover object-right"
+            />
+            {video.allowed && (
+              <video
+                key={variant}
+                ref={videoRef}
+                className={`absolute inset-0 h-full w-full object-cover object-right transition-opacity duration-1000 ${
+                  playing === variant ? "opacity-100" : "opacity-0"
+                }`}
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="none"
+                poster={POSTER}
+                onLoadedMetadata={(e) => {
+                  e.currentTarget.playbackRate = 1.15;
+                }}
+                onPlaying={() => setPlaying(variant)}
+              >
+                <source
+                  src={`/hero/loop${variant}.av1.webm`}
+                  type='video/webm; codecs="av01.0.05M.08"'
+                />
+                <source src={`/hero/loop${variant}.h264.mp4`} type="video/mp4" />
+              </video>
+            )}
+          </motion.div>
         </motion.div>
 
         {/* ---- Scrim: carries text contrast, so the grade does not have to.
@@ -197,15 +221,16 @@ export default function KineticHero() {
 
               {/* Scroll cue — part of this row rather than separately
                   positioned, so it cannot overlap the proof items. */}
-              <span
+              <motion.span
                 aria-hidden
+                style={{ opacity: reduced ? 1 : cueOpacity }}
                 className="ml-auto hidden items-center gap-3 sm:flex"
               >
                 <span className="kin-mono text-[0.65rem] tracking-[0.2em] text-paper/70">
                   {t("scroll")}
                 </span>
                 <span className="kin-scroll-cue block h-10 w-px bg-paper/70" />
-              </span>
+              </motion.span>
             </div>
           </div>
         </div>

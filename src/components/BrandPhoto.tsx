@@ -1,4 +1,8 @@
+"use client";
+
+import { useRef } from "react";
 import Image from "next/image";
+import { motion, useScroll, useTransform, useReducedMotion } from "motion/react";
 
 /**
  * Photography, treated as a brand device.
@@ -11,6 +15,9 @@ import Image from "next/image";
  *
  * When no image has been supplied yet, the frame renders as a designed
  * placeholder instead of a broken box — honest about what is missing.
+ *
+ * `parallax` enables a subtle vertical drift tied to scroll progress
+ * through the frame, scaling the image slightly so no edge is exposed.
  */
 export default function BrandPhoto({
   src,
@@ -24,6 +31,7 @@ export default function BrandPhoto({
   pendingLabel,
   pendingNote,
   onInk = false,
+  parallax = true,
 }: {
   src?: string;
   alt?: string;
@@ -36,7 +44,16 @@ export default function BrandPhoto({
   pendingLabel?: string;
   pendingNote?: string;
   onInk?: boolean;
+  parallax?: boolean;
 }) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const reduced = useReducedMotion();
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end start"],
+  });
+  const y = useTransform(scrollYProgress, [0, 1], ["-7%", "7%"]);
+
   const toneClass =
     tone === "orange"
       ? "kin-photo--orange"
@@ -85,18 +102,29 @@ export default function BrandPhoto({
     );
   }
 
+  const shouldParallax = parallax && !reduced;
+
   return (
     <div
-      className={`kin-photo ${toneClass} ${trueColour ? "kin-photo--true" : ""} ${className}`}
+      ref={containerRef}
+      className={`kin-photo overflow-hidden ${toneClass} ${trueColour ? "kin-photo--true" : ""} ${className}`}
     >
-      <Image
-        src={src}
-        alt={alt}
-        width={width}
-        height={height}
-        priority={priority}
-        className="h-full w-full object-cover"
-      />
+      <motion.div
+        style={{
+          y: shouldParallax ? y : 0,
+          scale: shouldParallax ? 1.15 : 1,
+        }}
+        className="h-full w-full will-change-transform"
+      >
+        <Image
+          src={src}
+          alt={alt}
+          width={width}
+          height={height}
+          priority={priority}
+          className="h-full w-full object-cover"
+        />
+      </motion.div>
     </div>
   );
 }
