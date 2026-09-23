@@ -155,10 +155,10 @@ export default function AboutPage({
           {/* Slot 2 — warehouse interior. See docs/photography-spec.md */}
           <Reveal delay={0.1}>
             <BrandPhoto
-              tone="lime"
+              src="/images/warehouse-racking.jpg"
+              alt={tPhoto("warehouseAlt")}
+              trueColour
               className="aspect-[4/3] w-full"
-              pendingLabel={tPhoto("warehouse")}
-              pendingNote={tPhoto("pending")}
             />
           </Reveal>
         </div>

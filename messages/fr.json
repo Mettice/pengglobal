@@ -55,7 +55,7 @@
       "headlineRich": "Connecter les marques internationales à <accent>l'Afrique centrale</accent>",
       "subtitle": "Peng Global Holding représente, importe et distribue des marques internationales de confiance au Cameroun et dans la zone CEMAC.",
       "cta1": "Devenir partenaire",
-      "cta2": "Découvrir Peng Edition",
+      "cta2": "Découvrir nos services",
       "badge": "Cameroun & CEMAC",
       "stat1Label": "Représentation exclusive",
       "stat1Value": "PENSAN Kalem & Kidz",
@@ -91,45 +91,18 @@
       "pensan": {
         "brand": "PENSAN Kalem & PENSAN Kidz",
         "claim": "Représentant exclusif, Cameroun & CEMAC"
-      },
-      "edition": {
-        "brand": "Peng Edition",
-        "claim": "2 ouvrages sur la liste officielle des manuels scolaires"
       }
     },
     "intro": {
       "heading": "Un partenaire local fiable pour les marques internationales",
       "p1": "Peng Global Holding est une société camerounaise spécialisée dans la représentation exclusive et la distribution de marques internationales au Cameroun et dans la zone CEMAC. Nous offrons aux fabricants étrangers un partenaire local fiable : connaissance du marché, conformité réglementaire et réseau de distribution établi.",
-      "p2": "Nous sommes le représentant exclusif des marques de papeterie turques PENSAN Kalem et PENSAN Kidz pour le Cameroun et la CEMAC, et la maison mère de Peng Edition, éditeur dont deux ouvrages figurent sur la liste officielle des manuels scolaires du secondaire au Cameroun."
+      "p2": "Nous sommes le représentant exclusif des marques de papeterie turques PENSAN Kalem et PENSAN Kidz pour le Cameroun et la CEMAC, et nous assurons l'importation, la conformité réglementaire et la distribution jusqu'au point de vente."
     },
     "servicesHeading": "Nos métiers",
     "servicesCta": "Découvrir nos services",
-    "editionBlock": {
-      "heading": "Peng Edition",
-      "tagline": "Éduquer le monde, un livre à la fois",
-      "proof": "Deux ouvrages officiellement prescrits sur la liste des manuels scolaires du secondaire au Cameroun.",
-      "cta": "Visiter Peng Edition"
-    },
-    "catalogue": {
-      "label": "Nouveautés",
-      "heading": "Un catalogue pensé pour les classes et les lecteurs",
-      "intro": "Peng Edition apporte au groupe sa preuve la plus visible : de vrais livres, de vrais ISBN et des titres déjà prescrits dans le système scolaire camerounais.",
-      "featuredLabel": "Extrait",
-      "featuredHeading": "Titre à la une",
-      "featuredCta": "Voir les livres",
-      "missionHeading": "Découvrez un univers littéraire et éducatif en pleine croissance",
-      "missionText": "Nous publions des ouvrages éducatifs et littéraires destinés aux établissements scolaires, aux librairies et aux familles au Cameroun et dans la zone CEMAC.",
-      "aboutHeading": "Une maison d'édition avec une mission régionale",
-      "aboutSubheading": "Peng Edition relie auteurs, établissements scolaires et librairies grâce à des livres capables de servir la classe et un lectorat plus large.",
-      "availabilityHeading": "Commandes scolaires et librairies, simplement",
-      "availabilityText": "Les titres actuels sont disponibles pour les demandes d'adoption, les commandes scolaires, les librairies et les distributions institutionnelles.",
-      "badgeSchools": "Écoles",
-      "badgeBookshops": "Librairies",
-      "badgeCemac": "CEMAC",
-      "capabilitiesHeading": "Plus qu'une maison d'édition",
-      "capabilitiesText": "Peng Edition intervient sur toute la chaîne éditoriale : développement des textes, production, logistique et accès au marché.",
-      "projectHeading": "Vous avez un projet éditorial, scolaire ou de distribution ?",
-      "projectText": "Parlez à Peng Global Holding des opportunités de partenariat, d'adoption et de distribution."
+    "finalCta": {
+      "heading": "Une marque à implanter au Cameroun et en zone CEMAC ?",
+      "text": "Parlez à Peng Global Holding de représentation, d'importation et de distribution."
     },
     "contactCta": {
       "heading": "Parlons-en",
@@ -147,7 +120,6 @@
       "a": "Représentation exclusive",
       "b": "Importation & douanes",
       "c": "Distribution CEMAC",
-      "d": "Édition scolaire",
       "e": "Marchés publics & privés"
     },
     "slots": {
@@ -399,6 +371,10 @@
     "hero3": "Distribution en détail",
     "slidePrev": "Image précédente",
     "slideNext": "Image suivante",
-    "slideGo": "Afficher l'image {n}"
+    "slideGo": "Afficher l'image {n}",
+    "warehouseAlt": "Intérieur d'entrepôt industriel avec rayonnages élevés et stocks sur palettes",
+    "shelfAlt": "Fournitures de papeterie et instruments d'écriture présentés sur des étagères de magasin",
+    "freightAlt": "Camions de transport de fret sur le quai de chargement d'un dépôt de distribution",
+    "cityAlt": "Front de mer et panorama urbain du port de Douala au Cameroun"
   }
 }

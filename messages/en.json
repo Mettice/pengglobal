@@ -55,7 +55,7 @@
       "headlineRich": "Connecting Global Brands with <accent>Central Africa</accent>",
       "subtitle": "Peng Global Holding represents, imports, and distributes trusted international brands across Cameroon and the CEMAC region.",
       "cta1": "Partner With Us",
-      "cta2": "Discover Peng Edition",
+      "cta2": "Explore our services",
       "badge": "Cameroon & CEMAC",
       "stat1Label": "Exclusive representation",
       "stat1Value": "PENSAN Kalem & Kidz",
@@ -91,45 +91,18 @@
       "pensan": {
         "brand": "PENSAN Kalem & PENSAN Kidz",
         "claim": "Exclusive representative, Cameroon & CEMAC"
-      },
-      "edition": {
-        "brand": "Peng Edition",
-        "claim": "2 titles on the official national textbook list"
       }
     },
     "intro": {
       "heading": "A reliable local partner for international brands",
       "p1": "Peng Global Holding is a Cameroonian company specializing in the exclusive representation and distribution of international brands across Cameroon and the CEMAC region. We give foreign manufacturers a reliable local partner: market knowledge, regulatory compliance, and an established distribution network.",
-      "p2": "We are the sole representative of the Turkish stationery brands PENSAN Kalem and PENSAN Kidz for Cameroon and CEMAC, and the parent company of Peng Edition, a publisher with two titles on Cameroon's official secondary school textbook list."
+      "p2": "We are the sole representative of the Turkish stationery brands PENSAN Kalem and PENSAN Kidz for Cameroon and CEMAC, handling import, regulatory compliance, and distribution to retail across the region."
     },
     "servicesHeading": "What we do",
     "servicesCta": "Explore our services",
-    "editionBlock": {
-      "heading": "Peng Edition",
-      "tagline": "Educating the World, One Book at a Time",
-      "proof": "Two titles officially prescribed on Cameroon's secondary school textbook list.",
-      "cta": "Visit Peng Edition"
-    },
-    "catalogue": {
-      "label": "New releases",
-      "heading": "A catalogue built for classrooms and readers",
-      "intro": "Peng Edition gives the group its strongest visual proof: real books, real ISBNs, and titles already prescribed in Cameroon's school system.",
-      "featuredLabel": "Extract",
-      "featuredHeading": "Featured title",
-      "featuredCta": "See the books",
-      "missionHeading": "Discover a growing literary and educational universe",
-      "missionText": "We publish educational and literary works designed for schools, bookshops, and families across Cameroon and the wider CEMAC region.",
-      "aboutHeading": "A publishing house with a regional mission",
-      "aboutSubheading": "Peng Edition connects authors, schools, and bookshops through books that can travel from classroom use to wider readership.",
-      "availabilityHeading": "School and bookshop orders made simple",
-      "availabilityText": "Current titles are available for adoption inquiries, school orders, bookshops, and institutional distribution requests.",
-      "badgeSchools": "Schools",
-      "badgeBookshops": "Bookshops",
-      "badgeCemac": "CEMAC",
-      "capabilitiesHeading": "More than a publishing imprint",
-      "capabilitiesText": "Peng Edition works across the publishing chain: editorial development, production, logistics, and market access.",
-      "projectHeading": "Have a publishing, school, or book distribution project?",
-      "projectText": "Talk to Peng Global Holding about partnership, adoption, and distribution opportunities."
+    "finalCta": {
+      "heading": "Have a brand to bring into Cameroon and CEMAC?",
+      "text": "Talk to Peng Global Holding about representation, import, and distribution."
     },
     "contactCta": {
       "heading": "Let's talk",
@@ -147,7 +120,6 @@
       "a": "Exclusive representation",
       "b": "Import & customs",
       "c": "CEMAC distribution",
-      "d": "Educational publishing",
       "e": "Public & private contracts"
     },
     "slots": {
@@ -399,6 +371,10 @@
     "hero3": "Retail distribution",
     "slidePrev": "Previous image",
     "slideNext": "Next image",
-    "slideGo": "Show image {n}"
+    "slideGo": "Show image {n}",
+    "warehouseAlt": "Industrial warehouse interior with high racking and palletized stock",
+    "shelfAlt": "Stationery and writing instruments displayed on modern retail shelving",
+    "freightAlt": "Freight cargo transport trucks at an active distribution depot loading dock",
+    "cityAlt": "Port of Douala waterfront and coastal skyline in Cameroon"
   }
 }

@@ -93,10 +93,10 @@ export default function ContactPage({
             {/* Slot 5 — the market being served, not the office.
                 See docs/photography-spec.md */}
             <BrandPhoto
-              tone="lime"
+              src="/images/douala-skyline.jpg"
+              alt={tPhoto("cityAlt")}
+              trueColour
               className="mt-7 aspect-[4/3] w-full"
-              pendingLabel={tPhoto("city")}
-              pendingNote={tPhoto("pending")}
             />
           </aside>
         </div>

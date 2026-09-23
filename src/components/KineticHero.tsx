@@ -88,7 +88,7 @@ export default function KineticHero() {
     return () => observer.disconnect();
   }, [video.allowed, variant]);
 
-  const proof = [t("chip1"), t("chip2"), t("meta2")];
+  const proof = [t("chip1"), t("chip3"), t("meta2")];
 
   return (
     <>
@@ -179,7 +179,7 @@ export default function KineticHero() {
                 <Link href="/contact" className="kin-btn">
                   {t("cta1")}
                 </Link>
-                <Link href="/peng-edition" className="kin-btn kin-btn--ghost">
+                <Link href="/services" className="kin-btn kin-btn--ghost">
                   {t("cta2")}
                 </Link>
               </div>
@@ -219,7 +219,9 @@ export default function KineticHero() {
 /** The capability rail that has always followed the hero. */
 function CapabilityMarquee() {
   const tMarquee = useTranslations("home.marquee");
-  const items = (["a", "b", "c", "d", "e"] as const).map((k) => tMarquee(k));
+  // "d" is educational publishing — Peng Edition's trade, which the home
+  // page leaves to the Peng Edition pages.
+  const items = (["a", "b", "c", "e"] as const).map((k) => tMarquee(k));
 
   return (
     <div className="kin-on-ink border-y-2 border-ink py-4">

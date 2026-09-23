@@ -62,18 +62,18 @@ export default function ServicesPage({
           <div className="mt-14 grid gap-5 sm:grid-cols-2">
             <Reveal>
               <BrandPhoto
-                tone="lime"
+                src="/images/retail-stationery.jpg"
+                alt={tPhoto("shelfAlt")}
+                trueColour
                 className="aspect-[3/2] w-full"
-                pendingLabel={tPhoto("shelf")}
-                pendingNote={tPhoto("pending")}
               />
             </Reveal>
             <Reveal delay={0.08}>
               <BrandPhoto
-                tone="lime"
+                src="/images/freight-logistics.jpg"
+                alt={tPhoto("freightAlt")}
+                trueColour
                 className="aspect-[3/2] w-full"
-                pendingLabel={tPhoto("freight")}
-                pendingNote={tPhoto("pending")}
               />
             </Reveal>
           </div>
