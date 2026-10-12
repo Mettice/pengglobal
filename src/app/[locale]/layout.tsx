@@ -25,9 +25,32 @@ const ORGANIZATION_JSON_LD = {
     addressLocality: "Douala",
     addressCountry: "CM",
   },
+  // The lockup, so search results and knowledge panels can show the mark.
+  logo: `${SITE_URL}/images/brand/peng-global.png`,
+  image: `${SITE_URL}/og/en.jpg`,
+  email: "info@penglobalholding.com",
+  telephone: "+237670878730",
+  foundingDate: "2021",
+  knowsLanguage: ["en", "fr"],
+  // The trading area, which is the thing people actually search by.
+  areaServed: [
+    { "@type": "Country", name: "Cameroon" },
+    { "@type": "Place", name: "CEMAC" },
+  ],
+  contactPoint: [
+    {
+      "@type": "ContactPoint",
+      contactType: "sales",
+      telephone: "+237670878730",
+      email: "info@penglobalholding.com",
+      areaServed: ["CM", "CF", "TD", "CG", "GQ", "GA"],
+      availableLanguage: ["en", "fr"],
+    },
+  ],
   subOrganization: {
     "@type": "Organization",
     name: "Peng Edition",
+    url: `${SITE_URL}/en/peng-edition`,
     description:
       "Publishing subsidiary of Peng Global Holding with two titles on Cameroon's official secondary school textbook list.",
   },

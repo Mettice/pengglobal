@@ -5,6 +5,7 @@ import { hasLocale, useLocale, useTranslations } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
 import { routing } from "@/i18n/routing";
 import { pageMetadata, SITE_URL } from "@/lib/seo";
+import BreadcrumbJsonLd from "@/components/BreadcrumbJsonLd";
 import BookCard, { BOOKS } from "@/components/BookCard";
 import SchoolsBand from "@/components/SchoolsBand";
 import BookShelf from "@/components/BookShelf";
@@ -66,9 +67,18 @@ export default function BooksPage({
   const { locale } = use(params);
   setRequestLocale(locale);
   const t = useTranslations("pengEdition");
+  const tNav = useTranslations("nav");
 
   return (
     <>
+      <BreadcrumbJsonLd
+        locale={locale}
+        trail={[
+          { name: tNav("home"), path: "/" },
+          { name: tNav("pengEdition"), path: "/peng-edition" },
+          { name: tNav("books"), path: "/peng-edition/books" },
+        ]}
+      />
       <BookJsonLd />
 
       {/* The shelf. A literary serif wordmark over a long row of the

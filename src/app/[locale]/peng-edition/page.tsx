@@ -6,6 +6,7 @@ import { hasLocale, useTranslations } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
 import { routing } from "@/i18n/routing";
 import { pageMetadata } from "@/lib/seo";
+import BreadcrumbJsonLd from "@/components/BreadcrumbJsonLd";
 import { Link } from "@/i18n/navigation";
 import Book3D, { BOOK_FACES } from "@/components/Book3D";
 import SchoolsBand from "@/components/SchoolsBand";
@@ -31,9 +32,17 @@ export default function PengEditionPage({
   const { locale } = use(params);
   setRequestLocale(locale);
   const t = useTranslations("pengEdition");
+  const tNav = useTranslations("nav");
 
   return (
     <>
+      <BreadcrumbJsonLd
+        locale={locale}
+        trail={[
+          { name: tNav("home"), path: "/" },
+          { name: tNav("pengEdition"), path: "/peng-edition" },
+        ]}
+      />
       {/* Sub-brand masthead: Peng Edition owns orange/black, with the
           holding's green kept as the parentage mark. */}
       <section className="kin-on-ink kin-grain">
@@ -106,7 +115,10 @@ export default function PengEditionPage({
               {t("booksHeading")}
             </span>
           </Reveal>
-          <Reveal delay={0.1} className="space-y-5 leading-relaxed text-ink-soft">
+          <Reveal
+            delay={0.1}
+            className="space-y-5 leading-relaxed text-ink-soft"
+          >
             <p className="kin-display text-[clamp(1.4rem,3.2vw,2.2rem)] normal-case text-ink">
               {t("about.p1")}
             </p>

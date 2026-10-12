@@ -6,6 +6,7 @@ import { hasLocale, useTranslations } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
 import { routing } from "@/i18n/routing";
 import { pageMetadata } from "@/lib/seo";
+import BreadcrumbJsonLd from "@/components/BreadcrumbJsonLd";
 import { Link } from "@/i18n/navigation";
 import { Reveal, MaskLine } from "@/components/motion/Kinetic";
 import BrandPhoto from "@/components/BrandPhoto";
@@ -39,6 +40,7 @@ export default function AboutPage({
   const { locale } = use(params);
   setRequestLocale(locale);
   const t = useTranslations("about");
+  const tNav = useTranslations("nav");
   const tLegal = useTranslations("legal");
   const tContact = useTranslations("home.contactCta");
   const tPhoto = useTranslations("photo");
@@ -52,6 +54,13 @@ export default function AboutPage({
 
   return (
     <>
+      <BreadcrumbJsonLd
+        locale={locale}
+        trail={[
+          { name: tNav("home"), path: "/" },
+          { name: tNav("about"), path: "/about" },
+        ]}
+      />
       {/* Masthead — the heading beside the shape of the group: the
           holding, its subsidiary and the brands it works with. */}
       <section className="kin-grain bg-paper">
@@ -88,7 +97,10 @@ export default function AboutPage({
               {t("story.heading")}
             </h2>
           </Reveal>
-          <Reveal delay={0.1} className="space-y-5 leading-relaxed text-paper/70">
+          <Reveal
+            delay={0.1}
+            className="space-y-5 leading-relaxed text-paper/70"
+          >
             <p>{t("story.p1")}</p>
             <p>{t("story.p2")}</p>
           </Reveal>
@@ -108,7 +120,11 @@ export default function AboutPage({
               reads as two people rather than a grid of thumbnails. */}
           <div className="mt-14 grid gap-16 md:grid-cols-2 md:gap-12 lg:gap-20">
             {leaders.map((l, i) => (
-              <Reveal key={l.key} delay={i * 0.1} className={i === 1 ? "md:mt-28" : ""}>
+              <Reveal
+                key={l.key}
+                delay={i * 0.1}
+                className={i === 1 ? "md:mt-28" : ""}
+              >
                 <figure>
                   <div className="relative max-w-[440px]">
                     <span
@@ -125,11 +141,15 @@ export default function AboutPage({
                     />
                   </div>
                   <figcaption className="mt-10 max-w-[440px] border-t-2 border-ink pt-5">
-                    <span className="kin-mono block text-ink-faint">{l.title}</span>
+                    <span className="kin-mono block text-ink-faint">
+                      {l.title}
+                    </span>
                     <h3 className="kin-display mt-3 text-[clamp(1.8rem,3.4vw,2.6rem)] leading-[0.92] text-ink">
                       {l.name || l.title}
                     </h3>
-                    <p className="mt-5 leading-relaxed text-ink-soft">{l.text}</p>
+                    <p className="mt-5 leading-relaxed text-ink-soft">
+                      {l.text}
+                    </p>
                   </figcaption>
                 </figure>
               </Reveal>
@@ -169,7 +189,9 @@ export default function AboutPage({
       <section className="bg-lime py-20 sm:py-28">
         <div className="mx-auto grid max-w-[1240px] gap-10 px-4 sm:px-8 lg:grid-cols-[1.1fr_0.9fr] lg:items-end">
           <Reveal>
-            <span className="kin-mono text-ink/80">{t("commitment.heading")}</span>
+            <span className="kin-mono text-ink/80">
+              {t("commitment.heading")}
+            </span>
             <h2 className="kin-display mt-6 max-w-[14ch] text-[clamp(2.2rem,5.4vw,4.2rem)] text-ink">
               {t("commitment.headline")}
             </h2>

@@ -22,7 +22,18 @@ export async function pageMetadata(
     routing.locales.map((l) => [l, `${SITE_URL}/${l}${suffix}`]),
   );
 
+  // One card per language, built by scripts/build-og.mjs. Shared links are
+  // how most of this audience meets the site — WhatsApp, LinkedIn — and
+  // without an image they arrive as a line of grey text.
+  const card = {
+    url: `${SITE_URL}/og/${locale}.jpg`,
+    width: 1200,
+    height: 630,
+    alt: t("siteName"),
+  };
+
   return {
+    metadataBase: new URL(SITE_URL),
     title: t(`${key}.title`),
     description: t(`${key}.description`),
     alternates: {
@@ -36,8 +47,17 @@ export async function pageMetadata(
       title: t(`${key}.title`),
       description: t(`${key}.description`),
       siteName: t("siteName"),
-      locale,
+      url: `${SITE_URL}/${locale}${suffix}`,
+      locale: locale === "fr" ? "fr_CM" : "en_GB",
+      alternateLocale: locale === "fr" ? "en_GB" : "fr_CM",
       type: "website",
+      images: [card],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: t(`${key}.title`),
+      description: t(`${key}.description`),
+      images: [card.url],
     },
   };
 }

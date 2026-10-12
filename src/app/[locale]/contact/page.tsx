@@ -5,6 +5,7 @@ import { hasLocale, useTranslations } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
 import { routing } from "@/i18n/routing";
 import { pageMetadata } from "@/lib/seo";
+import BreadcrumbJsonLd from "@/components/BreadcrumbJsonLd";
 import ContactForm from "@/components/ContactForm";
 import { MaskLine } from "@/components/motion/Kinetic";
 import BrandPhoto from "@/components/BrandPhoto";
@@ -30,10 +31,18 @@ export default function ContactPage({
   const { type } = use(searchParams);
   setRequestLocale(locale);
   const t = useTranslations("contact");
+  const tNav = useTranslations("nav");
   const tPhoto = useTranslations("photo");
 
   return (
     <>
+      <BreadcrumbJsonLd
+        locale={locale}
+        trail={[
+          { name: tNav("home"), path: "/" },
+          { name: tNav("contact"), path: "/contact" },
+        ]}
+      />
       <section className="kin-grain bg-paper">
         <hr className="kin-rule" />
         <div className="mx-auto max-w-[1240px] px-4 sm:px-8">

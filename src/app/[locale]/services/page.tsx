@@ -5,6 +5,7 @@ import { hasLocale, useTranslations } from "next-intl";
 import { setRequestLocale } from "next-intl/server";
 import { routing } from "@/i18n/routing";
 import { pageMetadata } from "@/lib/seo";
+import BreadcrumbJsonLd from "@/components/BreadcrumbJsonLd";
 import { Link } from "@/i18n/navigation";
 import ServiceCards from "@/components/ServiceCards";
 import { Reveal, MaskLine } from "@/components/motion/Kinetic";
@@ -30,18 +31,24 @@ export default function ServicesPage({
   const { locale } = use(params);
   setRequestLocale(locale);
   const t = useTranslations("services");
+  const tNav = useTranslations("nav");
   const tContact = useTranslations("home.contactCta");
   const tPhoto = useTranslations("photo");
 
   return (
     <>
+      <BreadcrumbJsonLd
+        locale={locale}
+        trail={[
+          { name: tNav("home"), path: "/" },
+          { name: tNav("services"), path: "/services" },
+        ]}
+      />
       <section className="kin-grain bg-paper">
         <hr className="kin-rule" />
         <div className="mx-auto max-w-[1240px] px-4 sm:px-8">
           <div className="flex items-baseline justify-between gap-4 border-b border-ink/15 py-4">
-            <span className="kin-mono text-ink-faint">
-              Peng Global Holding
-            </span>
+            <span className="kin-mono text-ink-faint">Peng Global Holding</span>
             <span className="kin-mono text-ink-faint">04 · Service lines</span>
           </div>
           <h1 className="kin-display pt-14 text-[clamp(2.4rem,8vw,5.4rem)] text-ink sm:pt-20">
